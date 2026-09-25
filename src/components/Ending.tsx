@@ -10,11 +10,11 @@ import {bump} from '../lib/anim.ts';
 import {FIT} from './textFit.ts';
 import {Wordmark, WORDMARK} from './Wordmark.tsx';
 
-export const Ending: React.FC<{f: number}> = ({f}) => {
-  if (f < K.swap) return null;
+export const Ending: React.FC<{f: number; swap?: number; reveal?: number}> = ({f, swap = K.swap, reveal = K.reveal}) => {
+  if (f < swap) return null;
   const E = LAYOUT.ending;
   const wmH = (E.wordmark.w * WORDMARK.h) / WORDMARK.w;
-  const hit = bump(f, K.reveal + 4, 16);
+  const hit = bump(f, reveal + 4, 16);
   return (
     <>
       <Wordmark x={E.wordmark.cx - E.wordmark.w / 2} y={E.wordmark.cy - wmH / 2} width={E.wordmark.w} glow={hit} />

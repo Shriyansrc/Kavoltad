@@ -7,3 +7,4 @@ __pycache__/
 # large intermediate frame sequences
 out/frames/
 deliverables/*.zip
+out/frames_city/

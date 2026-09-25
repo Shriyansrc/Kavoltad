@@ -27,6 +27,7 @@ export type KaveyPose = {
   handR: number;
   cube: {dx: number; dy: number; rot: number; scale: number; glow: number};
   blink: number; // 0 open … 1 closed
+  eyeScale?: number; // eye glow size (surprise > 1), default 1
   gazeX: number; // eye offset, source px
   gazeY: number;
   energy: number; // 0..1 glow/scarf energy
@@ -336,50 +337,63 @@ const SPRINGS: Record<'earL' | 'earR' | 'tail', Spring> = {
   tail: {f0: 1.2, zeta: 0.3, gx: 1.1, gy: 0.25, gr: -0.5, max: 14},
 };
 
-let cache: {earL: Float64Array; earR: Float64Array; tail: Float64Array} | null = null;
-const LIMIT = 1260;
+export type RootSample = {x: number; y: number; r: number};
+export type FlameKey = 'earL' | 'earR' | 'tail';
 
-const simulate = () => {
-  const out = {earL: new Float64Array(LIMIT), earR: new Float64Array(LIMIT), tail: new Float64Array(LIMIT)};
-  const pos = (f: number) => {
+/**
+ * Spring follow-through for the two ear flames and the scarf tail, driven by
+ * the acceleration of a root path (screen px, lean deg). Simulated once per
+ * performance and cached; `freeze` frames are repositions, not motion.
+ */
+export const followThrough = (root: (f: number) => RootSample, limit: number, freeze: number[] = []) => {
+  let cache: Record<FlameKey, Float64Array> | null = null;
+  const simulate = () => {
+    const out = {earL: new Float64Array(limit), earR: new Float64Array(limit), tail: new Float64Array(limit)};
+    for (const key of ['earL', 'earR', 'tail'] as const) {
+      const s = SPRINGS[key];
+      const w = 2 * Math.PI * s.f0;
+      let th = 0;
+      let v = 0;
+      const dt = 1 / FPS;
+      for (let f = 0; f < limit; f++) {
+        const a = freeze.includes(f)
+          ? {x: 0, y: 0, r: 0}
+          : (() => {
+              const p0 = root(f - 1);
+              const p1 = root(f);
+              const p2 = root(f + 1);
+              return {x: p2.x - 2 * p1.x + p0.x, y: p2.y - 2 * p1.y + p0.y, r: p2.r - 2 * p1.r + p0.r};
+            })();
+        const drive = (s.gx * a.x + s.gy * a.y + s.gr * a.r * 6) * FPS * FPS * 0.35;
+        const acc = -w * w * th - 2 * s.zeta * w * v + drive;
+        v += acc * dt;
+        th += v * dt;
+        if (Math.abs(th) > s.max) {
+          th = Math.sign(th) * s.max;
+          v *= 0.3;
+        }
+        out[key][f] = th;
+      }
+    }
+    return out;
+  };
+  return (key: FlameKey, f: number) => {
+    if (!cache) cache = simulate();
+    const arr = cache[key];
+    const i = Math.max(0, Math.min(limit - 2, Math.floor(f)));
+    const t = clamp(f - i, 0, 1);
+    return lerp(arr[i], arr[i + 1], t);
+  };
+};
+
+const springAt = followThrough(
+  (f) => {
     const r = rootAt(f);
     return {x: r.x, y: r.y + hoverAt(f), r: track(f, ROT_KEYS)};
-  };
-  for (const key of ['earL', 'earR', 'tail'] as const) {
-    const s = SPRINGS[key];
-    const w = 2 * Math.PI * s.f0;
-    let th = 0;
-    let v = 0;
-    const dt = 1 / FPS;
-    for (let f = 0; f < LIMIT; f++) {
-      // Freeze follow-through across the ending swap (a reposition, not motion).
-      const a = f === K.swap || f === K.swap + 1 ? {x: 0, y: 0, r: 0} : (() => {
-        const p0 = pos(f - 1);
-        const p1 = pos(f);
-        const p2 = pos(f + 1);
-        return {x: p2.x - 2 * p1.x + p0.x, y: p2.y - 2 * p1.y + p0.y, r: p2.r - 2 * p1.r + p0.r};
-      })();
-      const drive = (s.gx * a.x + s.gy * a.y + s.gr * a.r * 6) * FPS * FPS * 0.35;
-      const acc = -w * w * th - 2 * s.zeta * w * v + drive;
-      v += acc * dt;
-      th += v * dt;
-      if (Math.abs(th) > s.max) {
-        th = Math.sign(th) * s.max;
-        v *= 0.3;
-      }
-      out[key][f] = th;
-    }
-  }
-  return out;
-};
-
-const springAt = (key: 'earL' | 'earR' | 'tail', f: number) => {
-  if (!cache) cache = simulate();
-  const arr = cache[key];
-  const i = Math.max(0, Math.min(LIMIT - 2, Math.floor(f)));
-  const t = clamp(f - i, 0, 1);
-  return lerp(arr[i], arr[i + 1], t);
-};
+  },
+  1260,
+  [K.swap, K.swap + 1],
+);
 
 // ------------------------------------------------------------------ pose
 export const kaveyPose = (f: number): KaveyPose => {
@@ -448,12 +462,13 @@ export const layerPoint = (pose: KaveyPose, pivot: {x: number; y: number}, deg: 
   return project(kaveyMatrix(pose), lx, ly);
 };
 
-/** Screen position of a named anchor under the current pose (hands follow their rotation). */
-export const anchorAt = (f: number, name: keyof typeof KAVEY_SRC.anchors) => {
-  const pose = kaveyPose(f);
+/** Screen position of a named anchor under a pose (hands follow their rotation). */
+export const anchorOf = (pose: KaveyPose, name: keyof typeof KAVEY_SRC.anchors) => {
   const a = KAVEY_SRC.anchors[name];
   if (name === 'handLPalm' || name === 'handLTip') return layerPoint(pose, {x: 136, y: 426}, pose.handL, a);
   if (name === 'handRPalm') return layerPoint(pose, {x: 287, y: 482}, pose.handR, a);
   if (name === 'scarfTip') return layerPoint(pose, {x: 122, y: 452}, pose.tail, a);
   return project(kaveyMatrix(pose), a.x, a.y);
 };
+
+export const anchorAt = (f: number, name: keyof typeof KAVEY_SRC.anchors) => anchorOf(kaveyPose(f), name);

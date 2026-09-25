@@ -26,15 +26,19 @@ const layerTransform = (id: RigLayerId, pose: KaveyPose): {transform?: string; o
     case 'cube':
       return {transform: `translate(${pose.cube.dx}px, ${pose.cube.dy}px) rotate(${pose.cube.rot}deg) scale(${pose.cube.scale})`};
     case 'eyeL':
-    case 'eyeR':
-      return {transform: `translate(${pose.gazeX}px, ${pose.gazeY}px) scale(1, ${Math.max(0.08, 1 - pose.blink * 0.92)})`};
+    case 'eyeR': {
+      const e = pose.eyeScale ?? 1;
+      return {transform: `translate(${pose.gazeX}px, ${pose.gazeY}px) scale(${e}, ${e * Math.max(0.08, 1 - pose.blink * 0.92)})`};
+    }
     default:
       return {};
   }
 };
 
-const Rig: React.FC<{f: number; opacity: number; blend?: React.CSSProperties['mixBlendMode']}> = ({f, opacity, blend}) => {
-  const pose = kaveyPose(f);
+type PoseFn = (f: number) => KaveyPose;
+
+const Rig: React.FC<{f: number; opacity: number; blend?: React.CSSProperties['mixBlendMode']; poseAt: PoseFn}> = ({f, opacity, blend, poseAt}) => {
+  const pose = poseAt(f);
   const m = kaveyMatrix(pose);
   const W = KAVEY_SRC.width;
   const H = KAVEY_SRC.height;
@@ -76,9 +80,9 @@ const Rig: React.FC<{f: number; opacity: number; blend?: React.CSSProperties['mi
 };
 
 /** Screen-space speed of the silhouette (px/frame), used to decide on motion blur. */
-const speedAt = (f: number) => {
-  const a = kaveyMatrix(kaveyPose(f - 0.5));
-  const b = kaveyMatrix(kaveyPose(f + 0.5));
+const speedAt = (f: number, poseAt: PoseFn) => {
+  const a = kaveyMatrix(poseAt(f - 0.5));
+  const b = kaveyMatrix(poseAt(f + 0.5));
   const pts = [
     [KAVEY_SRC.bbox.x, KAVEY_SRC.bbox.y],
     [KAVEY_SRC.bbox.x + KAVEY_SRC.bbox.w, KAVEY_SRC.bbox.y + KAVEY_SRC.bbox.h],
@@ -93,14 +97,14 @@ const speedAt = (f: number) => {
   return max;
 };
 
-export const Kavey: React.FC<{f: number}> = ({f}) => {
+export const Kavey: React.FC<{f: number; poseAt?: PoseFn; shutter?: number}> = ({f, poseAt = kaveyPose, shutter = 0.25}) => {
   if (!hasRig()) return null;
-  const pose = kaveyPose(f);
+  const pose = poseAt(f);
   const m = kaveyMatrix(pose);
   const foot = project(m, KAVEY_SRC.rootPivot.x + 20, KAVEY_SRC.bbox.y + KAVEY_SRC.bbox.h);
   const s = pose.height / KAVEY_SRC.bbox.h;
   const lift = Math.max(0, Math.min(1, -pose.hover / 10 + 0.5));
-  const blurPx = speedAt(f) * 0.25; // 90° shutter
+  const blurPx = speedAt(f, poseAt) * shutter; // 90° shutter by default
   const samples = blurPx < 1.5 ? 1 : Math.min(8, Math.ceil(blurPx / 1.5) + 1);
   return (
     <div style={{position: 'absolute', inset: 0}}>
@@ -118,11 +122,11 @@ export const Kavey: React.FC<{f: number}> = ({f}) => {
         }}
       />
       {samples === 1 ? (
-        <Rig f={f} opacity={1} />
+        <Rig f={f} opacity={1} poseAt={poseAt} />
       ) : (
         <div style={{position: 'absolute', inset: 0, isolation: 'isolate'}}>
           {Array.from({length: samples}, (_, k) => (
-            <Rig key={k} f={f + (k / (samples - 1) - 0.5) * 0.25} opacity={1 / samples} blend="plus-lighter" />
+            <Rig key={k} f={f + (k / (samples - 1) - 0.5) * shutter} opacity={1 / samples} blend="plus-lighter" poseAt={poseAt} />
           ))}
         </div>
       )}

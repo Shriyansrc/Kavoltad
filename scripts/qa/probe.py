@@ -12,7 +12,7 @@ def ffprobe(path, *args):
     return json.loads(r.stdout)
 
 
-def main(path):
+def main(path, frames=1200, seconds=20.0):
     info = ffprobe(path, "-show_streams", "-show_format", "-count_frames")
     v = next(s for s in info["streams"] if s["codec_type"] == "video")
     a = next((s for s in info["streams"] if s["codec_type"] == "audio"), None)
@@ -27,8 +27,8 @@ def main(path):
         "square pixels": v.get("sample_aspect_ratio", "1:1") in ("1:1", "0:1", None),
         "r_frame_rate 60/1": v["r_frame_rate"] == "60/1",
         "avg_frame_rate 60/1": v["avg_frame_rate"] == "60/1",
-        "1200 decoded frames": int(v.get("nb_read_frames", 0)) == 1200,
-        "video duration 20.000 s": abs(float(v.get("duration", 0)) - 20.0) < 0.001,
+        f"{frames} decoded frames": int(v.get("nb_read_frames", 0)) == frames,
+        f"video duration {seconds:.3f} s": abs(float(v.get("duration", 0)) - seconds) < 0.001,
         "pix_fmt yuv420p": v["pix_fmt"] == "yuv420p",
         "color_space bt709": v.get("color_space") == "bt709",
         "color_primaries bt709": v.get("color_primaries") == "bt709",
@@ -55,4 +55,5 @@ def main(path):
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1]))
+    # python scripts/qa/probe.py FILE [FRAMES SECONDS]
+    sys.exit(main(sys.argv[1], int(sys.argv[2]) if len(sys.argv) > 2 else 1200, float(sys.argv[3]) if len(sys.argv) > 3 else 20.0))

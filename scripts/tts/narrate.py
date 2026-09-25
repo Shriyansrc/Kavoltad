@@ -66,12 +66,16 @@ def main():
     ap.add_argument("--voice", default="af_heart")
     ap.add_argument("--speed", type=float, default=1.0)
     ap.add_argument("--out", default="audio-src/narration")
+    ap.add_argument("--lines", default=None, help="JSON list of {id,text,start,end}; defaults to the 20 s film")
     args = ap.parse_args()
+    lines = LINES
+    if args.lines:
+        lines = [(d["id"], d["text"], d["start"], d["end"]) for d in json.load(open(args.lines))]
 
     os.makedirs(args.out, exist_ok=True)
     k = Kokoro(args.model, args.voices)
     report = {"engine": "kokoro-onnx (Kokoro-82M)", "voice": args.voice, "speed": args.speed, "lines": []}
-    for lid, text, start, end in LINES:
+    for lid, text, start, end in lines:
         ph = k.tokenizer.phonemize(text, "en-us")
         for a, b in PRONUNCIATION.items():
             ph = ph.replace(a, b)

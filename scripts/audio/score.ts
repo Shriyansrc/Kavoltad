@@ -47,7 +47,7 @@ const rootAt = (t: number) => (t >= MUSIC.resolve ? 'A2' : BASS_ROOTS[Math.min(9
 const octave = (n: string, d: number) => n.replace(/(-?\d)$/, (m) => String(Number(m) + d));
 
 // ------------------------------------------------------------------ voices
-const pulseNote = (freq: number, cutoff: number, len = 0.18) => {
+export const pulseNote = (freq: number, cutoff: number, len = 0.18) => {
   const s = saw(len, freq, 30, 0);
   const s2 = saw(len, freq, 30, 7);
   const m = new Float32Array(s.length);
@@ -56,12 +56,12 @@ const pulseNote = (freq: number, cutoff: number, len = 0.18) => {
   return mulEnv(f, envAD(len, 0.004, 0.09, 3));
 };
 
-const tick = (seed: number, len = 0.03) => {
+export const tick = (seed: number, len = 0.03) => {
   const n = biquad(noise(len, seed), 'highpass', 5200, 0.9);
   return mulEnv(n, envAD(len, 0.001, 0.012, 5));
 };
 
-const bassNote = (freq: number, len: number) => {
+export const bassNote = (freq: number, len: number) => {
   const tri = triangle(len, freq, 11);
   const sub = sine(len, freq / 2);
   const m = new Float32Array(tri.length);
@@ -70,7 +70,7 @@ const bassNote = (freq: number, len: number) => {
   return mulEnv(f, envAD(len, 0.006, len * 0.9, 2.2));
 };
 
-const pluck = (freq: number, len = 0.35, bright = 1) => {
+export const pluck = (freq: number, len = 0.35, bright = 1) => {
   const a = sine(len, freq);
   const b = sine(len, freq * 2);
   const c = sine(len, freq * 3.01);
@@ -80,7 +80,7 @@ const pluck = (freq: number, len = 0.35, bright = 1) => {
   return mulEnv(m, envAD(len, 0.003, len * 0.55, 3.2));
 };
 
-const kick = (len = 0.28) => {
+export const kick = (len = 0.28) => {
   const body = sine(len, (t) => 45 + 70 * Math.exp(-t * 28));
   const click = biquad(noise(0.012, SEED + 7), 'bandpass', 2500, 0.8);
   const m = new Float32Array(body.length);
@@ -88,7 +88,7 @@ const kick = (len = 0.28) => {
   return mulEnv(m, envAD(len, 0.002, 0.16, 3.2));
 };
 
-const snare = (seed: number, len = 0.16) => {
+export const snare = (seed: number, len = 0.16) => {
   const n = biquad(biquad(noise(len, seed), 'bandpass', 1900, 0.7), 'highpass', 450, 0.7);
   const tone = sine(len, 190);
   const m = new Float32Array(n.length);
@@ -97,12 +97,12 @@ const snare = (seed: number, len = 0.16) => {
   return mulEnv(m, envAD(len, 0.001, 0.08, 4));
 };
 
-const hat = (seed: number, len = 0.045, open = false) => {
+export const hat = (seed: number, len = 0.045, open = false) => {
   const n = biquad(biquad(noise(len, seed), 'highpass', 7200, 0.8), 'peaking', 10000, 1, 3);
   return mulEnv(n, envAD(len, 0.001, open ? 0.06 : 0.018, 4));
 };
 
-const padChord = (notes: string[], len: number, cutoff: number, attack = 0.35) => {
+export const padChord = (notes: string[], len: number, cutoff: number, attack = 0.35) => {
   const out = makeStereo(len);
   notes.forEach((n, k) => {
     const f = noteToFreq(n);
@@ -119,7 +119,7 @@ const padChord = (notes: string[], len: number, cutoff: number, attack = 0.35) =
 };
 
 // ------------------------------------------------------------------ render
-const clap = (seed: number, len = 0.2) => {
+export const clap = (seed: number, len = 0.2) => {
   const bursts = [0, 0.011, 0.023];
   const out = new Float32Array(Math.round(len * SR));
   for (const b of bursts) {
