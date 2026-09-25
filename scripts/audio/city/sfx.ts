@@ -10,7 +10,7 @@ import {CARS, carX} from '../../../src/city/world/cars.ts';
 import {SEED} from '../../../src/config/video.ts';
 import {addMono, addStereo, biquad, dbToGain, envAD, makeStereo, mulberry32, mulEnv, noise, noteToFreq, reverb, saw, sine, SR, type Stereo} from '../dsp.ts';
 
-export const CITY_DUR = 30;
+export const CITY_DUR = 48;
 const FPS = 60;
 
 // ------------------------------------------------------------------ helpers
@@ -547,6 +547,62 @@ const build = (c: Cue2, seed: number): Built => {
       addStereo(out, reverb(stereoLen(bell, s + 1.2), {room: 0.82, damp: 0.3, predelay: 0.01}), 0, 0.9);
       return {st: out};
     }
+    case 'confetti': {
+      // party popper: soft pop, paper burst, a few settling rustles
+      const s = 1.2;
+      const st = makeStereo(s);
+      const pop = mulEnv(sine(0.1, (t) => 420 * Math.pow(0.4, t / 0.1)), envAD(0.1, 0.001, 0.03, 4));
+      addMono(st, fadeEdges(pop), 0, 0.7, 0);
+      const burst = mulEnv(biquad(nz(0.35, seed), 'bandpass', 3800, 0.7), (t) => Math.exp(-t * 9) * Math.min(1, t / 0.003));
+      addMono(st, fadeEdges(burst), 0.005, 0.6, 0);
+      const rnd = mulberry32(seed);
+      for (let k = 0; k < 24; k++) {
+        const t = 0.08 + Math.pow(rnd(), 0.8) * 0.9;
+        const r = mulEnv(biquad(nz(0.03, seed + k), 'bandpass', 2500 + 3500 * rnd(), 1.5), (tt) => Math.sin(Math.PI * Math.min(1, tt / 0.03)));
+        addMono(st, r, t, 0.12 + 0.15 * rnd() * (1 - t), (rnd() - 0.5) * 1.4);
+      }
+      return {st: room(st, 0.2, {room: 0.6}, 0.5)};
+    }
+    case 'sparkle': {
+      // glittering shimmer: many soft high sine pings, spread wide
+      const s = 1.2;
+      const st = makeStereo(s);
+      const rnd = mulberry32(seed);
+      const scale = ['C6', 'E6', 'G6', 'A6', 'C7', 'E7', 'G7'];
+      for (let k = 0; k < 22; k++) {
+        const f = noteToFreq(scale[Math.floor(rnd() * scale.length)]);
+        const p = partials(0.35, [
+          [f, 0.2, 0.08],
+          [f * 2.01, 0.05, 0.04],
+        ]);
+        addMono(st, p, Math.pow(rnd(), 0.9) * 0.8, 0.5 + 0.5 * rnd(), (rnd() - 0.5) * 1.6);
+      }
+      return {st: room(st, 0.35, {room: 0.75, damp: 0.3}, 0.8)};
+    }
+    case 'spot': {
+      // stage spotlight switching on: heavy clunk and a warm electrical hum
+      const s = 0.9;
+      const m = buf(s);
+      addAt(m, mulEnv(sine(0.2, (t) => 70 + 50 * Math.exp(-t * 30)), envAD(0.2, 0.002, 0.08, 3)), 0, 1);
+      addAt(m, mulEnv(biquad(nz(0.03, seed), 'bandpass', 1400, 1), (t) => Math.sin(Math.PI * Math.min(1, t / 0.03))), 0, 0.5);
+      const hum = mulEnv(biquad(saw(0.8, 100, 20), 'lowpass', 600, 0.7), (t) => 0.25 * Math.min(1, t / 0.05) * Math.max(0, 1 - t / 0.8));
+      addAt(m, hum, 0.02, 1);
+      return {st: room(pan(fadeEdges(m), p0), 0.25, {room: 0.7}, 0.6)};
+    }
+    case 'chirp': {
+      // a small bird: two or three fast upward FM chirps
+      const s = 0.4;
+      const m = buf(s);
+      const rnd = mulberry32(seed);
+      const n = 2 + Math.floor(rnd() * 2);
+      for (let k = 0; k < n; k++) {
+        const f0 = 3200 + 1200 * rnd();
+        const len = 0.05 + 0.03 * rnd();
+        const ch = mulEnv(sine(len, (t) => f0 * (1 + 0.5 * (t / len)) + 300 * Math.sin(2 * Math.PI * 60 * t)), (t) => Math.sin(Math.PI * Math.min(1, t / len)));
+        addAt(m, ch, k * 0.09, 0.6);
+      }
+      return {st: room(pan(fadeEdges(m), p0), 0.2, {room: 0.6}, 0.3)};
+    }
     default:
       throw new Error(`unknown sfx kind ${c.kind}`);
   }
@@ -559,7 +615,7 @@ const chaosInView = (f: number) => {
   const near = (['salon', 'gym', 'clinic'] as const).map((k) => ({k, w: Math.max(0, 1 - Math.abs(x - DISTRICT[k]) / 700)}));
   let c = 0;
   for (const {k, w} of near) c += w * (1 - calm[k](f));
-  return f >= 1060 ? 0 : Math.min(1, c);
+  return f >= 1640 ? 0 : Math.min(1, c);
 };
 
 const cityBed = (): Stereo => {
@@ -636,9 +692,12 @@ const carBed = (): {st: Stereo; passes: {frame: number; dir: number}[]} => {
 };
 
 // ------------------------------------------------------------------ render
+/** Birdsong for a lively street (only in the district scenes). */
+const CHIRPS: Cue2[] = [20, 95, 170, 380, 520, 640, 860, 1010, 1120, 1300, 1480, 1590].map((frame, i) => ({id: `chirp-${i}`, frame, kind: 'chirp', db: -30 - (i % 3) * 2, pan: [-0.7, 0.6, -0.4, 0.8, -0.8, 0.5][i % 6]}));
+
 export const renderCitySfx = () => {
   const bus = makeStereo(CITY_DUR);
-  for (const c of SFX2) {
+  for (const c of [...SFX2, ...CHIRPS]) {
     const seed = SEED + c.frame * 17 + c.id.length * 131;
     const {st, offset = 0} = build(c, seed);
     let p = 0;
@@ -666,7 +725,7 @@ const IMPULSIVE = new Set(['click', 'pop', 'keys', 'construct', 'ticktock', 'gli
  * (> 10x the local level in ±1.5 ms) — required to be zero for smooth kinds.
  */
 export const auditCitySfx = () =>
-  SFX2.map((c) => {
+  [...SFX2, ...CHIRPS].map((c) => {
     const seed = SEED + c.frame * 17 + c.id.length * 131;
     const {st} = build(c, seed);
     let pk = 0;

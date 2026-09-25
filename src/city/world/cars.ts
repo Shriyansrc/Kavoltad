@@ -3,10 +3,10 @@
 export type Car = {lane: number; dir: 1 | -1; speed: number; x0: number; color: string};
 
 export const CARS: Car[] = [
-  {lane: 1650, dir: 1, speed: 11, x0: 200, color: '#3A2A63'},
-  {lane: 1650, dir: 1, speed: 11, x0: 2600, color: '#5A2A6E'},
-  {lane: 1800, dir: -1, speed: 14, x0: 900, color: '#27305E'},
-  {lane: 1800, dir: -1, speed: 14, x0: 3400, color: '#46235C'},
+  {lane: 1650, dir: 1, speed: 11, x0: 200, color: '#FF5C8A'},
+  {lane: 1650, dir: 1, speed: 11, x0: 2600, color: '#FFB547'},
+  {lane: 1800, dir: -1, speed: 14, x0: 900, color: '#4FB8F0'},
+  {lane: 1800, dir: -1, speed: 14, x0: 3400, color: '#8E6BFF'},
 ];
 
 const SPAN = 5600;

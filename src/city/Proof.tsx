@@ -17,13 +17,13 @@ const TILE = {x: 130, w: 330, h: 150, gap: 26};
 const tileBox = (i: number, top: number) => ({x: TILE.x, y: top + i * (TILE.h + TILE.gap), w: TILE.w, h: TILE.h});
 
 export const Tiles: React.FC<{f: number; top: number}> = ({f, top}) => {
-  if (f < C.tiles - 2 || f > 1540) return null;
+  if (f < C.tiles - 2 || f > C.tiles + 80) return null;
   return (
     <>
       {[0, 1].map((i) => {
         const at = C.tiles + i * 8;
         const p = spring01(f - at, SPR.pop);
-        const exit = ease.cubicIn(invLerp(1516 + i * 3, 1528 + i * 3, f));
+        const exit = ease.cubicIn(invLerp(C.tiles + 58 + i * 3, C.tiles + 70 + i * 3, f));
         if (p <= 0.001 || exit >= 1) return null;
         const b = tileBox(i, top);
         const glint = bump(f, at + 22 + (i ? 10 : 0), 8);
@@ -96,10 +96,10 @@ export const TileGlyphs: React.FC<{f: number; top: number}> = ({f, top}) => {
 // ------------------------------------------------------------------ billboard (world)
 export const BOARD = {x: 1624, y: 300, imgW: 648, imgH: 243, border: 18};
 
-const boardRise = (f: number) => ease.backOut(1.2)(invLerp(1488, 1520, f));
+const boardRise = (f: number) => ease.backOut(1.2)(invLerp(C.billboard - 34, C.billboard - 4, f));
 
 export const Billboard: React.FC<{f: number}> = ({f}) => {
-  if (f < 1484 || f >= C.swap) return null;
+  if (f < C.billboard - 38 || f >= C.swap) return null;
   const rise = boardRise(f);
   const dy = (1 - rise) * 520;
   const W = BOARD.imgW + 2 * BOARD.border;

@@ -1,170 +1,226 @@
 [
   {
-    "source": "Kavolt_ChaosCity_30s_Narration.wav",
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "n01",
+    "script": "Welcome to Chaos City, where running a business gets a little crazy!",
+    "heard": "Welcome to Chaos City, where running a business gets a little crazy.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "s01",
+    "script": "Oh no! The bookings at my salon are clashing again!",
+    "heard": "Oh no, the bookings at my salon are clashing again.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "n02",
+    "script": "No stress! Kavolt builds your salon one smooth booking flow, so every slot is sorted.",
+    "heard": "No stress. Kavolt builds your salon one smooth booking flow, so every slot is sorted.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "s02",
+    "script": "Amazing! Thank you!",
+    "heard": "Amazing thank you.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "g01",
+    "script": "Oh man! My gym's payments keep slipping away!",
+    "heard": "Oh man, my gym's payments keep slipping away.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "n03",
+    "script": "Kavolt connects Razorpay, so every payment lands, right on time.",
+    "heard": "Kavolt connects Razorpay, so every payment lands right on time.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "g02",
+    "script": "Yes! Let's go!",
+    "heard": "Yes, let's go.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
     "id": "c01",
-    "script": "Welcome to Chaos City.",
-    "heard": "Welcome to Chaos City.",
+    "script": "Oh dear, my patients keep forgetting their appointments!",
+    "heard": "Oh dear my patients keep forgetting their appointments.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Narration.wav",
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "n04",
+    "script": "Now WhatsApp reminders bring them right back to your door!",
+    "heard": "Now WhatsApp reminders bring them right back to your door.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
     "id": "c02",
-    "script": "Bookings clashing?",
-    "heard": "Bookings clashing.",
+    "script": "Brilliant!",
+    "heard": "Brilliant.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Narration.wav",
-    "id": "c03",
-    "script": "Sorted, with one booking flow.",
-    "heard": "Sorted with one booking flow.",
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "n05",
+    "script": "That's Kavolt! Stunning websites and apps, beautifully designed, with everything your business needs.",
+    "heard": "That's Kavolt, stunning websites and apps, beautifully designed with everything your business needs.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Narration.wav",
-    "id": "c04",
-    "script": "Payments slipping away?",
-    "heard": "Payment slipping away.",
-    "wer": 0.333
-  },
-  {
-    "source": "Kavolt_ChaosCity_30s_Narration.wav",
-    "id": "c05",
-    "script": "Connected, with Razorpay.",
-    "heard": "connected with Razorpay.",
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "n06",
+    "script": "Built in just seven days, and reviewed right on your phone.",
+    "heard": "Built in just seven days and reviewed right on your phone.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Narration.wav",
-    "id": "c06",
-    "script": "Clients forgetting?",
-    "heard": "Clients forgetting.",
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "n07",
+    "script": "Launch day! Your code and your keys, all yours.",
+    "heard": "Launch Day. Your code and your keys all yours.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Narration.wav",
-    "id": "c07",
-    "script": "Reminders go out on WhatsApp.",
-    "heard": "Reminders go out on WhatsApp.",
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "n08",
+    "script": "Real work. Really shipped.",
+    "heard": "Real work really shipped.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Narration.wav",
-    "id": "c08",
-    "script": "Kavolt ships it all as one product, in seven days.",
-    "heard": "Kavolt ships it all as one product, in seven days.",
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "n09",
+    "script": "Ready to bring your business to the global stage?",
+    "heard": "Ready to bring your business to the global stage.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Narration.wav",
-    "id": "c09",
-    "script": "Reviewed on your phone. Launched on day seven.",
-    "heard": "Reviewed on your phone. Launched on Day 7.",
-    "wer": 0.125
+    "source": "Kavolt_ChaosCity_48s_Narration.wav",
+    "id": "n10",
+    "script": "Visit kavolt dot antideploy dot com!",
+    "heard": "visit kavolt.antideploy.com",
+    "wer": 0.833
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Narration.wav",
-    "id": "c10",
-    "script": "Your code. Your keys.",
-    "heard": "your code, your keys.",
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "n01",
+    "script": "Welcome to Chaos City, where running a business gets a little crazy!",
+    "heard": "Welcome to Chaos City, where running a business gets a little crazy.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Narration.wav",
-    "id": "c11",
-    "script": "Real work, shipped.",
-    "heard": "Real work shipped.",
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "s01",
+    "script": "Oh no! The bookings at my salon are clashing again!",
+    "heard": "Oh no, the bookings at my salon are clashing again.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Narration.wav",
-    "id": "c12",
-    "script": "Ready to ship? Check the website.",
-    "heard": "Ready to ship? Check the website.",
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "n02",
+    "script": "No stress! Kavolt builds your salon one smooth booking flow, so every slot is sorted.",
+    "heard": "No stress. Kavolt builds your salon one smooth booking flow, so every slot is sorted.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Mix.wav",
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "s02",
+    "script": "Amazing! Thank you!",
+    "heard": "Amazing thank you.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "g01",
+    "script": "Oh man! My gym's payments keep slipping away!",
+    "heard": "Oh man, my gym's payments keep slipping away.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "n03",
+    "script": "Kavolt connects Razorpay, so every payment lands, right on time.",
+    "heard": "Kavolt connects Razorpay, so every payment lands right on time.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "g02",
+    "script": "Yes! Let's go!",
+    "heard": "Yes, let's go!",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
     "id": "c01",
-    "script": "Welcome to Chaos City.",
-    "heard": "Welcome to Chaos City.",
+    "script": "Oh dear, my patients keep forgetting their appointments!",
+    "heard": "Oh dear, my patients keep forgetting their appointments.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Mix.wav",
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "n04",
+    "script": "Now WhatsApp reminders bring them right back to your door!",
+    "heard": "Now WhatsApp reminders bring them right back to your door.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
     "id": "c02",
-    "script": "Bookings clashing?",
-    "heard": "Bookings clashing.",
+    "script": "Brilliant!",
+    "heard": "Brilliant.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Mix.wav",
-    "id": "c03",
-    "script": "Sorted, with one booking flow.",
-    "heard": "Sorted with one booking flow.",
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "n05",
+    "script": "That's Kavolt! Stunning websites and apps, beautifully designed, with everything your business needs.",
+    "heard": "That's Kavolt. Stunning websites and apps, beautifully designed with everything your business needs.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Mix.wav",
-    "id": "c04",
-    "script": "Payments slipping away?",
-    "heard": "payments slipping away.",
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "n06",
+    "script": "Built in just seven days, and reviewed right on your phone.",
+    "heard": "Built in just 7 days and reviewed right on your phone.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Mix.wav",
-    "id": "c05",
-    "script": "Connected, with Razorpay.",
-    "heard": "connected with Razorpay.",
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "n07",
+    "script": "Launch day! Your code and your keys, all yours.",
+    "heard": "Launch Day, your code and your keys, all yours.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Mix.wav",
-    "id": "c06",
-    "script": "Clients forgetting?",
-    "heard": "Clients forgetting.",
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "n08",
+    "script": "Real work. Really shipped.",
+    "heard": "Real work really shipped.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Mix.wav",
-    "id": "c07",
-    "script": "Reminders go out on WhatsApp.",
-    "heard": "Reminders go out on WhatsApp.",
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "n09",
+    "script": "Ready to bring your business to the global stage?",
+    "heard": "Ready to bring your business to the global stage.",
     "wer": 0.0
   },
   {
-    "source": "Kavolt_ChaosCity_30s_Mix.wav",
-    "id": "c08",
-    "script": "Kavolt ships it all as one product, in seven days.",
-    "heard": "Kavolt ships it all as one product in seven days.",
-    "wer": 0.0
-  },
-  {
-    "source": "Kavolt_ChaosCity_30s_Mix.wav",
-    "id": "c09",
-    "script": "Reviewed on your phone. Launched on day seven.",
-    "heard": "Reviewed on your phone. Launched on day 7.",
-    "wer": 0.125
-  },
-  {
-    "source": "Kavolt_ChaosCity_30s_Mix.wav",
-    "id": "c10",
-    "script": "Your code. Your keys.",
-    "heard": "Your code, your keys.",
-    "wer": 0.0
-  },
-  {
-    "source": "Kavolt_ChaosCity_30s_Mix.wav",
-    "id": "c11",
-    "script": "Real work, shipped.",
-    "heard": "Real work shipped.",
-    "wer": 0.0
-  },
-  {
-    "source": "Kavolt_ChaosCity_30s_Mix.wav",
-    "id": "c12",
-    "script": "Ready to ship? Check the website.",
-    "heard": "Ready to ship? Check the website.",
-    "wer": 0.0
+    "source": "Kavolt_ChaosCity_48s_Mix.wav",
+    "id": "n10",
+    "script": "Visit kavolt dot antideploy dot com!",
+    "heard": "visit kavolt.antideploy.com",
+    "wer": 0.833
   }
 ]

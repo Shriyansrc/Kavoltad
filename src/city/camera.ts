@@ -2,7 +2,7 @@
 // screen at zoom 1). Districts sit side by side on one street; the camera
 // cranes down from the sky, travels shop to shop, pulls back for the build,
 // tilts to the billboard, and lifts to the sky for the ending.
-import {C} from './config.ts';
+import {C, PANS} from './config.ts';
 import {bump, ease, glide, lerp, noise1, ring, track, type Key} from '../lib/anim.ts';
 
 export const DISTRICT = {salon: 540, gym: 1740, clinic: 2940} as const;
@@ -11,39 +11,42 @@ export const REF = {x: 1740, y: 960};
 
 const X: Key[] = [
   [0, DISTRICT.salon],
-  [448, DISTRICT.salon],
-  [500, DISTRICT.gym, glide],
-  [748, DISTRICT.gym],
-  [800, DISTRICT.clinic, glide],
-  [1060, DISTRICT.clinic],
-  [1124, DISTRICT.gym, glide],
-  [1604, DISTRICT.gym],
-  [1605, DISTRICT.gym],
+  [PANS.toGym[0], DISTRICT.salon],
+  [PANS.toGym[1], DISTRICT.gym, glide],
+  [PANS.toClinic[0], DISTRICT.gym],
+  [PANS.toClinic[1], DISTRICT.clinic, glide],
+  [1636, DISTRICT.clinic],
+  [1706, DISTRICT.gym, glide],
+  [2480, DISTRICT.gym],
+  [2481, DISTRICT.gym],
 ];
+// Crane down in the hook; pull back for the showcase and build; close-up for
+// the handoff; tilt up to the billboard; the ending has its own backdrop.
 const Y: Key[] = [
   [0, 120],
-  [176, 960, ease.bezier(0.5, 0, 0.2, 1)],
-  [1060, 960],
-  [1124, 760, glide],
-  [1440, 820],
-  [1500, 900, ease.cubicInOut],
-  [1510, 900],
-  [1542, 640, ease.cubicInOut],
-  [1604, 600],
-  [1605, 40],
+  [200, 960, ease.bezier(0.5, 0, 0.2, 1)],
+  [1636, 960],
+  [1706, 740, glide],
+  [2200, 760],
+  [2246, 780],
+  [2286, 900, ease.cubicInOut],
+  [2306, 900],
+  [2338, 640, ease.cubicInOut],
+  [2480, 600],
+  [2481, 40],
 ];
 const Z: Key[] = [
   [0, 0.8],
-  [176, 1, ease.bezier(0.5, 0, 0.2, 1)],
-  [1060, 1],
-  [1124, 0.6, glide],
-  [1370, 0.64, ease.sineInOut],
-  [1440, 0.64],
-  [1500, 0.92, ease.cubicInOut],
-  [1510, 0.92],
-  [1542, 0.82, ease.cubicInOut],
-  [1604, 0.84],
-  [1605, 0.72],
+  [200, 1, ease.bezier(0.5, 0, 0.2, 1)],
+  [1636, 1],
+  [1706, 0.6, glide],
+  [2150, 0.63, ease.sineInOut],
+  [2246, 0.64],
+  [2286, 0.92, ease.cubicInOut],
+  [2306, 0.92],
+  [2338, 0.82, ease.cubicInOut],
+  [2480, 0.84],
+  [2481, 0.72],
 ];
 
 export type Cam = {cx: number; cy: number; zoom: number; rot: number};

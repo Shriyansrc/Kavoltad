@@ -9,7 +9,7 @@ import {C} from '../config.ts';
 import {Layer, visibleX} from './Layer.tsx';
 import {CROWD, WALKERS, walkerState} from './people.ts';
 
-const SKIN = '#E6D9F5';
+const SKINS = ['#F2C9A0', '#C98E6B', '#8D5A3B', '#E8B48A', '#6B4430'];
 
 export const Person: React.FC<{
   x: number;
@@ -24,7 +24,8 @@ export const Person: React.FC<{
   arms?: number; // 0 down … 1 raised (cheer)
   opacity?: number;
   scale?: number;
-}> = ({x, y, h, body, hair = '#1A1024', dir, phase, walking, mood, arms = 0, opacity = 1, scale = 1}) => {
+  skin?: string;
+}> = ({x, y, h, body, hair = '#1A1024', dir, phase, walking, mood, arms = 0, opacity = 1, scale = 1, skin = SKINS[0]}) => {
   const leg = 0.3 * h;
   const torso = 0.42 * h;
   const r = 0.125 * h;
@@ -55,7 +56,7 @@ export const Person: React.FC<{
       </g>
       <rect x={-tw / 2} y={-leg - torso} width={tw} height={torso + 8} rx={tw / 2} fill={body} />
       <rect x={-tw / 2 + 6} y={-leg - torso + 10} width={tw * 0.25} height={torso * 0.6} rx={6} fill={rgba('#FFFFFF', 0.08)} />
-      <circle cx={0} cy={headY} r={r} fill={SKIN} />
+      <circle cx={0} cy={headY} r={r} fill={skin} />
       <path d={`M${-r},${headY - 2} A${r},${r} 0 0 1 ${r},${headY - 2} L${r * 0.4 * -dir},${headY - r * 0.4} Z`} fill={hair} />
       <circle cx={dir * r * 0.35} cy={headY + 2} r={2.4} fill="#1A1024" />
       <circle cx={dir * r * 0.75} cy={headY + 2} r={2.4} fill="#1A1024" />
@@ -81,15 +82,15 @@ export const Person: React.FC<{
 
 export const People: React.FC<{f: number}> = ({f}) => {
   const vis = visibleX(f, 1, 200);
-  const crowdIn = clamp(invLerp(1090, 1150, f));
+  const crowdIn = clamp(invLerp(1672, 1736, f));
   return (
     <Layer f={f} p={1}>
       {WALKERS.map((wk) => {
         const s = walkerState(wk, f);
         if (!s.visible || s.x < vis.x0 || s.x > vis.x1) return null;
-        return <Person key={wk.id} x={s.x} y={s.y} h={wk.h} body={wk.body} hair={wk.hair} dir={s.dir} phase={s.phase} walking={f < wk.t1 + 22} mood={wk.mood} opacity={s.opacity} scale={s.scale} />;
+        return <Person key={wk.id} x={s.x} y={s.y} h={wk.h} body={wk.body} hair={wk.hair} dir={s.dir} phase={s.phase} walking={f < wk.t1 + 22} mood={wk.mood} opacity={s.opacity} scale={s.scale} skin={SKINS[wk.id % SKINS.length]} />;
       })}
-      {f >= 1090 && f < C.swap
+      {f >= 1672 && f < C.swap
         ? CROWD.map((p, i) => {
             const from = p.x + (i < 3 ? -420 : 420);
             const x = lerp(from, p.x, crowdIn);
@@ -110,6 +111,7 @@ export const People: React.FC<{f: number}> = ({f}) => {
                 walking={walking}
                 mood={f > C.launch ? 'happy' : undefined}
                 arms={arms}
+                skin={SKINS[(i + 2) % SKINS.length]}
               />
             );
           })

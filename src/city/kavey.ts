@@ -5,13 +5,12 @@
 // whole-body acting, |turn| ≤ 15°, squash ≤ 7 %, spring follow-through on the
 // flames, hand gestures, the cube, blinks, gaze and eye glow size.
 import {KAVEY_SRC} from '../config/kavey.ts';
-import {LAYOUT} from '../config/layout.ts';
 import {FPS} from '../config/video.ts';
 import {bump, clamp, ease, glide, invLerp, lerp, ring, track, type Key} from '../lib/anim.ts';
 import {anchorOf, followThrough, kaveyMatrix, type KaveyPose} from '../scenes/kavey.ts';
 import {project} from '../lib/mat4.ts';
 import {baseToScreen, baseToWorld, worldToBase} from './camera.ts';
-import {C, CITY_FRAMES} from './config.ts';
+import {C, CITY_FRAMES, PANS} from './config.ts';
 import {THROWS} from './story.ts';
 import {SHOP} from './world/shop.ts';
 
@@ -22,127 +21,130 @@ const B = KAVEY_SRC.bbox;
 const snap = ease.bezier(0.3, 0, 0.1, 1);
 const soft = ease.bezier(0.45, 0, 0.2, 1);
 const HOME = {x: 770, y: 1130, h: 480};
-const E = LAYOUT.ending.kavey;
-const END_H = Math.min(E.maxH, (E.maxW / B.w) * B.h, B.h);
+// Ending: on the global stage (see GlobalStage.tsx).
+const E = {cx: 540, cy: 1030};
+const END_H = 520;
 
 // Where he perches on the SALON sign during the hook (world), and his world height there.
 const PERCH_H = 470;
 const PERCH = {x: 640, y: SHOP.signTop - PERCH_H * 0.36};
 
 // ------------------------------------------------------------------ root path (base screen)
+const SHOW = {x: 800, y: 1190, h: 360}; // below-right of the showcase devices
+const HAND = {x: 790, y: 1150, h: 470}; // handoff close-up
+const BOARD_POS = {x: 846, y: 934, h: 430}; // beside the billboard
+
+/** Wind-up and throw (x offsets from base b, starting from offset pre). */
+const throwX = (T: number, b: number, pre = 0): Key[] => [
+  [T - 12, b + pre],
+  [T - 6, b + 22, snap],
+  [T, b + 22],
+  [T + 6, b - 34, snap],
+  [T + 30, b - 8, soft],
+];
+const throwY = (T: number, b: number, pre = 0): Key[] => [
+  [T - 12, b + pre],
+  [T - 6, b + 12, snap],
+  [T, b + 12],
+  [T + 6, b - 18, snap],
+  [T + 30, b, soft],
+];
+/** Anticipation, dash ahead of the camera, settle. */
+const dashX = (P: number, b: number): Key[] => [
+  [P - 4, b],
+  [P + 8, b - 26, snap],
+  [P + 34, b + 70, ease.cubicInOut],
+  [P + 64, b, soft],
+];
+const dashY = (P: number, b: number): Key[] => [
+  [P - 4, b],
+  [P + 8, b + 10, snap],
+  [P + 34, b - 40, ease.cubicInOut],
+  [P + 64, b, soft],
+];
+
 const X: Key[] = [
-  [160, HOME.x],
-  // salon
-  [228, HOME.x],
-  [238, HOME.x + 44, snap],
-  [258, HOME.x + 18, soft],
-  [278, HOME.x - 14],
-  [294, HOME.x + 22, snap],
-  [300, HOME.x + 22],
-  [306, HOME.x - 34, snap],
-  [330, HOME.x - 8, soft],
-  [440, HOME.x],
-  // pan to gym: anticipation, dash ahead, settle
-  [452, HOME.x - 26, snap],
-  [478, HOME.x + 70, ease.cubicInOut],
-  [508, HOME.x, soft],
-  // gym: the grab that misses
-  [548, HOME.x],
-  [556, HOME.x - 64, snap],
-  [566, HOME.x - 80],
-  [584, HOME.x - 10, soft],
-  [594, HOME.x + 22, snap],
-  [600, HOME.x + 22],
-  [606, HOME.x - 34, snap],
-  [630, HOME.x - 8, soft],
-  [740, HOME.x],
-  [752, HOME.x - 26, snap],
-  [778, HOME.x + 70, ease.cubicInOut],
-  [808, HOME.x, soft],
+  [C.home, HOME.x],
+  // salon: surprise at the clashes, lean in, throw
+  [C.salonSurprise - 2, HOME.x],
+  [C.salonSurprise + 8, HOME.x + 44, snap],
+  [C.salonSurprise + 28, HOME.x + 18, soft],
+  [C.salonThrow - 40, HOME.x - 14],
+  ...throwX(C.salonThrow, HOME.x, -14),
+  ...dashX(PANS.toGym[0], HOME.x),
+  // gym: the grab that misses, then the throw
+  [C.gymGrab - 8, HOME.x],
+  [C.gymGrab, HOME.x - 64, snap],
+  [C.gymGrab + 10, HOME.x - 80],
+  [C.gymGrab + 28, HOME.x - 10, soft],
+  ...throwX(C.gymThrow, HOME.x, -10),
+  ...dashX(PANS.toClinic[0], HOME.x),
   // clinic: leans in to the sleeping clock, waves, gets an idea, throws
-  [816, HOME.x - 46, ease.cubicInOut],
-  [868, HOME.x - 46],
-  [880, HOME.x - 10, snap],
-  [894, HOME.x + 22, snap],
-  [900, HOME.x + 22],
-  [906, HOME.x - 34, snap],
-  [930, HOME.x - 8, soft],
-  [996, HOME.x - 8],
-  [1002, HOME.x + 30, snap],
-  [1020, HOME.x, soft],
-  [1060, HOME.x],
-  // build: up beside the product
-  [1124, 858, glide],
-  [1170, 858],
-  [1176, 884, snap],
-  [1196, 858, soft],
-  [1440, 858],
+  [PANS.toClinic[1] + 28, HOME.x - 46, ease.cubicInOut],
+  [C.clinicThrow - 54, HOME.x - 46],
+  [C.clinicThrow - 42, HOME.x - 10, snap],
+  ...throwX(C.clinicThrow, HOME.x, -10),
+  [C.clinicWake, HOME.x - 8],
+  [C.clinicWake + 6, HOME.x + 30, snap],
+  [C.clinicWake + 24, HOME.x, soft],
+  [1640, HOME.x],
+  // showcase + build: up beside the devices
+  [1706, SHOW.x, glide],
+  [C.holoMerge, SHOW.x],
+  [C.holoMerge + 6, SHOW.x + 26, snap],
+  [C.holoMerge + 26, SHOW.x, soft],
+  [2240, SHOW.x],
   // proof
-  [1496, 790, ease.cubicInOut],
-  [1510, 790],
-  [1542, 846, ease.cubicInOut],
+  [2286, HAND.x, ease.cubicInOut],
+  [2306, HAND.x],
+  [2338, BOARD_POS.x, ease.cubicInOut],
 ];
 const Y: Key[] = [
-  [160, HOME.y],
-  [228, HOME.y],
-  [238, HOME.y - 54, snap],
-  [258, HOME.y - 6, soft],
-  [288, HOME.y],
-  [294, HOME.y + 12, snap],
-  [300, HOME.y + 12],
-  [306, HOME.y - 18, snap],
-  [330, HOME.y, soft],
-  [440, HOME.y],
-  [452, HOME.y + 10],
-  [478, HOME.y - 40, ease.cubicInOut],
-  [508, HOME.y, soft],
-  [548, HOME.y],
-  [556, HOME.y - 70, snap],
-  [566, HOME.y - 78],
-  [584, HOME.y, soft],
-  [594, HOME.y + 12, snap],
-  [600, HOME.y + 12],
-  [606, HOME.y - 18, snap],
-  [630, HOME.y, soft],
-  [740, HOME.y],
-  [752, HOME.y + 10],
-  [778, HOME.y - 40, ease.cubicInOut],
-  [808, HOME.y, soft],
-  [816, HOME.y + 24, ease.cubicInOut],
-  [868, HOME.y + 24],
-  [880, HOME.y - 20, snap],
-  [894, HOME.y + 12, snap],
-  [900, HOME.y + 12],
-  [906, HOME.y - 18, snap],
-  [930, HOME.y, soft],
-  [996, HOME.y],
-  [1002, HOME.y - 44, snap],
-  [1020, HOME.y, soft],
-  [1060, HOME.y],
-  [1124, 866, glide],
-  [1440, 866],
-  [1496, 1150, ease.cubicInOut],
-  [1510, 1150],
-  [1542, 934, ease.cubicInOut],
+  [C.home, HOME.y],
+  [C.salonSurprise - 2, HOME.y],
+  [C.salonSurprise + 8, HOME.y - 54, snap],
+  [C.salonSurprise + 28, HOME.y - 6, soft],
+  [C.salonThrow - 40, HOME.y],
+  ...throwY(C.salonThrow, HOME.y),
+  ...dashY(PANS.toGym[0], HOME.y),
+  [C.gymGrab - 8, HOME.y],
+  [C.gymGrab, HOME.y - 70, snap],
+  [C.gymGrab + 10, HOME.y - 78],
+  [C.gymGrab + 28, HOME.y, soft],
+  ...throwY(C.gymThrow, HOME.y),
+  ...dashY(PANS.toClinic[0], HOME.y),
+  [PANS.toClinic[1] + 28, HOME.y + 24, ease.cubicInOut],
+  [C.clinicThrow - 54, HOME.y + 24],
+  [C.clinicThrow - 42, HOME.y - 20, snap],
+  ...throwY(C.clinicThrow, HOME.y, -20),
+  [C.clinicWake, HOME.y],
+  [C.clinicWake + 6, HOME.y - 44, snap],
+  [C.clinicWake + 24, HOME.y, soft],
+  [1640, HOME.y],
+  [1706, SHOW.y, glide],
+  [2240, SHOW.y],
+  [2286, HAND.y, ease.cubicInOut],
+  [2306, HAND.y],
+  [2338, BOARD_POS.y, ease.cubicInOut],
 ];
 const H: Key[] = [
-  [160, HOME.h],
-  [1060, HOME.h],
-  [1124, 380, glide],
-  [1440, 380],
-  [1496, 470, ease.cubicInOut],
-  [1510, 470],
-  [1542, 430, ease.cubicInOut],
+  [C.home, HOME.h],
+  [1640, HOME.h],
+  [1706, SHOW.h, glide],
+  [2240, SHOW.h],
+  [2286, HAND.h, ease.cubicInOut],
+  [2306, HAND.h],
+  [2338, BOARD_POS.h, ease.cubicInOut],
 ];
 
 /** Extra lift for hops and the launch jump (px, up positive). */
 const lift = (f: number) => {
   let up = 0;
   const hop = (at: number, h: number, len: number) => (f > at && f < at + len ? h * Math.pow(Math.sin((Math.PI * (f - at)) / len), 1.5) : 0);
-  up += hop(C.salonChecks, 46, 26) + hop(C.gymChecks, 46, 26) + hop(C.clinicWake + 12, 30, 22) + hop(1314, 22, 20);
-  // launch: squat is in squash, then a big jump, land at +40
+  up += hop(C.salonChecks, 46, 26) + hop(C.salonCheer, 30, 22) + hop(C.gymChecks, 46, 26) + hop(C.gymCheer, 34, 22);
+  up += hop(C.clinicWake + 12, 30, 22) + hop(C.clinicCheer, 30, 22) + hop(C.day6 + 20, 22, 20);
+  for (const d of C.design) up += hop(d - 2, 16, 16);
   up += hop(C.launch - 2, 130, 44);
-  // flinch on every clash
   for (const h of C.clashHits) up += ring(f, h, 7, 12, 6);
   return up;
 };
@@ -166,12 +168,12 @@ const rootAt = (f: number): {x: number; y: number; h: number} => {
     const p = bez({x: -320, y: 160}, {x: 160, y: 900}, L, u);
     return {x: p.x, y: p.y, h: lerp(360, L.h, u)};
   }
-  if (f < 100) return perchAt(f);
-  if (f < 160) {
+  if (f < C.hop) return perchAt(f);
+  if (f < C.home) {
     // Hop off the sign: blend from the (still moving) perch to HOME with an
     // arc; weights start and end at rest, so velocity stays continuous.
     const A = perchAt(f);
-    const u = invLerp(100, 160, f);
+    const u = invLerp(C.hop, C.home, f);
     const w = soft(u);
     const arc = Math.pow(Math.sin(Math.PI * u), 2);
     return {x: lerp(A.x, HOME.x, w) + 70 * arc, y: lerp(A.y, HOME.y, w) - 130 * arc, h: lerp(A.h, HOME.h, w)};
@@ -195,133 +197,130 @@ const rootAt = (f: number): {x: number; y: number; h: number} => {
 
 const hoverAt = (f: number) => {
   const t = f / FPS;
-  const amp = f >= 52 && f < 100 ? 2 : f >= C.swap ? 4 : 7;
+  const amp = f >= 52 && f < C.hop ? 2 : f >= C.swap ? 4 : 7;
   return (amp * (Math.sin((2 * Math.PI * t) / 2.6) + 0.18 * Math.sin((2 * Math.PI * t) / 4.1 + 1.1))) / 1.1;
 };
 
 // ------------------------------------------------------------------ lean / turn
+const throwRot = (T: number, pre: number): Key[] => [
+  [T - 12, pre],
+  [T - 6, 9, snap],
+  [T, 9],
+  [T + 6, -12, snap],
+  [T + 30, -2, soft],
+];
+const dashRot = (P: number): Key[] => [
+  [P - 4, -1],
+  [P + 8, -7, snap],
+  [P + 26, 13, ease.cubicInOut],
+  [P + 64, -1, soft],
+];
 const ROT: Key[] = [
   [0, 26],
   [44, 18],
   [52, -9, snap],
   [72, 2, soft],
-  [96, 0],
-  [102, -7, snap],
-  [116, 9, snap],
-  [160, 0, soft],
-  [200, -2],
-  [228, -1],
-  [238, 11, snap],
-  [258, 2, soft],
-  [278, -6],
-  [294, 9, snap],
-  [300, 9],
-  [306, -12, snap],
-  [330, -2, soft],
-  [440, -1],
-  [452, -7, snap],
-  [470, 13, ease.cubicInOut],
-  [508, -1, soft],
-  [548, -2],
-  [556, -15, snap],
-  [566, -16],
-  [584, -2, soft],
-  [594, 9, snap],
-  [600, 9],
-  [606, -12, snap],
-  [630, -2, soft],
-  [740, -1],
-  [752, -7, snap],
-  [770, 13, ease.cubicInOut],
-  [808, -1, soft],
-  [816, -10, ease.cubicInOut],
-  [868, -10],
-  [880, 3, snap],
-  [894, 9, snap],
-  [900, 9],
-  [906, -12, snap],
-  [930, -2, soft],
-  [996, -2],
-  [1002, 9, snap],
-  [1020, 0, soft],
-  [1060, 0],
-  [1088, 12, ease.cubicInOut],
-  [1124, -2, soft],
-  [1170, -2],
-  [1176, 7, snap],
-  [1196, -2, soft],
-  [1372, -2],
-  [1378, 3],
-  [1390, -5, snap],
-  [1424, 0, soft],
-  [1440, 0],
-  [1470, -4],
-  [1500, -2],
-  [1528, 7, ease.cubicInOut],
-  [1556, -3, soft],
-  [1566, -3],
-  [1574, 4, snap],
-  [1590, -11, ease.cubicIn],
-  [1604, -12],
-  [1605, -3],
-  [1640, 0, soft],
+  [C.hop - 4, 0],
+  [C.hop + 2, -7, snap],
+  [C.hop + 16, 9, snap],
+  [C.home, 0, soft],
+  [C.salonBlocks, -2],
+  [C.salonSurprise - 2, -1],
+  [C.salonSurprise + 8, 11, snap],
+  [C.salonSurprise + 28, 2, soft],
+  [C.salonThrow - 40, -6],
+  ...throwRot(C.salonThrow, -6),
+  ...dashRot(PANS.toGym[0]),
+  [C.gymGrab - 8, -2],
+  [C.gymGrab, -15, snap],
+  [C.gymGrab + 10, -16],
+  [C.gymGrab + 28, -2, soft],
+  ...throwRot(C.gymThrow, -2),
+  ...dashRot(PANS.toClinic[0]),
+  [PANS.toClinic[1] + 28, -10, ease.cubicInOut],
+  [C.clinicThrow - 54, -10],
+  [C.clinicThrow - 42, 3, snap],
+  ...throwRot(C.clinicThrow, 3),
+  [C.clinicWake, -2],
+  [C.clinicWake + 6, 9, snap],
+  [C.clinicWake + 24, 0, soft],
+  [1640, 0],
+  [1668, 12, ease.cubicInOut],
+  [1706, -2, soft],
+  [C.holoMerge, -2],
+  [C.holoMerge + 6, 7, snap],
+  [C.holoMerge + 26, -2, soft],
+  [C.launch - 6, -2],
+  [C.launch, 3],
+  [C.launch + 10, -5, snap],
+  [C.launch + 44, 0, soft],
+  [2256, -4],
+  [2286, -2],
+  [2320, 7, ease.cubicInOut],
+  [2338, -3, soft],
+  [C.anticipation, -3],
+  [C.sweep, 4, snap],
+  [C.cross, -11, ease.cubicIn],
+  [C.swap - 1, -12],
+  [C.swap, -3],
+  [C.swap + 35, 0, soft],
+];
+const dashTurn = (P: number): Key[] => [
+  [P - 4, -10],
+  [P + 8, -8],
+  [P + 26, 12, ease.cubicInOut],
+  [P + 52, 5],
+  [P + 78, -12, soft],
 ];
 const TURN: Key[] = [
   [0, 12],
   [52, 10],
   [72, -8, soft],
-  [100, -8],
-  [160, -10],
-  [440, -10],
-  [452, -8],
-  [470, 12, ease.cubicInOut],
-  [496, 5],
-  [520, -11, soft],
-  [740, -11],
-  [752, -8],
-  [770, 12, ease.cubicInOut],
-  [796, 5],
-  [822, -13, soft],
-  [1060, -10],
-  [1096, 6, ease.cubicInOut],
-  [1124, -8, soft],
-  [1372, -8],
-  [1384, 0, snap],
-  [1430, -4],
-  [1446, -9, ease.cubicInOut],
-  [1528, -9],
-  [1556, -14, ease.cubicInOut],
-  [1574, -14],
-  [1590, -15, ease.cubicIn],
-  [1604, -15],
-  [1605, -5],
-  [1640, 0, soft],
+  [C.hop, -8],
+  [C.home, -10],
+  ...dashTurn(PANS.toGym[0]),
+  ...dashTurn(PANS.toClinic[0]),
+  [1640, -10],
+  [1676, 6, ease.cubicInOut],
+  [1706, -8, soft],
+  [C.launch - 6, -8],
+  [C.launch + 4, 0, snap],
+  [2240, -4],
+  [2256, -9, ease.cubicInOut],
+  [2320, -9],
+  [2338, -14, ease.cubicInOut],
+  [C.sweep, -14],
+  [C.cross, -15, ease.cubicIn],
+  [C.swap - 1, -15],
+  [C.swap, -5],
+  [C.swap + 35, 0, soft],
 ];
 
 // ------------------------------------------------------------------ squash
 const squashAt = (f: number) => {
   let sy = 1 + 0.01 * Math.sin((2 * Math.PI * f) / (FPS * 2.2));
   sy += ring(f, 52, -0.065, 14, 7); // lands on the sign
-  sy -= 0.05 * bump(f, 100, 6);
-  sy += 0.05 * bump(f, 110, 8);
-  sy += ring(f, 160, -0.03, 16, 8);
+  sy -= 0.05 * bump(f, C.hop, 6);
+  sy += 0.05 * bump(f, C.hop + 10, 8);
+  sy += ring(f, C.home, -0.03, 16, 8);
   for (const h of C.clashHits) sy += ring(f, h, -0.02, 10, 5);
-  sy += 0.055 * bump(f, 234, 8); // surprise stretch
+  sy += 0.055 * bump(f, C.salonSurprise + 4, 8);
   for (const t of THROWS) {
     sy -= 0.05 * bump(f, t.windup + 8, 7);
     sy += 0.055 * bump(f, t.release + 3, 6);
-    sy += ring(f, t.back1, -0.03, 10, 5); // catches the cube
+    sy += ring(f, t.back1, -0.03, 10, 5);
   }
-  sy += 0.05 * bump(f, 556, 7); // the grab
-  sy -= 0.05 * bump(f, C.salonChecks - 2, 5) + 0.05 * bump(f, C.gymChecks - 2, 5);
-  sy += 0.04 * bump(f, C.salonChecks + 8, 8) + 0.04 * bump(f, C.gymChecks + 8, 8);
-  for (const at of [452, 752]) {
+  sy += 0.05 * bump(f, C.gymGrab, 7);
+  for (const at of [C.salonChecks, C.gymChecks, C.salonCheer, C.gymCheer, C.clinicCheer]) {
+    sy -= 0.045 * bump(f, at - 2, 5);
+    sy += 0.04 * bump(f, at + 8, 8);
+  }
+  for (const at of [PANS.toGym[0] + 8, PANS.toClinic[0] + 8]) {
     sy -= 0.04 * bump(f, at, 6);
     sy += 0.04 * bump(f, at + 12, 10);
   }
-  sy += 0.05 * bump(f, 1002, 7); // startled by the alarm
+  sy += 0.05 * bump(f, C.clinicWake + 6, 7);
   sy += ring(f, C.holoMerge + 2, -0.03, 12, 6);
-  // launch jump: squat, stretch, land
   sy -= 0.065 * bump(f, C.launch - 4, 7);
   sy += 0.06 * bump(f, C.launch + 8, 9);
   sy -= 0.05 * bump(f, C.launch + 42, 6);
@@ -334,40 +333,43 @@ const squashAt = (f: number) => {
 };
 
 // ------------------------------------------------------------------ hands
+const cheerL = (at: number): Key[] => [
+  [at, -2],
+  [at + 6, -28, snap],
+  [at + 34, -2, soft],
+];
 const HAND_L: Key[] = [
   [0, -22],
   [48, -18],
   [54, 8, snap],
   [74, 0, soft],
-  [228, 0],
-  [236, -30, snap],
-  [262, -4, soft],
-  [C.salonChecks, -4],
-  [C.salonChecks + 6, -28, snap],
-  [C.salonChecks + 34, -2, soft],
-  [548, -2],
-  [556, -36, snap],
-  [570, -30],
-  [586, 0, soft],
-  [C.gymChecks, 0],
-  [C.gymChecks + 6, -28, snap],
-  [C.gymChecks + 34, -2, soft],
-  [996, -2],
-  [1002, -26, snap],
-  [1024, -2, soft],
-  [1096, -2],
-  [1106, -34, snap],
-  [1166, -30],
-  [1178, -8, soft],
+  [C.salonSurprise - 2, 0],
+  [C.salonSurprise + 6, -30, snap],
+  [C.salonSurprise + 32, -4, soft],
+  ...cheerL(C.salonChecks),
+  [C.gymGrab - 8, -2],
+  [C.gymGrab, -36, snap],
+  [C.gymGrab + 14, -30],
+  [C.gymGrab + 30, 0, soft],
+  ...cheerL(C.gymChecks),
+  ...cheerL(C.clinicWake),
+  [1740, -2],
+  [1750, -34, snap],
+  [C.holoMerge, -30],
+  [C.holoMerge + 8, -8, soft],
   [C.launch - 2, -4],
   [C.launch + 6, -36, snap],
   [C.launch + 50, -10, soft],
-  [1530, -10],
-  [1542, -30, snap],
-  [1566, -24],
-  [1576, -10],
-  [1604, -10],
-  [1605, 0],
+  [C.fcnReveal - 4, -10],
+  [C.fcnReveal + 8, -30, snap],
+  [C.anticipation, -24],
+  [C.anticipation + 10, -10],
+  [C.swap - 1, -10],
+  [C.swap, 0],
+  [C.reveal + 18, 0],
+  [C.reveal + 28, -30, snap],
+  [C.reveal + 96, -26],
+  [C.reveal + 116, 0, soft],
 ];
 const handRKeys = (): Key[] => {
   const k: Key[] = [
@@ -382,22 +384,23 @@ const handRKeys = (): Key[] => {
     [C.launch - 2, 2],
     [C.launch + 6, -26, snap],
     [C.launch + 50, -4, soft],
-    [1446, -4],
-    [1456, -22, snap],
-    [1500, -12, soft],
-    [1604, -12],
-    [1605, 0],
+    [C.tiles, -4],
+    [C.tiles + 10, -22, snap],
+    [C.tiles + 50, -12, soft],
+    [C.swap - 1, -12],
+    [C.swap, 0],
   );
   return k;
 };
 const HAND_R = handRKeys();
 
 // ------------------------------------------------------------------ eyes
-const BLINKS = [40, 146, 214, 280, 342, 430, 530, 644, 724, 858, 944, 1052, 1150, 1244, 1336, 1470, 1520, 1666, 1742];
+const BLINKS = [40, 146, 240, 330, 450, 520, 610, 690, 760, 860, 990, 1100, 1180, 1260, 1320, 1470, 1600, 1690, 1840, 1990, 2090, 2230, 2300, 2420, 2560, 2640, 2760, 2840];
 const HAPPY = [
-  [C.salonChecks + 2, C.salonChecks + 34],
-  [C.gymChecks + 2, C.gymChecks + 34],
-  [C.clinicWake + 14, C.clinicWake + 44],
+  [C.salonChecks + 2, C.salonCheer + 30],
+  [C.gymChecks + 2, C.gymCheer + 30],
+  [C.clinicWake + 14, C.clinicCheer + 30],
+  [C.design[0], C.design[4] + 20],
   [C.launch + 6, C.launch + 56],
   [C.reveal + 2, C.reveal + 30],
 ] as const;
@@ -408,47 +411,50 @@ const blinkAt = (f: number) => {
     if (d < -3 || d > 8) continue;
     if (d < 0) b = Math.max(b, ease.cubicIn((d + 3) / 3));
     else if (d < 1) b = 1;
-    else b = Math.max(b, 1 - snap((d - 1) / 7));
+    else b = Math.max(b, 1 - ease.cubicOut((d - 1) / 7));
   }
-  // happy squint
-  for (const [a, z] of HAPPY) b = Math.max(b, 0.42 * (snap(invLerp(a, a + 5, f)) - ease.cubicIn(invLerp(z - 6, z, f))));
-  // squeezes at each clash
+  for (const [a, z] of HAPPY) b = Math.max(b, 0.42 * (ease.cubicOut(invLerp(a, a + 5, f)) - ease.cubicIn(invLerp(z - 6, z, f))));
   for (const h of C.clashHits.slice(1)) b = Math.max(b, 0.55 * bump(f, h + 2, 5));
   return clamp(b);
 };
 const eyeScaleAt = (f: number) =>
-  1 + 0.34 * (snap(invLerp(230, 234, f)) - ease.cubicIn(invLerp(250, 262, f))) + 0.24 * bump(f, 566, 12) + 0.3 * bump(f, 1004, 14) + 0.18 * bump(f, C.holoMerge + 4, 12) + 0.16 * bump(f, 876, 10);
+  1 +
+  0.34 * (ease.cubicOut(invLerp(C.salonSurprise, C.salonSurprise + 4, f)) - ease.cubicIn(invLerp(C.salonSurprise + 20, C.salonSurprise + 32, f))) +
+  0.24 * bump(f, C.gymGrab + 10, 12) +
+  0.3 * bump(f, C.clinicWake + 8, 14) +
+  0.18 * bump(f, C.holoMerge + 4, 12) +
+  0.16 * bump(f, C.clinicThrow - 40, 10);
 
 const GAZE_X: Key[] = [
   [0, 4],
   [52, 0],
   [62, -4, ease.cubicInOut],
   [80, 3, ease.cubicInOut],
-  [96, -4],
-  [160, -5],
-  [384, -5],
-  [396, -2, ease.cubicInOut],
-  [440, 0],
-  [462, 4, ease.cubicInOut],
-  [508, -4],
-  [514, 1],
-  [524, -4],
-  [540, 2],
-  [548, -5],
-  [632, -5],
-  [700, -3],
-  [740, 0],
-  [762, 4, ease.cubicInOut],
-  [808, -5],
-  [1004, -5],
-  [1016, -2, ease.cubicInOut],
-  [1060, 0],
-  [1124, -5, ease.cubicInOut],
-  [1374, -5],
-  [1384, 0, snap],
-  [1440, -2],
-  [1448, -5, ease.cubicInOut],
-  [1600, -5],
+  [C.hop - 6, -4],
+  [C.home, -5],
+  [C.salonWalkIn, -5],
+  [C.salonWalkIn + 12, -2, ease.cubicInOut],
+  [PANS.toGym[0] - 4, 0],
+  [PANS.toGym[0] + 18, 4, ease.cubicInOut],
+  [PANS.toGym[1] + 6, -4],
+  [C.planesOut[0], -3],
+  [C.planesOut[1], 2],
+  [C.planesOut[2], -4],
+  [C.planesOut[3], 1],
+  [C.gymGrab - 8, -5],
+  [C.gymChecks, -3],
+  [PANS.toClinic[0] - 4, 0],
+  [PANS.toClinic[0] + 18, 4, ease.cubicInOut],
+  [PANS.toClinic[1] + 6, -5],
+  [C.clinicWalk, -5],
+  [C.clinicWalk + 12, -2, ease.cubicInOut],
+  [1640, 0],
+  [1706, -5, ease.cubicInOut],
+  [C.launch - 6, -5],
+  [C.launch + 4, 0, snap],
+  [2246, -2],
+  [2256, -5, ease.cubicInOut],
+  [C.swap - 5, -5],
   [C.swap, 0],
   [C.glanceStart, 0],
   [C.glanceStart + 10, -1, ease.cubicInOut],
@@ -458,31 +464,31 @@ const GAZE_X: Key[] = [
 const GAZE_Y: Key[] = [
   [0, 2],
   [52, 3],
-  [96, 2],
-  [160, 1],
-  [186, -3, ease.cubicInOut],
-  [206, 1, ease.cubicInOut],
-  [300, 1],
-  [440, 0],
-  [496, -2],
-  [540, -3],
-  [556, -4],
-  [584, 0],
-  [620, -2],
-  [676, 0],
-  [796, 3, ease.cubicInOut],
-  [900, 1],
-  [926, -4, ease.cubicInOut],
-  [988, -3],
-  [998, 1, ease.cubicInOut],
-  [1060, 0],
-  [1124, -2],
-  [1374, -2],
-  [1386, -4, snap],
-  [1430, 0],
-  [1530, 0],
-  [1540, -3, ease.cubicInOut],
-  [1600, -1],
+  [C.hop, 2],
+  [C.home, 1],
+  [C.salonBlocks - 4, -3, ease.cubicInOut],
+  [C.clashHits[0], 1, ease.cubicInOut],
+  [C.salonThrow, 1],
+  [PANS.toGym[0], 0],
+  [PANS.toGym[1] - 4, -2],
+  [C.planesOut[2], -3],
+  [C.gymGrab, -4],
+  [C.gymGrab + 28, 0],
+  [C.planesBack[0] - 30, -2],
+  [C.planesBack[3], 0],
+  [PANS.toClinic[1] + 12, 3, ease.cubicInOut],
+  [C.clinicThrow, 1],
+  [C.birds[0] + 2, -4, ease.cubicInOut],
+  [C.birdsLand[3] + 4, -3],
+  [C.clinicWake + 2, 1, ease.cubicInOut],
+  [1640, 0],
+  [1706, -2],
+  [C.launch - 6, -2],
+  [C.launch + 6, -4, snap],
+  [C.launch + 44, 0],
+  [C.fcnReveal - 4, 0],
+  [C.fcnReveal + 6, -3, ease.cubicInOut],
+  [C.swap - 5, -1],
   [C.swap, 0],
   [C.glanceStart, 0],
   [C.glanceStart + 10, 4, ease.cubicInOut],
@@ -514,7 +520,8 @@ export const cityPose = (f: number): KaveyPose => {
   const nod = (at: number, deg: number, len = 16) => (f < at || f > at + len ? 0 : deg * Math.sin((Math.PI * (f - at)) / len));
   let pitch = 0;
   for (const s of C.salonSnaps) pitch += nod(s, 3, 10);
-  pitch += nod(1314, 6) + nod(1226, 3, 12) + nod(1250, 3, 12);
+  pitch += nod(C.day6 + 20, 6) + nod(C.day2 + 10, 3, 12) + nod(C.day2 + 40, 3, 12);
+  for (const d of C.design) pitch += nod(d, 3, 12);
   pitch += track(f, [
     [C.glanceStart, 0],
     [C.glanceStart + 14, 5, ease.cubicInOut],
@@ -532,8 +539,10 @@ export const cityPose = (f: number): KaveyPose => {
   const catchPop = back ? 0.3 * bump(f, back.back1 + 2, 6) : 0;
   const hop = f >= C.launch - 2 && f < C.launch + 44 ? -40 * Math.sin(Math.PI * invLerp(C.launch - 2, C.launch + 40, f)) : 0;
   // hand gestures layered on the keys: waving at the clock, conducting the build
-  const wave = f > 824 && f < 868 ? 16 * Math.sin((f - 824) * 0.55) * Math.sin((Math.PI * (f - 824)) / 44) : 0;
-  const conduct = f > 1210 && f < 1282 ? 9 * Math.sin((f - 1210) * 0.42) * Math.sin((Math.PI * (f - 1210)) / 72) : 0;
+  const win = (a: number, b: number, rate: number, amp: number) => (f > a && f < b ? amp * Math.sin((f - a) * rate) * Math.sin((Math.PI * (f - a)) / (b - a)) : 0);
+  // waving at the sleeping clock; painting the showcase; conducting the build
+  const wave = win(1330, 1378, 0.55, 16) + win(C.reveal + 28, C.reveal + 100, 0.5, 14);
+  const conduct = win(C.design[0] - 6, C.design[4] + 30, 0.3, 12) + win(C.day2 + 4, C.day6 - 6, 0.42, 9);
   return {
     x: r.x,
     y: r.y + hover,

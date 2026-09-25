@@ -1,0 +1,148 @@
+// Dialogue for the 48 s city film — mirror of scripts/tts/lines_city_v2.json
+// (the TTS input). build-city-audio.ts fails if the two ever differ.
+export const LINES = [
+ {
+  "id": "n01",
+  "speaker": "narrator",
+  "voice": "af_heart",
+  "speed": 1.12,
+  "text": "Welcome to Chaos City, where running a business gets a little crazy!",
+  "start": 0.35,
+  "end": 6.35
+ },
+ {
+  "id": "s01",
+  "speaker": "salon",
+  "voice": "af_kore",
+  "speed": 1.05,
+  "text": "Oh no! The bookings at my salon are clashing again!",
+  "start": 4.2,
+  "end": 10.2
+ },
+ {
+  "id": "n02",
+  "speaker": "narrator",
+  "voice": "af_heart",
+  "speed": 1.12,
+  "text": "No stress! Kavolt builds your salon one smooth booking flow, so every slot is sorted.",
+  "start": 7.15,
+  "end": 13.15
+ },
+ {
+  "id": "s02",
+  "speaker": "salon",
+  "voice": "af_kore",
+  "speed": 1.05,
+  "text": "Amazing! Thank you!",
+  "start": 12.1,
+  "end": 18.1
+ },
+ {
+  "id": "g01",
+  "speaker": "gym",
+  "voice": "am_fenrir",
+  "speed": 1.05,
+  "text": "Oh man! My gym's payments keep slipping away!",
+  "start": 13.5,
+  "end": 19.5
+ },
+ {
+  "id": "n03",
+  "speaker": "narrator",
+  "voice": "af_heart",
+  "speed": 1.12,
+  "text": "Kavolt connects Razorpay, so every payment lands, right on time.",
+  "start": 16.2,
+  "end": 22.2
+ },
+ {
+  "id": "g02",
+  "speaker": "gym",
+  "voice": "am_fenrir",
+  "speed": 1.05,
+  "text": "Yes! Let's go!",
+  "start": 19.9,
+  "end": 25.9
+ },
+ {
+  "id": "c01",
+  "speaker": "clinic",
+  "voice": "bf_emma",
+  "speed": 1.05,
+  "text": "Oh dear, my patients keep forgetting their appointments!",
+  "start": 21.3,
+  "end": 27.3
+ },
+ {
+  "id": "n04",
+  "speaker": "narrator",
+  "voice": "af_heart",
+  "speed": 1.12,
+  "text": "Now WhatsApp reminders bring them right back to your door!",
+  "start": 24.3,
+  "end": 30.3
+ },
+ {
+  "id": "c02",
+  "speaker": "clinic",
+  "voice": "bf_emma",
+  "speed": 1.05,
+  "text": "Brilliant!",
+  "start": 27.0,
+  "end": 33.0
+ },
+ {
+  "id": "n05",
+  "speaker": "narrator",
+  "voice": "af_heart",
+  "speed": 1.12,
+  "text": "That's Kavolt! Stunning websites and apps, beautifully designed, with everything your business needs.",
+  "start": 28.2,
+  "end": 34.2
+ },
+ {
+  "id": "n06",
+  "speaker": "narrator",
+  "voice": "af_heart",
+  "speed": 1.12,
+  "text": "Built in just seven days, and reviewed right on your phone.",
+  "start": 33.6,
+  "end": 39.6
+ },
+ {
+  "id": "n07",
+  "speaker": "narrator",
+  "voice": "af_heart",
+  "speed": 1.12,
+  "text": "Launch day! Your code and your keys, all yours.",
+  "start": 36.6,
+  "end": 42.6
+ },
+ {
+  "id": "n08",
+  "speaker": "narrator",
+  "voice": "af_heart",
+  "speed": 1.12,
+  "text": "Real work. Really shipped.",
+  "start": 39.3,
+  "end": 45.3
+ },
+ {
+  "id": "n09",
+  "speaker": "narrator",
+  "voice": "af_heart",
+  "speed": 1.12,
+  "text": "Ready to bring your business to the global stage?",
+  "start": 41.9,
+  "end": 47.9
+ },
+ {
+  "id": "n10",
+  "speaker": "narrator",
+  "voice": "af_heart",
+  "speed": 1.12,
+  "text": "Visit kavolt dot antideploy dot com!",
+  "start": 44.3,
+  "end": 50.3
+ }
+] as const;

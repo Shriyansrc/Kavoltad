@@ -4,20 +4,20 @@
 // sum to the master), stems, captions and a report.
 //
 //   node scripts/audio/build-city-audio.ts
-import {existsSync, mkdirSync, writeFileSync} from 'node:fs';
+import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {NARR2, SFX2} from '../../src/city/config.ts';
 import {MIX} from '../../src/config/cues.ts';
-import {addMono, biquad, dbToGain, gainToDb, makeStereo, readWav, SR, writeWav, type Stereo} from './dsp.ts';
+import {addMono, addStereo, biquad, dbToGain, gainToDb, makeStereo, readWav, reverb, SR, writeWav, type Stereo} from './dsp.ts';
 import {integratedLoudness, limiterGain, truePeakDb, windowLoudness} from './loudness.ts';
 import {renderCityScore} from './city/score.ts';
 import {CITY_DUR, renderCitySfx} from './city/sfx.ts';
 
 const ROOT = process.cwd();
-const NARR_DIR = join(ROOT, 'audio-src/narration_city');
+const NARR_DIR = join(ROOT, 'audio-src/narration_city_v2');
 const OUT_DIR = join(ROOT, 'audio');
 const PUBLIC_AUDIO = join(ROOT, 'public/audio');
-const NAME = 'Kavolt_ChaosCity_30s';
+const NAME = 'Kavolt_ChaosCity_48s';
 const DUR = CITY_DUR;
 const FPS = 60;
 mkdirSync(OUT_DIR, {recursive: true});
@@ -73,14 +73,19 @@ const compress = (x: Float32Array, thresholdDb: number, ratio: number, attackMs 
   return out;
 };
 
-type Placed = {id: string; text: string; start: number; end: number; window: [number, number]};
+type Placed = {id: string; text: string; start: number; end: number; window: [number, number]; speaker: string};
+
+const SPEAKER: Record<string, string> = {salon: 'Salon owner', gym: 'Gym owner', clinic: 'Clinic doctor'};
 
 const buildNarration = () => {
+  // The TTS input and the film's copy of the dialogue must be identical.
+  const json = JSON.parse(readFileSync(join(ROOT, 'scripts/tts/lines_city_v2.json'), 'utf8'));
+  if (JSON.stringify(json) !== JSON.stringify(NARR2)) throw new Error('src/city/lines.ts is out of sync with scripts/tts/lines_city_v2.json');
   const bus = makeStereo(DUR);
   const placed: Placed[] = [];
   for (const line of NARR2) {
     const path = join(NARR_DIR, `${line.id}.wav`);
-    if (!existsSync(path)) throw new Error(`missing narration take ${path} — run scripts/tts/narrate.py --lines scripts/tts/lines_city.json --out audio-src/narration_city`);
+    if (!existsSync(path)) throw new Error(`missing take ${path} — run scripts/tts/narrate.py --lines scripts/tts/lines_city_v2.json --out audio-src/narration_city_v2`);
     const {s, sr} = readWav(path);
     let mono = s.L;
     if (sr === 24000) mono = upsample2(mono);
@@ -105,8 +110,24 @@ const buildNarration = () => {
     const g = dbToGain(-18 - lufs);
     const dur = mono.length / SR;
     if (dur > line.end - line.start + 1e-3) throw new Error(`${line.id} overruns its window (${dur.toFixed(2)} s)`);
-    addMono(bus, mono, line.start, g, 0);
-    placed.push({id: line.id, text: line.text, start: line.start, end: line.start + dur, window: [line.start, line.end]});
+    // Shop owners speak from the scene (slightly left, a touch of room);
+    // the narrator stays centred and dry.
+    if (line.speaker === 'narrator') addMono(bus, mono, line.start, g, 0);
+    else {
+      const one = makeStereo(dur + 0.6);
+      addMono(one, mono, 0, g, -0.12);
+      const wet = reverb(one, {room: 0.45, damp: 0.5, predelay: 0.008});
+      addStereo(one, wet, 0, 0.18);
+      addStereo(bus, one, line.start, 1);
+    }
+    placed.push({id: line.id, text: line.text, start: line.start, end: line.start + dur, window: [line.start, line.end], speaker: line.speaker});
+  }
+  // Voice-bus peak control (transparent, ~2–4 dB on the hottest syllables) so the
+  // master limiter never has to squash speech.
+  const env = limiterGain(bus, -9, 1.5, 80);
+  for (let i = 0; i < bus.L.length; i++) {
+    bus.L[i] *= env[i];
+    bus.R[i] *= env[i];
   }
   return {bus, placed};
 };
@@ -177,10 +198,11 @@ const main = () => {
   const {bus: fxCues, beds, carPasses} = renderCitySfx();
   console.log('narration …');
   const {bus: voice, placed} = buildNarration();
+  for (let i = 1; i < placed.length; i++) if (placed[i].start < placed[i - 1].end) throw new Error(`${placed[i].id} overlaps ${placed[i - 1].id}`);
 
   const speechLufs = -18;
-  const musicRef = windowLoudness(music, 3, 26);
-  const musicGain = dbToGain(speechLufs - 11 - musicRef);
+  const musicRef = windowLoudness(music, 4, 40);
+  const musicGain = dbToGain(speechLufs - 10 - musicRef);
   const duck = duckCurve(placed);
   // 22 Hz high-pass on music and effects: removes DC and sub-sonic energy.
   const hp = (s: Stereo): Stereo => ({L: biquad(biquad(s.L, 'highpass', 22, 0.707), 'highpass', 22, 0.707), R: biquad(biquad(s.R, 'highpass', 22, 0.707), 'highpass', 22, 0.707)});
@@ -222,8 +244,9 @@ const main = () => {
   writeWav(join(OUT_DIR, `${NAME}_Narration.wav`), vStem);
   writeWav(join(OUT_DIR, `${NAME}_Mix.wav`), master);
   writeWav(join(PUBLIC_AUDIO, 'city_mix.wav'), master);
-  const srt = placed.map((p, i) => `${i + 1}\n${ts(p.start, ',')} --> ${ts(p.end + 0.12, ',')}\n${p.text}\n`).join('\n');
-  const vtt = 'WEBVTT\n\n' + placed.map((p) => `${ts(p.start, '.')} --> ${ts(p.end + 0.12, '.')}\n${p.text}\n`).join('\n');
+  const cap = (p: Placed) => (SPEAKER[p.speaker] ? `[${SPEAKER[p.speaker]}] ${p.text}` : p.text);
+  const srt = placed.map((p, i) => `${i + 1}\n${ts(p.start, ',')} --> ${ts(p.end + 0.12, ',')}\n${cap(p)}\n`).join('\n');
+  const vtt = 'WEBVTT\n\n' + placed.map((p) => `${ts(p.start, '.')} --> ${ts(p.end + 0.12, '.')}\n${cap(p)}\n`).join('\n');
   writeFileSync(join(OUT_DIR, `${NAME}_Captions.srt`), srt);
   writeFileSync(join(OUT_DIR, `${NAME}_Captions.vtt`), vtt);
 

@@ -101,27 +101,28 @@ const FixCheck: React.FC<{f: number; at: number; exitAt: number; size: number}> 
   );
 };
 
-type Beat = {lines: readonly [string, string]; at: number; exitAt: number; kind: 'problem' | 'fix' | 'plain'; size: number; accent2?: boolean; nouns?: boolean};
+type Beat = {lines: readonly [string, string]; at: number; exitAt: number; kind: 'problem' | 'fix' | 'plain'; size: number; accent1?: boolean; accent2?: boolean; nouns?: boolean};
 
 const BEATS: Beat[] = [
-  {lines: COPY2.salonProblem, at: 194, exitAt: 310, kind: 'problem', size: 96},
-  {lines: COPY2.salonFix, at: 324, exitAt: 440, kind: 'fix', size: 96},
-  {lines: COPY2.gymProblem, at: 494, exitAt: 608, kind: 'problem', size: 96},
-  {lines: COPY2.gymFix, at: 624, exitAt: 738, kind: 'fix', size: 96},
-  {lines: COPY2.clinicProblem, at: 794, exitAt: 906, kind: 'problem', size: 96},
-  {lines: COPY2.clinicFix, at: 924, exitAt: 1068, kind: 'fix', size: 84},
-  {lines: COPY2.build, at: 1098, exitAt: 1430, kind: 'plain', size: 88, accent2: true},
-  {lines: COPY2.handoff, at: 1448, exitAt: 1520, kind: 'plain', size: 88, nouns: true},
+  {lines: COPY2.salonProblem, at: 256, exitAt: 410, kind: 'problem', size: 96},
+  {lines: COPY2.salonFix, at: 436, exitAt: 736, kind: 'fix', size: 96},
+  {lines: COPY2.gymProblem, at: 816, exitAt: 952, kind: 'problem', size: 96},
+  {lines: COPY2.gymFix, at: 972, exitAt: 1208, kind: 'fix', size: 96},
+  {lines: COPY2.clinicProblem, at: 1288, exitAt: 1438, kind: 'problem', size: 96},
+  {lines: COPY2.clinicFix, at: 1462, exitAt: 1640, kind: 'fix', size: 84},
+  {lines: COPY2.showcase, at: 1700, exitAt: 2008, kind: 'plain', size: 76, accent1: true},
+  {lines: COPY2.build, at: 2022, exitAt: 2244, kind: 'plain', size: 88, accent2: true},
+  {lines: COPY2.handoff, at: C.tiles + 2, exitAt: C.tiles + 78, kind: 'plain', size: 88, nouns: true},
 ];
 
 export const Titles: React.FC<{f: number}> = ({f}) => {
   if (f >= C.swap) return null;
   const lh = (s: number) => s * 0.96;
-  const shipSlam = spring01(f - 1532, {freq: 3, damping: 0.5});
+  const shipSlam = spring01(f - C.shipped, {freq: 3, damping: 0.5});
   const out: React.ReactNode[] = [];
 
   // Hook: WELCOME TO / CHAOS CITY. (letters glitch in magenta)
-  out.push(<Words key="h1" f={f} words={split(COPY2.hook[0])} at={12} stagger={4} exitAt={164} top={TITLE_TOP} size={100} />);
+  out.push(<Words key="h1" f={f} words={split(COPY2.hook[0])} at={12} stagger={4} exitAt={222} top={TITLE_TOP} size={100} />);
   out.push(
     <Words
       key="h2"
@@ -129,7 +130,7 @@ export const Titles: React.FC<{f: number}> = ({f}) => {
       words={COPY2.hook[1].split('').map((c) => ({text: c === ' ' ? ' ' : c, color: PALETTE.magenta}))}
       at={24}
       stagger={1.4}
-      exitAt={166}
+      exitAt={224}
       exitStagger={0.6}
       top={TITLE_TOP + lh(100)}
       size={100}
@@ -141,7 +142,7 @@ export const Titles: React.FC<{f: number}> = ({f}) => {
   const nouns = (s: string): Word[] => s.split(' ').map((t, i) => ({text: t, color: i === 1 ? PALETTE.magenta : undefined}));
   BEATS.forEach((b, k) => {
     const [l1, l2] = b.lines;
-    out.push(<Words key={`a${k}`} f={f} words={b.nouns ? nouns(l1) : split(l1)} at={b.at} exitAt={b.exitAt} top={TITLE_TOP} size={b.size} />);
+    out.push(<Words key={`a${k}`} f={f} words={b.nouns ? nouns(l1) : b.accent1 ? split(l1, PALETTE.magenta) : split(l1)} at={b.at} exitAt={b.exitAt} top={TITLE_TOP} size={b.size} />);
     const w2 = b.kind === 'problem' || b.accent2 ? split(l2, PALETTE.magenta) : b.nouns ? nouns(l2) : split(l2);
     out.push(
       <Words
@@ -159,7 +160,7 @@ export const Titles: React.FC<{f: number}> = ({f}) => {
   });
 
   // Proof: SHIPPED. slams, NOT MOCKED UP. follows word by word
-  if (f >= 1532) {
+  if (f >= C.shipped) {
     out.push(
       <div
         key="ship"
@@ -178,6 +179,6 @@ export const Titles: React.FC<{f: number}> = ({f}) => {
       </div>,
     );
   }
-  out.push(<Words key="nmu" f={f} words={split(COPY2.proof[1])} at={1538} stagger={2} exitAt={2000} top={TITLE_TOP + lh(92)} size={82} />);
+  out.push(<Words key="nmu" f={f} words={split(COPY2.proof[1])} at={C.shipped + 6} stagger={2} exitAt={99999} top={TITLE_TOP + lh(92)} size={82} />);
   return <>{out}</>;
 };

@@ -12,7 +12,7 @@ const K = DISTRICT.clinic;
 
 // ------------------------------------------------------------------ problems
 /** Salon: the calendar critter (becomes the booking hologram). */
-export const CAL = {x: S - 215, y: 1070, w: 300, h: 330};
+export const CAL = {x: S - 215, y: 1000, w: 300, h: 330};
 /** Gym: the payment card hologram appears here. */
 export const CARD = {x: G - 205, y: 950, w: 320, h: 400};
 /** Clinic: the reminder chat hologram and the sleepy clock beneath it. */
@@ -22,9 +22,9 @@ export const CLOCK = {x: K - 235, y: 1330, r: 88};
 // ------------------------------------------------------------------ throws
 export type Throw = {windup: number; release: number; hit: number; back0: number; back1: number; target: {x: number; y: number}};
 export const THROWS: Throw[] = [
-  {windup: C.salonThrow - 12, release: C.salonThrow + 2, hit: C.salonHit, back0: 348, back1: 364, target: {x: CAL.x, y: CAL.y - 40}},
-  {windup: C.gymThrow - 12, release: C.gymThrow + 2, hit: C.gymHit, back0: 680, back1: 696, target: {x: CARD.x, y: CARD.y}},
-  {windup: C.clinicThrow - 12, release: C.clinicThrow + 2, hit: C.clinicHit, back0: 962, back1: 978, target: {x: CHAT.x, y: CHAT.y}},
+  {windup: C.salonThrow - 12, release: C.salonThrow + 2, hit: C.salonHit, back0: 474, back1: 490, target: {x: CAL.x, y: CAL.y - 40}},
+  {windup: C.gymThrow - 12, release: C.gymThrow + 2, hit: C.gymHit, back0: 1024, back1: 1040, target: {x: CARD.x, y: CARD.y}},
+  {windup: C.clinicThrow - 12, release: C.clinicThrow + 2, hit: C.clinicHit, back0: 1514, back1: 1530, target: {x: CHAT.x, y: CHAT.y}},
 ];
 export const activeThrow = (f: number) => THROWS.find((t) => f >= t.release && f < t.back1) ?? null;
 
@@ -117,33 +117,35 @@ const flyPath = (w: Way[], f: number) => {
 
 export const cardRow = (i: number) => ({x: CARD.x - 70, y: CARD.y - 70 + i * 66});
 
+// Out of the gym door and away; plane 2 swoops past Kavey's hand at the grab.
+const o = (i: number, k: number) => C.planesOut[i] + k;
 const OUT = [
   P([
-    [C.planesOut[0], G, 1330],
-    [510, G - 170, 1150],
-    [530, G - 430, 1060],
-    [560, G - 780, 700],
+    [o(0, 0), G, 1330],
+    [o(0, 18), G - 170, 1150],
+    [o(0, 38), G - 430, 1060],
+    [o(0, 68), G - 780, 700],
   ]),
   P([
-    [C.planesOut[1], G, 1330],
-    [524, G + 60, 1120],
-    [544, G - 70, 920],
-    [566, G + 230, 690],
-    [596, G + 800, 520],
+    [o(1, 0), G, 1330],
+    [o(1, 18), G + 60, 1120],
+    [o(1, 38), G - 70, 920],
+    [o(1, 60), G + 230, 690],
+    [o(1, 90), G + 800, 520],
   ]),
   P([
-    [C.planesOut[2], G, 1330],
-    [540, G - 90, 1150],
-    [552, G + 90, 1010],
-    [560, G + 190, 930],
-    [572, G + 330, 770],
-    [604, G + 220, -180],
+    [o(2, 0), G, 1330],
+    [o(2, 20), G - 90, 1150],
+    [C.gymGrab - 4, G + 90, 1010],
+    [C.gymGrab + 4, G + 190, 930],
+    [C.gymGrab + 16, G + 330, 770],
+    [C.gymGrab + 48, G + 220, -180],
   ]),
   P([
-    [C.planesOut[3], G, 1330],
-    [552, G - 130, 1190],
-    [570, G - 60, 900],
-    [600, G - 340, -180],
+    [o(3, 0), G, 1330],
+    [o(3, 18), G - 130, 1190],
+    [o(3, 36), G - 60, 900],
+    [o(3, 66), G - 340, -180],
   ]),
 ];
 const BACK = C.planesBack.map((arrive, i) => {
@@ -215,13 +217,22 @@ export const birdState = (i: number, f: number): BirdState => {
 };
 
 // ------------------------------------------------------------------ build hub
-/** The product phone the three holograms merge into (world). */
-export const HUB = {x: 1800, y: 300, w: 340, h: 640};
-/** Where each hologram docks inside the phone before the merge. */
+/**
+ * Showcase devices (world): each fixed business gets a stunning product —
+ * the salon a website on a laptop, the gym an app, the clinic a booking app.
+ */
+export const DEVICES = {
+  laptop: {x: 1740, y: 290, w: 1083, h: 683},
+  phoneL: {x: 1173, y: 523, w: 283, h: 550},
+  phoneR: {x: 2307, y: 540, w: 267, h: 500},
+};
+/** Centre of the device group (light wave, sparkles). */
+export const HUB = {x: 1740, y: 360, w: 340, h: 640};
+/** Where each hologram lands: calendar → laptop, pay card → gym app, chat → clinic app. */
 export const HUB_SLOT = [
-  {x: HUB.x, y: HUB.y - 170},
-  {x: HUB.x, y: HUB.y + 20},
-  {x: HUB.x, y: HUB.y + 210},
+  {x: DEVICES.laptop.x, y: DEVICES.laptop.y},
+  {x: DEVICES.phoneL.x, y: DEVICES.phoneL.y},
+  {x: DEVICES.phoneR.x, y: DEVICES.phoneR.y},
 ];
 export const HOLO_HOME = [
   {x: CAL.x, y: CAL.y},
@@ -232,5 +243,5 @@ export const HOLO_HOME = [
 /** Hologram i flying into the hub (0 home … 1 docked), with per-item stagger. */
 export const holoFlight = (i: number, f: number) => ease.cubicInOut(invLerp(C.holoRise + i * 10, C.holoMerge - 14 + i * 4, f));
 
-/** The phone rockets up out of frame after LIVE. */
-export const hubLift = (f: number) => ease.cubicIn(invLerp(C.launch + 22, C.launch + 52, f));
+/** After LIVE the devices shoot up into the sky (as the camera moves in for the handoff). */
+export const hubLift = (f: number) => ease.cubicIn(invLerp(C.launch + 30, C.launch + 70, f));

@@ -24,7 +24,7 @@ const concurrency = arg('concurrency', process.env.REMOTION_CONCURRENCY ?? '3');
 const shell = process.platform === 'win32';
 const FILMS = {
   kavey20: {comp: 'KavoltKavey20s', mix: 'audio/Kavolt_Kavey_20s_Mix.wav', frames: 1200, out: 'deliverables/Kavolt_Kavey_20s_Final.mp4', dir: 'out/frames', tag: 'Kavolt'},
-  city: {comp: 'KaveyChaosCity', mix: 'audio/Kavolt_ChaosCity_30s_Mix.wav', frames: 1800, out: 'deliverables/Kavolt_ChaosCity_30s_Final.mp4', dir: 'out/frames_city', tag: 'ChaosCity'},
+  city: {comp: 'KaveyChaosCity', mix: 'audio/Kavolt_ChaosCity_48s_Mix.wav', frames: 2880, out: 'deliverables/Kavolt_ChaosCity_48s_Final.mp4', dir: 'out/frames_city', tag: 'ChaosCity'},
 };
 const film = FILMS[arg('film', 'kavey20')];
 if (!film) {

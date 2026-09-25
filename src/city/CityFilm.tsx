@@ -7,7 +7,6 @@
 import React from 'react';
 import {AbsoluteFill, getStaticFiles, Html5Audio, staticFile, useCurrentFrame} from 'remotion';
 import {Grain} from '../components/Background.tsx';
-import {Ending} from '../components/Ending.tsx';
 import {Kavey} from '../components/Kavey.tsx';
 import {RibbonView} from '../components/RibbonView.tsx';
 import {PALETTE, rgba} from '../config/palette.ts';
@@ -16,12 +15,13 @@ import {makeRibbon} from '../scenes/ribbon.ts';
 import {BuildLayer, DayChips, Fireworks} from './Build.tsx';
 import {cam, camBase, camDeltaCss} from './camera.ts';
 import {C} from './config.ts';
-import {EndingBackdrop} from './EndingBackdrop.tsx';
+import {GlobalStageBack, GlobalStageFront} from './GlobalStage.tsx';
 import {cityAnchorScreen, cityPose} from './kavey.ts';
 import {PropsBack, PropsFront, ThrownCubeImg} from './Props.tsx';
 import {Billboard, BillboardImage, Tiles, TileGlyphs} from './Proof.tsx';
 import {TITLE_TOP, Titles} from './Titles.tsx';
 import {Bokeh, Haze, NearPoles, StringLights} from './world/Foreground.tsx';
+import {Owners} from './world/Owners.tsx';
 import {People} from './world/People.tsx';
 import {Sky} from './world/Sky.tsx';
 import {Street} from './world/Street.tsx';
@@ -96,6 +96,7 @@ export const CityFilm: React.FC<CityProps> = ({maskOnly = false, mute = false}) 
           <BillboardImage f={f} />
           <Street f={f} />
           <People f={f} />
+          <Owners f={f} />
           <PropsBack f={f} />
           <BuildLayer f={f} />
           <ThrownCubeImg f={f} />
@@ -110,14 +111,15 @@ export const CityFilm: React.FC<CityProps> = ({maskOnly = false, mute = false}) 
           <Bokeh f={f} p={1.6} count={26} salt={302} blurPx={9} alpha={0.22} />
           <SpeedLines f={f} />
           {/* legibility scrim for the headline zone, and a soft vignette */}
-          <div style={{position: 'absolute', left: 0, top: 0, width: 1080, height: 720, background: 'linear-gradient(180deg, rgba(7,6,13,0.55) 0%, rgba(7,6,13,0.32) 55%, rgba(7,6,13,0) 100%)'}} />
-          <div style={{position: 'absolute', inset: 0, background: 'radial-gradient(1300px 1800px at 540px 980px, rgba(0,0,0,0) 58%, rgba(0,0,0,0.5) 100%)'}} />
+          <div style={{position: 'absolute', left: 0, top: 0, width: 1080, height: 720, background: 'linear-gradient(180deg, rgba(16,10,44,0.6) 0%, rgba(16,10,44,0.34) 55%, rgba(16,10,44,0) 100%)'}} />
+          <div style={{position: 'absolute', inset: 0, background: 'radial-gradient(1300px 1800px at 540px 980px, rgba(0,0,0,0) 62%, rgba(20,8,40,0.35) 100%)'}} />
         </>
       ) : (
         <>
-          <EndingBackdrop f={f} />
+          <GlobalStageBack f={f} />
           <RibbonView shape={CITY_RIBBON.scarfWisp(f)} id="wisp" f={f} />
           <Kavey f={f} poseAt={cityPose} />
+          <GlobalStageFront f={f} />
         </>
       )}
 
@@ -127,7 +129,6 @@ export const CityFilm: React.FC<CityProps> = ({maskOnly = false, mute = false}) 
       <DayChips f={f} top={TITLE_TOP + 88 * 0.96 * 2 + 20} />
       <Tiles f={f} top={TITLE_TOP + 88 * 0.96 * 2 + 40} />
       <TileGlyphs f={f} top={TITLE_TOP + 88 * 0.96 * 2 + 40} />
-      <Ending f={f} swap={C.swap} reveal={C.reveal} />
 
       <RibbonView shape={CITY_RIBBON.transitionBand(f)} id="band" f={f} />
 

@@ -9,7 +9,7 @@ import {FONT_MONO, FONT_SANS} from '../config/type.ts';
 import {bump, clamp, ease, invLerp, lerp, ring, SPR, spring01} from '../lib/anim.ts';
 import {hash01} from '../lib/random.ts';
 import {DISTRICT} from './camera.ts';
-import {C, calm, COPY2} from './config.ts';
+import {C, calm, CONFETTI, COPY2} from './config.ts';
 import {cityAnchorWorld, cityRigScale} from './kavey.ts';
 import {
   birdState,
@@ -358,16 +358,16 @@ const PayCard: React.FC<{f: number}> = ({f}) => {
 
 // ------------------------------------------------------------------ clinic: clock, sleepers, chat, birds
 const Clock: React.FC<{f: number}> = ({f}) => {
-  if (f < 700 || f > 1110) return null;
+  if (f < 1150 || f > 1690) return null;
   const awake = f >= C.clinicWake;
-  const snore = awake ? 0 : Math.sin((f - 780) * 0.12);
+  const snore = awake ? 0 : Math.sin((f - 1277) * 0.12);
   const jump = awake ? 44 * Math.max(0, Math.sin(Math.PI * clamp((f - C.clinicWake) / 16))) : 0;
   const shakeR = awake ? 14 * Math.exp(-(f - C.clinicWake) / 16) * Math.sin((f - C.clinicWake) * 2.4) : 0;
   const R = CLOCK.r;
   const smile = f > C.clinicWake + 14;
   const zz = !awake
     ? Array.from({length: 4}, (_, k) => {
-        const ph = (((f - 780 + k * 15) % 60) + 60) % 60 / 60;
+        const ph = (((f - 1277 + k * 15) % 60) + 60) % 60 / 60;
         return (
           <text key={k} x={R * 0.6 + ph * 70 + 8 * Math.sin(ph * 6)} y={-R - 30 - ph * 150} fontFamily={FONT_SANS} fontWeight={800} fontSize={28 + ph * 22} fill={WHITE} opacity={Math.sin(Math.PI * ph) * 0.9}>
             Z
@@ -418,7 +418,7 @@ const Clock: React.FC<{f: number}> = ({f}) => {
 
 /** Clients asleep in the flats above the clinic; each wakes when a reminder bird lands. */
 const Sleepers: React.FC<{f: number}> = ({f}) => {
-  if (f < 700 || f > 1110) return null;
+  if (f < 1150 || f > 1690) return null;
   return (
     <g>
       {[0, 1, 2, 3].map((i) => {
@@ -634,7 +634,7 @@ const Alerts: React.FC<{f: number}> = ({f}) => {
 };
 
 const Papers: React.FC<{f: number}> = ({f}) => {
-  if (f > 260) return null;
+  if (f > 320) return null;
   return (
     <g>
       {Array.from({length: 10}, (_, k) => {
@@ -655,6 +655,46 @@ const Papers: React.FC<{f: number}> = ({f}) => {
       })}
     </g>
   );
+};
+
+// ------------------------------------------------------------------ celebrations
+const CONF_COLORS = ['#FF4F9A', '#FFD166', '#7C4DFF', '#3DDC97', '#4FB8F0', '#FF8A3D', '#FFFFFF'];
+
+/** Confetti bursts over each shop when its problem is solved (and balloons drifting up). */
+const Celebrations: React.FC<{f: number}> = ({f}) => {
+  const out: React.ReactNode[] = [];
+  const shops = ['salon', 'gym', 'clinic'] as const;
+  CONFETTI.forEach((at, si) => {
+    const t = f - at;
+    if (t < 0 || t > 200) return;
+    const cx = DISTRICT[shops[si]];
+    for (let k = 0; k < 70; k++) {
+      const a = -Math.PI / 2 + (hash01(si, k, 1) - 0.5) * 2.4;
+      const v = 9 + 9 * hash01(si, k, 2);
+      const x = cx + (hash01(si, k, 3) - 0.5) * 200 + Math.cos(a) * v * t + 14 * Math.sin(t * 0.15 + k);
+      const y = 600 + Math.sin(a) * v * t + 0.16 * t * t;
+      if (y > 1600) continue;
+      const rot = t * (6 + 10 * hash01(si, k, 4)) * (k % 2 ? 1 : -1);
+      const w = 12 + 8 * hash01(si, k, 5);
+      out.push(<rect key={`c${si}-${k}`} x={x - w / 2} y={y - 5} width={w} height={10} rx={2} fill={CONF_COLORS[k % CONF_COLORS.length]} transform={`rotate(${rot}, ${x}, ${y})`} opacity={1 - clamp((t - 150) / 50)} />);
+    }
+    for (let k = 0; k < 5; k++) {
+      const bt = t - k * 8;
+      if (bt < 0) continue;
+      const bx = cx - 260 + k * 130 + 20 * Math.sin(bt * 0.05 + k);
+      const by = 1380 - bt * 5.5;
+      const col = CONF_COLORS[(k * 3 + si) % CONF_COLORS.length];
+      out.push(
+        <g key={`b${si}-${k}`}>
+          <path d={`M${bx},${by + 60} q${10 * Math.sin(bt * 0.1)},30 0,70`} fill="none" stroke={rgba('#FFFFFF', 0.6)} strokeWidth={2} />
+          <ellipse cx={bx} cy={by} rx={34} ry={42} fill={col} />
+          <ellipse cx={bx - 10} cy={by - 14} rx={8} ry={12} fill={rgba('#FFFFFF', 0.45)} />
+          <path d={`M${bx - 6},${by + 42} L${bx + 6},${by + 42} L${bx},${by + 52} Z`} fill={col} />
+        </g>,
+      );
+    }
+  });
+  return <>{out}</>;
 };
 
 // ------------------------------------------------------------------ composite layers
@@ -678,12 +718,13 @@ export const PropsBack: React.FC<{f: number}> = ({f}) => (
       </>
     ) : null}
     <CubeFx f={f} />
+    <Celebrations f={f} />
   </Layer>
 );
 
 /** Flyers in front (planes, birds) — they cross in front of the shops. */
 export const PropsFront: React.FC<{f: number}> = ({f}) =>
-  f >= 480 && f < 1000 ? (
+  f >= 800 && f < 1600 ? (
     <Layer f={f} p={1}>
       {[0, 1, 2, 3].map((i) => (
         <Plane key={i} i={i} f={f} />

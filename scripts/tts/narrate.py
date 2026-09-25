@@ -68,25 +68,29 @@ def main():
     ap.add_argument("--out", default="audio-src/narration")
     ap.add_argument("--lines", default=None, help="JSON list of {id,text,start,end}; defaults to the 20 s film")
     args = ap.parse_args()
-    lines = LINES
+    lines = [(lid, text, start, end, None, None) for lid, text, start, end in LINES]
     if args.lines:
-        lines = [(d["id"], d["text"], d["start"], d["end"]) for d in json.load(open(args.lines))]
+        # Each line may override the voice and speed (e.g. shop owners vs narrator).
+        lines = [(d["id"], d["text"], d.get("start", 0), d.get("end", 99), d.get("voice"), d.get("speed")) for d in json.load(open(args.lines))]
 
     os.makedirs(args.out, exist_ok=True)
     k = Kokoro(args.model, args.voices)
     report = {"engine": "kokoro-onnx (Kokoro-82M)", "voice": args.voice, "speed": args.speed, "lines": []}
-    for lid, text, start, end in lines:
-        ph = k.tokenizer.phonemize(text, "en-us")
+    for lid, text, start, end, voice, speed in lines:
+        voice = voice or args.voice
+        speed = speed or args.speed
+        lang = "en-gb" if voice.startswith("b") else "en-us"
+        ph = k.tokenizer.phonemize(text, lang)
         for a, b in PRONUNCIATION.items():
             ph = ph.replace(a, b)
-        audio, sr = k.create(ph, voice=args.voice, speed=args.speed, lang="en-us", is_phonemes=True)
+        audio, sr = k.create(ph, voice=voice, speed=speed, lang=lang, is_phonemes=True)
         audio = trim(np.asarray(audio, dtype=np.float32), sr)
         path = os.path.join(args.out, f"{lid}.wav")
         sf.write(path, audio, sr, subtype="FLOAT")
         dur = len(audio) / sr
         window = end - start
         report["lines"].append(
-            {"id": lid, "text": text, "phonemes": ph, "window": [start, end], "duration": round(dur, 3), "fits": dur <= window + 1e-6, "sr": sr, "file": path}
+            {"id": lid, "text": text, "voice": voice, "speed": speed, "phonemes": ph, "window": [start, end], "duration": round(dur, 3), "fits": dur <= window + 1e-6, "sr": sr, "file": path}
         )
         print(f"{lid} {dur:5.2f}s / window {window:4.2f}s {'OK ' if dur <= window else 'OVER'}  {text}")
     with open(os.path.join(args.out, "report.json"), "w") as fh:

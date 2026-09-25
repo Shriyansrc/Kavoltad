@@ -1,0 +1,247 @@
+{
+  "engine": "kokoro-onnx (Kokoro-82M)",
+  "voice": "af_heart",
+  "speed": 1.0,
+  "lines": [
+    {
+      "id": "n01",
+      "text": "Welcome to Chaos City, where running a business gets a little crazy!",
+      "voice": "af_heart",
+      "speed": 1.12,
+      "phonemes": "wˈɛlkʌm tə kˈeɪɑːs sˈɪɾi, wˌɛɹ ɹˈʌnɪŋ ɐ bˈɪznəs ɡˈɛts ɐ lˈɪɾəl kɹˈeɪzi!",
+      "window": [
+        0.35,
+        6.35
+      ],
+      "duration": 3.434,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/n01.wav"
+    },
+    {
+      "id": "s01",
+      "text": "Oh no! The bookings at my salon are clashing again!",
+      "voice": "af_kore",
+      "speed": 1.05,
+      "phonemes": "ˈoʊ nˈoʊ! ðə bˈʊkɪŋz æt maɪ sɐlˈɑːn ɑːɹ klˈæʃɪŋ ɐɡˈɛn!",
+      "window": [
+        4.2,
+        10.2
+      ],
+      "duration": 2.574,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/s01.wav"
+    },
+    {
+      "id": "n02",
+      "text": "No stress! Kavolt builds your salon one smooth booking flow, so every slot is sorted.",
+      "voice": "af_heart",
+      "speed": 1.12,
+      "phonemes": "nˈoʊ stɹˈɛs! kəvˈoʊlt bˈɪldz jʊɹ sɐlˈɑːn wˈʌn smˈuːð bˈʊkɪŋ flˈoʊ, sˌoʊ ˈɛvɹi slˈɑːt ɪz sˈɔːɹɾᵻd.",
+      "window": [
+        7.15,
+        13.15
+      ],
+      "duration": 4.889,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/n02.wav"
+    },
+    {
+      "id": "s02",
+      "text": "Amazing! Thank you!",
+      "voice": "af_kore",
+      "speed": 1.05,
+      "phonemes": "ɐmˈeɪzɪŋ! θˈæŋk juː!",
+      "window": [
+        12.1,
+        18.1
+      ],
+      "duration": 1.044,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/s02.wav"
+    },
+    {
+      "id": "g01",
+      "text": "Oh man! My gym's payments keep slipping away!",
+      "voice": "am_fenrir",
+      "speed": 1.05,
+      "phonemes": "ˈoʊ mˈæn! maɪ dʒˈɪmz pˈeɪmənts kˈiːp slˈɪpɪŋ ɐwˈeɪ!",
+      "window": [
+        13.5,
+        19.5
+      ],
+      "duration": 2.299,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/g01.wav"
+    },
+    {
+      "id": "n03",
+      "text": "Kavolt connects Razorpay, so every payment lands, right on time.",
+      "voice": "af_heart",
+      "speed": 1.12,
+      "phonemes": "kəvˈoʊlt kənˈɛkts ɹˈeɪzɚpˌeɪ, sˌoʊ ˈɛvɹi pˈeɪmənt lˈændz, ɹˈaɪt ˌɔn tˈaɪm.",
+      "window": [
+        16.2,
+        22.2
+      ],
+      "duration": 3.629,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/n03.wav"
+    },
+    {
+      "id": "g02",
+      "text": "Yes! Let's go!",
+      "voice": "am_fenrir",
+      "speed": 1.05,
+      "phonemes": "jˈɛs! lˈɛts ɡˈoʊ!",
+      "window": [
+        19.9,
+        25.9
+      ],
+      "duration": 0.849,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/g02.wav"
+    },
+    {
+      "id": "c01",
+      "text": "Oh dear, my patients keep forgetting their appointments!",
+      "voice": "bf_emma",
+      "speed": 1.05,
+      "phonemes": "ˈəʊ dˈiə, maɪ pˈeɪʃənts kˈiːp fəɡˈɛtɪŋ ðeəɹ ɐpˈɔɪntmənts!",
+      "window": [
+        21.3,
+        27.3
+      ],
+      "duration": 2.634,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/c01.wav"
+    },
+    {
+      "id": "n04",
+      "text": "Now WhatsApp reminders bring them right back to your door!",
+      "voice": "af_heart",
+      "speed": 1.12,
+      "phonemes": "nˈaʊ wʌts ˈæp ɹᵻmˈaɪndɚz bɹˈɪŋ ðˌɛm ɹˈaɪt bˈæk tə jʊɹ dˈɔːɹ!",
+      "window": [
+        24.3,
+        30.3
+      ],
+      "duration": 2.634,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/n04.wav"
+    },
+    {
+      "id": "c02",
+      "text": "Brilliant!",
+      "voice": "bf_emma",
+      "speed": 1.05,
+      "phonemes": "bɹˈɪliənt!",
+      "window": [
+        27.0,
+        33.0
+      ],
+      "duration": 0.674,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/c02.wav"
+    },
+    {
+      "id": "n05",
+      "text": "That's Kavolt! Stunning websites and apps, beautifully designed, with everything your business needs.",
+      "voice": "af_heart",
+      "speed": 1.12,
+      "phonemes": "ðæts kəvˈoʊlt! stˈʌnɪŋ wˈɛbsaɪts ænd ˈæps, bjˈuːɾɪfəli dɪzˈaɪnd, wɪð ˈɛvɹɪθˌɪŋ jʊɹ bˈɪznəs nˈiːdz.",
+      "window": [
+        28.2,
+        34.2
+      ],
+      "duration": 5.239,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/n05.wav"
+    },
+    {
+      "id": "n06",
+      "text": "Built in just seven days, and reviewed right on your phone.",
+      "voice": "af_heart",
+      "speed": 1.12,
+      "phonemes": "bˈɪlt ɪn dʒˈʌst sˈɛvən dˈeɪz, ænd ɹᵻvjˈuːd ɹˈaɪt ˌɔn jʊɹ fˈoʊn.",
+      "window": [
+        33.6,
+        39.6
+      ],
+      "duration": 2.804,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/n06.wav"
+    },
+    {
+      "id": "n07",
+      "text": "Launch day! Your code and your keys, all yours.",
+      "voice": "af_heart",
+      "speed": 1.12,
+      "phonemes": "lˈɑːntʃ dˈeɪ! jʊɹ kˈoʊd ænd jʊɹ kˈiːz, ˈɔːl jˈɔːɹz.",
+      "window": [
+        36.6,
+        42.6
+      ],
+      "duration": 2.359,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/n07.wav"
+    },
+    {
+      "id": "n08",
+      "text": "Real work. Really shipped.",
+      "voice": "af_heart",
+      "speed": 1.12,
+      "phonemes": "ɹˈiːəl wˈɜːk. ɹˈiəli ʃˈɪpt.",
+      "window": [
+        39.3,
+        45.3
+      ],
+      "duration": 1.309,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/n08.wav"
+    },
+    {
+      "id": "n09",
+      "text": "Ready to bring your business to the global stage?",
+      "voice": "af_heart",
+      "speed": 1.12,
+      "phonemes": "ɹˈɛdi tə bɹˈɪŋ jʊɹ bˈɪznəs tə ðə ɡlˈoʊbəl stˈeɪdʒ?",
+      "window": [
+        41.9,
+        47.9
+      ],
+      "duration": 2.154,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/n09.wav"
+    },
+    {
+      "id": "n10",
+      "text": "Visit kavolt dot antideploy dot com!",
+      "voice": "af_heart",
+      "speed": 1.12,
+      "phonemes": "vˈɪzɪt kəvˈoʊlt dˈɑːt ˌæntɪdᵻplˈɔɪ dˈɑːt kˈɑːm!",
+      "window": [
+        44.3,
+        50.3
+      ],
+      "duration": 2.129,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration_city_v2/n10.wav"
+    }
+  ]
+}

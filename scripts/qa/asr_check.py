@@ -18,7 +18,7 @@ from scipy.signal import resample_poly
 
 
 def norm(s):
-    s = s.lower().replace("whatsapp", "whats app").replace("razor pay", "razorpay").replace("-", " ").replace(" 7", " seven")
+    s = re.sub(r"(?<=[a-z])\.(?=[a-z])", " dot ", s.lower()).replace("whatsapp", "whats app").replace("razor pay", "razorpay").replace("-", " ").replace(" 7", " seven")
     return re.sub(r"[^a-z0-9 ]", "", s).split()
 
 

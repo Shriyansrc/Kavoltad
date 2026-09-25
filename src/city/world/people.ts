@@ -19,8 +19,8 @@ export type Walker = {
   mood?: 'rush' | 'lost' | 'happy';
 };
 
-const BODY = ['#4B2C6B', '#2F3C78', '#5B3E8E', '#6A2F63', '#3A2A5C', '#28506A'];
-const HAIR = ['#1A1024', '#3B2350', '#0F1A2A', '#5A3A2A'];
+const BODY = ['#FF5C8A', '#4FB8F0', '#FFB547', '#8E6BFF', '#3DDC97', '#FF8A65', '#BA68C8', '#26C6DA'];
+const HAIR = ['#1A1024', '#3B2350', '#5A3A2A', '#E0B04C', '#8A4B2A'];
 
 let id = 0;
 const w = (x0: number, x1: number, t0: number, t1: number, rest: Partial<Walker> = {}): Walker => ({
@@ -31,7 +31,7 @@ const w = (x0: number, x1: number, t0: number, t1: number, rest: Partial<Walker>
   t1,
   body: BODY[id % BODY.length],
   hair: HAIR[id % HAIR.length],
-  h: 150 + ((id * 37) % 5) * 6,
+  h: 150 + ((id * 37) % 5) * 7,
   ...rest,
 });
 
@@ -40,27 +40,32 @@ const G = DISTRICT.gym;
 const K = DISTRICT.clinic;
 
 export const WALKERS: Walker[] = [
-  // Salon: people rush past a clashing calendar …
-  w(S + 700, S - 700, 150, 330, {mood: 'rush'}),
-  w(S - 650, S + 700, 200, 380, {mood: 'lost'}),
+  // Salon: people rush past while bookings clash …
+  w(S + 700, S - 700, 180, 380, {mood: 'rush'}),
+  w(S - 650, S + 700, 240, 440, {mood: 'lost'}),
+  w(S + 760, S - 760, 330, 560),
+  w(S - 760, S + 760, 470, 690),
   // … then walk in once bookings are sorted.
-  w(S - 520, S, C.salonWalkIn - 50, C.salonWalkIn + 10, {enter: 'salon', mood: 'happy'}),
-  w(S + 560, S, C.salonWalkIn - 40, C.salonWalkIn + 28, {enter: 'salon', mood: 'happy'}),
-  w(S - 700, S, C.salonWalkIn - 30, C.salonWalkIn + 46, {enter: 'salon', mood: 'happy'}),
+  w(S - 520, S, C.salonWalkIn - 40, C.salonWalkIn + 10, {enter: 'salon', mood: 'happy'}),
+  w(S + 560, S, C.salonWalkIn - 30, C.salonWalkIn + 28, {enter: 'salon', mood: 'happy'}),
+  w(S - 700, S, C.salonWalkIn - 20, C.salonWalkIn + 46, {enter: 'salon', mood: 'happy'}),
   // Gym
-  w(G - 700, G + 700, 470, 650, {mood: 'rush'}),
-  w(G + 520, G, C.gymChecks - 40, C.gymChecks + 16, {enter: 'gym', mood: 'happy'}),
-  w(G - 560, G, C.gymChecks - 30, C.gymChecks + 34, {enter: 'gym', mood: 'happy'}),
+  w(G - 700, G + 700, 800, 1000, {mood: 'rush'}),
+  w(G + 740, G - 740, 960, 1150),
+  w(G + 520, G, C.gymChecks - 30, C.gymChecks + 16, {enter: 'gym', mood: 'happy'}),
+  w(G - 560, G, C.gymChecks - 20, C.gymChecks + 34, {enter: 'gym', mood: 'happy'}),
+  w(G + 700, G, C.gymChecks - 10, C.gymChecks + 52, {enter: 'gym', mood: 'happy'}),
   // Clinic: nobody turns up while clients forget …
-  w(K + 700, K - 700, 780, 960, {mood: 'lost'}),
+  w(K + 700, K - 700, 1272, 1452, {mood: 'lost'}),
+  w(K - 740, K + 740, 1330, 1520),
   // … reminders land and they come.
-  w(K + 520, K, C.clinicWalk - 30, C.clinicWalk + 12, {enter: 'clinic', mood: 'happy'}),
-  w(K - 560, K, C.clinicWalk - 20, C.clinicWalk + 30, {enter: 'clinic', mood: 'happy'}),
-  w(K + 700, K, C.clinicWalk - 10, C.clinicWalk + 48, {enter: 'clinic', mood: 'happy'}),
+  w(K + 520, K, C.clinicWalk - 20, C.clinicWalk + 22, {enter: 'clinic', mood: 'happy'}),
+  w(K - 560, K, C.clinicWalk - 10, C.clinicWalk + 40, {enter: 'clinic', mood: 'happy'}),
+  w(K + 700, K, C.clinicWalk, C.clinicWalk + 58, {enter: 'clinic', mood: 'happy'}),
 ];
 
-// A small crowd in front of the gym cheers at launch (visible in the wide shot).
-export const CROWD = [-300, -190, -80, 70, 190, 300].map((dx, i) => ({x: G + dx, body: BODY[(i + 2) % BODY.length], hair: HAIR[i % HAIR.length], h: 150 + (i % 3) * 8, phase: i * 3}));
+// A crowd in front of the gym watches the showcase and cheers at launch.
+export const CROWD = [-340, -230, -120, 90, 200, 310, 420].map((dx, i) => ({x: G + dx, body: BODY[(i + 2) % BODY.length], hair: HAIR[i % HAIR.length], h: 150 + (i % 3) * 8, phase: i * 3}));
 
 export type WalkerState = {x: number; y: number; scale: number; opacity: number; dir: 1 | -1; phase: number; visible: boolean};
 
