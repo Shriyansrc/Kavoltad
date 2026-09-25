@@ -103,6 +103,48 @@ python scripts/qa/clicks.py audio/Kavolt_ChaosCity_30s_*.wav
   zero-starting envelopes with edge fades, and every effect is audited in isolation for
   clicks (`scripts/audio/city/audit-run.ts`).
 
+### Verification (city film, final MP4)
+
+- ffprobe: H.264 High, 1080 × 1920, 60/1 real and average frame rate, 1800
+  decoded frames, 30.000 s, yuv420p, BT.709 primaries/transfer/matrix, tv
+  range, AAC-LC 48 kHz stereo 256 kbps, moov before mdat. All checks pass
+  (`scripts/qa/probe.py`).
+- Audio: −14.0 LUFS integrated (source mix and decoded AAC), −1.65 dBTP source
+  true peak, limiter reduction ≤ 1.4 dB for 0.05 s in total, 0 clipped
+  samples; decoded AAC vs source mix offset 0 samples; the brand hit decodes
+  at frame 1620.05.
+- On every line the narration is at least 12.5 LU above the music and
+  10.8 LU above the effects (window loudness per line).
+  Offline Whisper small.en recognises all 12 lines from the narration stem and
+  from the full mix (only differences: “7” for “seven”, and one “Payment” on
+  the isolated stem that is heard as “payments” in the mix).
+- Clicks: all 90 effects pass an isolated click audit (edge level ≤ 2e-5 of
+  peak, no isolated second-difference spikes); the SFX, music, narration and
+  mix stems show 0 clicks, 0 clipped samples and no DC offset in
+  `scripts/qa/clicks.py` (its self-test shows dense stems can mask −48 dBFS
+  steps, which is why effects are audited at source).
+- Motion: Kavey's paths are checked for velocity discontinuities (all keys
+  ease from and to rest; the remaining fast accelerations are the throws and
+  lunges, softened by motion blur); flyers use continuous-velocity splines.
+  Decoded video: maximum frame-to-frame luminance change 5.3/255 (no flash),
+  no unexpected single-frame jumps; the only near-identical frames are the
+  still end card (1686–1763).
+- Transition: `CityTransitionMask` covers 100 % of the frame, corners
+  included, for frames 1602–1608; the swap happens on 1605.
+- Storyboard (`deliverables/Kavolt_ChaosCity_30s_Storyboard.png`) is built
+  from decoded MP4 frames.
+
+### Limitations (city film)
+
+- I cannot watch video in real time or listen here. Motion was checked with
+  numeric continuity tests and decoded frames; sound with loudness metering,
+  click audits and speech recognition, not by ear.
+- The voice is a synthetic TTS voice; recorded human takes can replace
+  `audio-src/narration_city/*.wav`, and `node scripts/audio/build-city-audio.ts`
+  rebuilds the mix and captions.
+- Platform UI zones were only approximated (`scripts/qa/safe_zones.py`).
+- A full-resolution render takes about 70–100 minutes on 4 cores.
+
 ---
 
 ## Kavey turns chaos into a launch (20 s)
