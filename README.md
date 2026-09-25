@@ -14,7 +14,7 @@ and a local neural TTS voice for narration. No video-generation model is used.
 | `Kavolt_Kavey_20s_Final.mp4` | H.264 High, 1080 × 1920, constant 60 fps, 1200 frames, 20.000 s, `yuv420p`, BT.709 (tagged), CRF 18, fast-start; stereo AAC-LC 48 kHz 256 kbps |
 | `audio/Kavolt_Kavey_20s_{Music,SFX,Narration,Mix}.wav` | 48 kHz 24-bit stereo stems; Music + SFX + Narration sum to the Mix |
 | `audio/Kavolt_Kavey_20s_Captions.{srt,vtt}` | Timed captions matching the placed narration |
-| `Kavolt_Kavey_20s_Cover_9x16.png`, `…_Cover_1x1.png` | Cover from 3.5 s (frame 210); square version repositions the same frame |
+| `Kavolt_Kavey_20s_Cover_9x16.png`, `…_Cover_1x1.png` | Cover from 3.5 s (frame 210); the square version is a 1080 × 1080 window of that same frame holding the headline and Kavey's face |
 | `Kavolt_Kavey_20s_Storyboard.png` | Contact sheet of decoded frames from the final MP4 |
 | `Kavolt_Kavey_20s_Project.zip` | This project without `node_modules`, `out/` or deliverables |
 
@@ -50,7 +50,7 @@ node scripts/render/render.mjs draft               # 540×960 draft with audio
 
 # Final master (PNG frames → x264 CRF 18 + AAC 256k)
 REMOTION_CONCURRENCY=4 node scripts/render/render.mjs final
-npm run render:cover
+npm run render:cover                             # frame 210 still + square crop
 
 # QA
 python scripts/qa/probe.py deliverables/Kavolt_Kavey_20s_Final.mp4

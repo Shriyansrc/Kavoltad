@@ -12,7 +12,7 @@
     "audio:build": "node scripts/audio/build-audio.ts",
     "render:draft": "node scripts/render/render.mjs draft",
     "render:final": "node scripts/render/render.mjs final",
-    "render:cover": "remotion still src/index.ts CoverVertical deliverables/Kavolt_Kavey_20s_Cover_9x16.png && remotion still src/index.ts CoverSquare deliverables/Kavolt_Kavey_20s_Cover_1x1.png"
+    "render:cover": "remotion still src/index.ts KavoltKavey20s deliverables/Kavolt_Kavey_20s_Cover_9x16.png --frame=210 && python scripts/render/cover_square.py"
   },
   "dependencies": {
     "@remotion/cli": "4.0.529",

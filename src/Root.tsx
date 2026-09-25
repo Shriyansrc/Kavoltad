@@ -1,8 +1,7 @@
 import React from 'react';
-import {Composition, Still} from 'remotion';
+import {Composition} from 'remotion';
 import {DURATION_IN_FRAMES, FPS, HEIGHT, WIDTH} from './config/video.ts';
 import {Film} from './Film.tsx';
-import {Cover} from './Cover.tsx';
 import './fonts.ts';
 
 export const RemotionRoot: React.FC = () => (
@@ -26,7 +25,5 @@ export const RemotionRoot: React.FC = () => (
       height={HEIGHT}
       defaultProps={{maskOnly: true, mute: true}}
     />
-    <Still id="CoverVertical" component={Cover} width={WIDTH} height={HEIGHT} defaultProps={{square: false}} />
-    <Still id="CoverSquare" component={Cover} width={1080} height={1080} defaultProps={{square: true}} />
   </>
 );
