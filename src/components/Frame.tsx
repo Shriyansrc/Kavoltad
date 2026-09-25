@@ -174,7 +174,7 @@ export const FrameObject: React.FC<{f: number; fcnAvailable: boolean}> = ({f, fc
           {fcnAvailable ? (
             <Img
               src={staticFile('assets/fcn_crop.png')}
-              style={{width: vp.w, height: vp.h, display: 'block', transform: `scale(${1.04 - 0.04 * reveal})`, transformOrigin: 'top center'}}
+              style={{width: vp.w, height: (vp.w * 450) / 1200, display: 'block', transform: `scale(${1.04 - 0.04 * reveal})`, transformOrigin: 'top center'}}
             />
           ) : (
             <div style={{width: '100%', height: '100%', display: 'grid', placeItems: 'center', color: '#ff5252', ...mono(18)}}>FCN SCREENSHOT PENDING</div>
