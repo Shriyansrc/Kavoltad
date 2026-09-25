@@ -1,0 +1,114 @@
+[
+  {
+    "source": "Kavolt_Kavey_20s_Narration.wav",
+    "id": "l1",
+    "script": "Booking chaos?",
+    "heard": "Booking chaos.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Narration.wav",
+    "id": "l2",
+    "script": "Kavolt. Live in seven days.",
+    "heard": "Kavolt live in seven days.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Narration.wav",
+    "id": "l3",
+    "script": "Start on WhatsApp.",
+    "heard": "Start on WhatsApp.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Narration.wav",
+    "id": "l4",
+    "script": "Payments connected. Reminders automated.",
+    "heard": "Payments connected. Reminders automated.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Narration.wav",
+    "id": "l5",
+    "script": "Review on your phone.",
+    "heard": "Review on your phone.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Narration.wav",
+    "id": "l6",
+    "script": "Your code. Your keys.",
+    "heard": "your code, your keys.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Narration.wav",
+    "id": "l7",
+    "script": "Shipped. Not mocked up.",
+    "heard": "Shipped not mocked up.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Narration.wav",
+    "id": "l8",
+    "script": "Ready to ship? Check the website.",
+    "heard": "Ready to ship? Check the website.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Mix.wav",
+    "id": "l1",
+    "script": "Booking chaos?",
+    "heard": "Booking chaos.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Mix.wav",
+    "id": "l2",
+    "script": "Kavolt. Live in seven days.",
+    "heard": "Kavolt live in seven days.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Mix.wav",
+    "id": "l3",
+    "script": "Start on WhatsApp.",
+    "heard": "Start on WhatsApp.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Mix.wav",
+    "id": "l4",
+    "script": "Payments connected. Reminders automated.",
+    "heard": "Payments connected. Reminders automated.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Mix.wav",
+    "id": "l5",
+    "script": "Review on your phone.",
+    "heard": "Review on your phone.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Mix.wav",
+    "id": "l6",
+    "script": "Your code. Your keys.",
+    "heard": "Your code, your keys.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Mix.wav",
+    "id": "l7",
+    "script": "Shipped. Not mocked up.",
+    "heard": "Shipped, not mocked up.",
+    "wer": 0.0
+  },
+  {
+    "source": "Kavolt_Kavey_20s_Mix.wav",
+    "id": "l8",
+    "script": "Ready to ship? Check the website.",
+    "heard": "Ready to ship? Check the website.",
+    "wer": 0.0
+  }
+]

@@ -1,0 +1,241 @@
+{
+  "sampleRate": 48000,
+  "durationSeconds": 20,
+  "integratedLufs": -14.01,
+  "truePeakDbtp": -1.65,
+  "truePeakBeforeLimiter": -0.08,
+  "limiterApplied": true,
+  "limiterMaxReductionDb": 1.57,
+  "limiterSecondsOver1dB": 0.065,
+  "musicGainDb": -5.81,
+  "narration": [
+    {
+      "id": "l1",
+      "text": "Booking chaos?",
+      "start": 0.15,
+      "end": 1.059,
+      "window": [
+        0.15,
+        1.4
+      ],
+      "startFrame": 9,
+      "endFrame": 63.5
+    },
+    {
+      "id": "l2",
+      "text": "Kavolt. Live in seven days.",
+      "start": 2.6,
+      "end": 4.329000000000001,
+      "window": [
+        2.6,
+        4.65
+      ],
+      "startFrame": 156,
+      "endFrame": 259.7
+    },
+    {
+      "id": "l3",
+      "text": "Start on WhatsApp.",
+      "start": 5.15,
+      "end": 6.079000000000001,
+      "window": [
+        5.15,
+        6.7
+      ],
+      "startFrame": 309,
+      "endFrame": 364.7
+    },
+    {
+      "id": "l4",
+      "text": "Payments connected. Reminders automated.",
+      "start": 7.15,
+      "end": 9.609,
+      "window": [
+        7.15,
+        9.65
+      ],
+      "startFrame": 429,
+      "endFrame": 576.5
+    },
+    {
+      "id": "l5",
+      "text": "Review on your phone.",
+      "start": 10.15,
+      "end": 11.114,
+      "window": [
+        10.15,
+        11.7
+      ],
+      "startFrame": 609,
+      "endFrame": 666.8
+    },
+    {
+      "id": "l6",
+      "text": "Your code. Your keys.",
+      "start": 12.15,
+      "end": 13.419,
+      "window": [
+        12.15,
+        13.7
+      ],
+      "startFrame": 729,
+      "endFrame": 805.1
+    },
+    {
+      "id": "l7",
+      "text": "Shipped. Not mocked up.",
+      "start": 14.2,
+      "end": 15.373999999999999,
+      "window": [
+        14.2,
+        15.7
+      ],
+      "startFrame": 852,
+      "endFrame": 922.4
+    },
+    {
+      "id": "l8",
+      "text": "Ready to ship? Check the website.",
+      "start": 17.2,
+      "end": 18.959,
+      "window": [
+        17.2,
+        19.55
+      ],
+      "startFrame": 1032,
+      "endFrame": 1137.5
+    }
+  ],
+  "separationLufs": [
+    {
+      "id": "l1",
+      "voice": -12.8,
+      "music": -43.5,
+      "sfx": -31.2
+    },
+    {
+      "id": "l2",
+      "voice": -12.8,
+      "music": -30.8,
+      "sfx": -34.5
+    },
+    {
+      "id": "l3",
+      "voice": -12.7,
+      "music": -31.8,
+      "sfx": -32.7
+    },
+    {
+      "id": "l4",
+      "voice": -12.9,
+      "music": -27.1,
+      "sfx": -30.2
+    },
+    {
+      "id": "l5",
+      "voice": -12.8,
+      "music": -26.3,
+      "sfx": -44.5
+    },
+    {
+      "id": "l6",
+      "voice": -12.7,
+      "music": -26.4,
+      "sfx": -32
+    },
+    {
+      "id": "l7",
+      "voice": -12.7,
+      "music": -28.2,
+      "sfx": -44.2
+    },
+    {
+      "id": "l8",
+      "voice": -13,
+      "music": -27.6,
+      "sfx": -43.3
+    }
+  ],
+  "sfxCues": [
+    {
+      "id": "hook-tick",
+      "frame": 0,
+      "seconds": 0
+    },
+    {
+      "id": "card-catch",
+      "frame": 18,
+      "seconds": 0.3
+    },
+    {
+      "id": "panel-tick-a",
+      "frame": 48,
+      "seconds": 0.8
+    },
+    {
+      "id": "panel-tick-b",
+      "frame": 78,
+      "seconds": 1.3
+    },
+    {
+      "id": "system-connect",
+      "frame": 150,
+      "seconds": 2.5
+    },
+    {
+      "id": "scope-confirmed",
+      "frame": 324,
+      "seconds": 5.4
+    },
+    {
+      "id": "pulse-booking",
+      "frame": 438,
+      "seconds": 7.3
+    },
+    {
+      "id": "pulse-payment",
+      "frame": 480,
+      "seconds": 8
+    },
+    {
+      "id": "pulse-reminder",
+      "frame": 534,
+      "seconds": 8.9
+    },
+    {
+      "id": "preview-approved",
+      "frame": 654,
+      "seconds": 10.9
+    },
+    {
+      "id": "launch",
+      "frame": 738,
+      "seconds": 12.3
+    },
+    {
+      "id": "proof-settles",
+      "frame": 852,
+      "seconds": 14.2
+    },
+    {
+      "id": "anticipation",
+      "frame": 960,
+      "seconds": 16
+    },
+    {
+      "id": "scarf-sweep",
+      "frame": 972,
+      "seconds": 16.2
+    },
+    {
+      "id": "music-gap-air",
+      "frame": 1002,
+      "seconds": 16.7
+    },
+    {
+      "id": "brand-hit",
+      "frame": 1020,
+      "seconds": 17
+    }
+  ]
+}

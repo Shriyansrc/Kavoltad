@@ -1,0 +1,111 @@
+{
+  "engine": "kokoro-onnx (Kokoro-82M)",
+  "voice": "af_heart",
+  "speed": 1.0,
+  "lines": [
+    {
+      "id": "l1",
+      "text": "Booking chaos?",
+      "phonemes": "bˈʊkɪŋ kˈeɪɑːs?",
+      "window": [
+        0.15,
+        1.4
+      ],
+      "duration": 0.909,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration/l1.wav"
+    },
+    {
+      "id": "l2",
+      "text": "Kavolt. Live in seven days.",
+      "phonemes": "kəvˈoʊlt. lˈɪv ɪn sˈɛvən dˈeɪz.",
+      "window": [
+        2.6,
+        4.65
+      ],
+      "duration": 1.729,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration/l2.wav"
+    },
+    {
+      "id": "l3",
+      "text": "Start on WhatsApp.",
+      "phonemes": "stˈɑːɹt ˌɔn wʌts ˈæp.",
+      "window": [
+        5.15,
+        6.7
+      ],
+      "duration": 0.929,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration/l3.wav"
+    },
+    {
+      "id": "l4",
+      "text": "Payments connected. Reminders automated.",
+      "phonemes": "pˈeɪmənts kənˈɛktᵻd. ɹᵻmˈaɪndɚz ˈɔːɾəmˌeɪɾᵻd.",
+      "window": [
+        7.15,
+        9.65
+      ],
+      "duration": 2.459,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration/l4.wav"
+    },
+    {
+      "id": "l5",
+      "text": "Review on your phone.",
+      "phonemes": "ɹᵻvjˈuː ˌɔn jʊɹ fˈoʊn.",
+      "window": [
+        10.15,
+        11.7
+      ],
+      "duration": 0.964,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration/l5.wav"
+    },
+    {
+      "id": "l6",
+      "text": "Your code. Your keys.",
+      "phonemes": "jʊɹ kˈoʊd. jʊɹ kˈiːz.",
+      "window": [
+        12.15,
+        13.7
+      ],
+      "duration": 1.269,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration/l6.wav"
+    },
+    {
+      "id": "l7",
+      "text": "Shipped. Not mocked up.",
+      "phonemes": "ʃˈɪpt. nˌɑːt mˈɑːkt ˈʌp.",
+      "window": [
+        14.2,
+        15.7
+      ],
+      "duration": 1.174,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration/l7.wav"
+    },
+    {
+      "id": "l8",
+      "text": "Ready to ship? Check the website.",
+      "phonemes": "ɹˈɛdi tə ʃˈɪp? tʃˈɛk ðə wˈɛbsaɪt.",
+      "window": [
+        17.2,
+        19.55
+      ],
+      "duration": 1.759,
+      "fits": true,
+      "sr": 24000,
+      "file": "audio-src/narration/l8.wav"
+    }
+  ]
+}

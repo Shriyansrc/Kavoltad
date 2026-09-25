@@ -1,0 +1,8 @@
+node_modules/
+out/
+.remotion/
+*.log
+__pycache__/
+.DS_Store
+# large intermediate frame sequences
+out/frames/
