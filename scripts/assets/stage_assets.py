@@ -46,7 +46,8 @@ def describe(p):
 def stage(src, name, originals):
     os.makedirs(originals, exist_ok=True)
     dst = os.path.join(originals, name)
-    shutil.copyfile(src, dst)
+    if os.path.abspath(src) != os.path.abspath(dst):
+        shutil.copyfile(src, dst)
     assert sha256(src) == sha256(dst)
     return dst
 

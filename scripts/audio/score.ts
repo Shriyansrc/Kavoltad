@@ -119,144 +119,173 @@ const padChord = (notes: string[], len: number, cutoff: number, attack = 0.35) =
 };
 
 // ------------------------------------------------------------------ render
+const clap = (seed: number, len = 0.2) => {
+  const bursts = [0, 0.011, 0.023];
+  const out = new Float32Array(Math.round(len * SR));
+  for (const b of bursts) {
+    const n = biquad(noise(len - b, seed + Math.round(b * 1000)), 'bandpass', 1500, 0.9);
+    mulEnv(n, envAD(len - b, 0.001, b === 0.023 ? 0.09 : 0.012, 4));
+    const off = Math.round(b * SR);
+    for (let i = 0; i < n.length && i + off < out.length; i++) out[i + off] += n[i];
+  }
+  return biquad(out, 'highpass', 600, 0.7);
+};
+
+const kickTimes: number[] = [];
+
 export const renderScore = () => {
   const pre = makeStereo(DUR); // everything before the 17 s resolution (gets the dip)
+  const pumpable = makeStereo(DUR); // bass/pads/arps ducked by the kick (sidechain pump)
   const post = makeStereo(DUR); // the resolution and final bars
   const revSend = makeStereo(DUR);
   const revSendPost = makeStereo(DUR);
+  kickTimes.length = 0;
 
-  // 1. Filtered pulse on 8ths (bars 0–8), opening its filter as the story builds.
+  // 1. Filtered pulse on 8ths through the whole build, opening with the story.
   for (let t = 0; t < MUSIC.dipStart; t += BEAT / 2) {
     const k = Math.round(t / (BEAT / 2));
-    const thin = t >= MUSIC.proofThin && t < MUSIC.riseStart ? k % 2 === 0 : true;
-    if (!thin) continue;
-    const cutoff = t < 2.5 ? 520 : t < 7 ? 520 + (t - 2.5) * 140 : t < 14 ? 1250 : t < 16 ? 900 : 900 + (t - 16) * 2600;
-    const accent = k % 4 === 0 ? 1 : 0.72;
-    const g = (t < 2.5 ? 0.12 : 0.1) * accent;
-    addMono(pre, pulseNote(noteToFreq(octave(rootAt(t), 1)), cutoff), t, g, 0);
+    const cutoff = t < 2.5 ? 480 + t * 90 : t < 7 ? 700 + (t - 2.5) * 160 : t < 14 ? 1500 : t < 16 ? 1100 : 1100 + (t - 16) * 3200;
+    const accent = k % 4 === 0 ? 1 : 0.7;
+    addMono(t < 2.5 ? pre : pumpable, pulseNote(noteToFreq(octave(rootAt(t), 1)), cutoff), t, 0.11 * accent, 0);
   }
 
-  // 2. Sparse ticks in the opening (0–2.5 s).
-  const tickSteps = [3, 6, 11, 14, 19, 22, 27, 30, 35];
-  for (const st of tickSteps) {
-    const t = st * S16;
-    if (t >= 2.5) continue;
-    addMono(pre, tick(SEED + st * 13), t, 0.1, st % 2 ? 0.3 : -0.3);
+  // 2. Opening: sparse ticks and a tension riser into the 2.5 s reveal.
+  for (const st of [3, 6, 11, 14, 19]) addMono(pre, tick(SEED + st * 13), st * S16, 0.1, st % 2 ? 0.3 : -0.3);
+  {
+    const len = 1.6;
+    const n = biquad(noise(len, SEED + 5), 'bandpass', (tt) => 600 * Math.pow(8, tt / len), 1.1);
+    mulEnv(n, (tt) => Math.pow(tt / len, 2.2));
+    addMono(pre, n, 2.5 - len, 0.16, 0);
   }
 
-  // 3. Bass from 2.5 s: root on the bar, syncopated eighths.
-  const bassPattern: [number, number][] = [
-    [0, 0.7],
-    [1.5, 0.22],
-    [2, 0.45],
-    [3, 0.22],
-    [3.5, 0.22],
-  ];
-  for (let bar = 1; bar < 10; bar++) {
-    for (const [beat, len] of bassPattern) {
-      const t = bar * 2 + beat * BEAT;
-      if (t < MUSIC.bassIn - 1e-6 || t >= MUSIC.dipStart) continue;
-      const light = t >= MUSIC.proofThin && t < MUSIC.riseStart && beat !== 0 && beat !== 2;
-      if (light) continue;
-      addMono(pre, bassNote(noteToFreq(rootAt(t)), len), t, 0.34, 0);
+  // 3. Kick four-on-the-floor from 2.5 s (lighter in the proof bars).
+  for (let t = 2.5; t < MUSIC.dipStart; t += BEAT) {
+    const light = t >= MUSIC.proofThin && t < MUSIC.riseStart;
+    if (light && Math.round(t / BEAT) % 2 === 1) continue;
+    addMono(pre, kick(), t, light ? 0.3 : 0.5, 0);
+    kickTimes.push(t);
+  }
+
+  // 4. Claps on 2 & 4 from 5 s; hats: offbeat 8ths from 2.5 s, 16ths in the groove.
+  for (let t = 5; t < MUSIC.proofThin; t += BEAT) {
+    if (Math.round(t / BEAT) % 2 === 1) {
+      const c = clap(SEED + Math.round(t * 100));
+      addMono(pre, c, t, 0.16, 0);
+      addMono(revSend, c, t, 0.08, 0);
     }
   }
+  for (let t = 2.5; t < MUSIC.riseStart; t += S16) {
+    const step = Math.round(t / S16) % 4;
+    const groove = t >= MUSIC.grooveIn && t < MUSIC.proofThin;
+    if (!groove && step !== 2) continue;
+    const g = step === 2 ? 0.055 : 0.028;
+    addMono(pre, hat(SEED + Math.round(t * 1000), step === 2 ? 0.06 : 0.035, step === 2 && t >= MUSIC.proofThin), t, g, step % 2 ? 0.18 : 0.1);
+  }
 
-  // 4. Plucks: sparse offbeats (2.5–7), arpeggio (7–14), thinner (14–16).
+  // 5. Bass from 2.5 s: driving eighths with octave pops.
+  for (let t = 2.5; t < MUSIC.dipStart; t += BEAT / 2) {
+    const e = Math.round(t / (BEAT / 2)) % 8;
+    const light = t >= MUSIC.proofThin && t < MUSIC.riseStart;
+    if (light && e % 2 === 1) continue;
+    const pattern = [1, 0, 0.7, 1, 0.8, 0, 0.7, 1][e];
+    if (!pattern) continue;
+    const note = e === 3 || e === 7 ? octave(rootAt(t), 1) : rootAt(t);
+    addMono(pumpable, bassNote(noteToFreq(note), 0.22), t, 0.3 * pattern, 0);
+  }
+
+  // 6. Pluck arpeggios: 8ths from 2.5 s, 16ths in the groove, sparse in the proof.
   for (let t = 2.5; t < MUSIC.riseStart; t += S16) {
     const step = Math.round(t / S16) % 16;
     const chord = chordAt(t);
     let play = false;
-    let idx = 0;
-    if (t < 7) {
-      play = step === 2 || step === 6 || step === 10 || step === 13;
-      idx = [2, 6, 10, 13].indexOf(step);
-    } else if (t < 14) {
-      play = [0, 3, 6, 8, 10, 12, 14].includes(step);
-      idx = [0, 3, 6, 8, 10, 12, 14].indexOf(step);
-    } else {
-      play = step === 4 || step === 12;
-      idx = step === 4 ? 1 : 3;
-    }
+    if (t < 7) play = step % 2 === 0;
+    else if (t < 14) play = true;
+    else play = step % 4 === 0;
     if (!play) continue;
-    const n = chord[(idx + Math.floor(t / 2)) % chord.length];
+    const idx = [0, 1, 2, 3, 2, 1, 3, 2, 0, 2, 1, 3, 2, 3, 1, 2][step];
+    const n = chord[idx % chord.length];
     const f = noteToFreq(octave(n, 1));
-    const p = pluck(f, 0.32, t < 7 ? 0.7 : 1);
-    const pan = ((idx % 4) - 1.5) * 0.08;
-    addMono(pre, p, t, t < 7 ? 0.05 : 0.055, pan);
+    const p = pluck(f, 0.26, t < 7 ? 0.8 : 1);
+    const pan = (step % 2 ? 1 : -1) * 0.14;
+    addMono(pumpable, p, t, t < 7 ? 0.05 : 0.045, pan);
     addMono(revSend, p, t, 0.05, pan);
   }
 
-  // 5. Groove 7–14 s: kick 1 & 3, soft snare 2 & 4, eighth hats.
-  for (let t = MUSIC.grooveIn; t < MUSIC.proofThin; t += BEAT / 2) {
-    const e = Math.round(t / (BEAT / 2)) % 8;
-    if (e === 0 || e === 4) addMono(pre, kick(), t, 0.42, 0);
-    if (e === 2 || e === 6) {
-      const s = snare(SEED + Math.round(t * 100));
-      addMono(pre, s, t, 0.1, 0);
-      addMono(revSend, s, t, 0.06, 0);
-    }
-    addMono(pre, hat(SEED + Math.round(t * 1000)), t, e % 2 ? 0.05 : 0.03, 0.12);
-  }
-  // 14–16: percussion thins to quarter hats and one soft kick per bar.
-  for (let t = MUSIC.proofThin; t < MUSIC.riseStart; t += BEAT) {
-    const b = Math.round(t / BEAT) % 4;
-    if (b === 0) addMono(pre, kick(), t, 0.26, 0);
-    addMono(pre, hat(SEED + Math.round(t * 1000) + 3), t, 0.03, 0.12);
-  }
-
-  // 6. Pad bed from 7 s (restrained), following the chords.
-  for (let bar = 3; bar < 9; bar++) {
-    const t0 = Math.max(bar * 2, 6.5);
+  // 7. Pad bed from 2.5 s, following the chords (pumped by the kick).
+  for (let bar = 1; bar < 9; bar++) {
+    const t0 = Math.max(bar * 2, 2.5);
     const len = bar * 2 + 2 - t0 + 0.3;
-    const pad = padChord(CHORDS[bar], len, bar < 7 ? 1100 : 900, 0.4);
-    addStereo(pre, pad, t0, t0 < 7 ? 0.5 : 0.8);
+    const pad = padChord(CHORDS[bar], len, bar < 3 ? 900 : 1300, 0.25);
+    addStereo(pumpable, pad, t0, bar < 3 ? 0.55 : 0.8);
     addStereo(revSend, pad, t0, 0.3);
   }
 
-  // 7. Rising texture 16.0–16.7 s tied to the scarf movement.
+  // Sidechain pump: duck the pumpable bus after every kick (≈-6 dB, 160 ms).
   {
-    const len = MUSIC.dipStart - MUSIC.riseStart + 0.08;
-    const n = biquad(noise(len, SEED + 99), 'bandpass', (t) => 500 * Math.pow(12, t / len), 1.4);
-    mulEnv(n, (t) => Math.pow(t / len, 1.6));
-    addMono(pre, n, MUSIC.riseStart, 0.18, 0);
-    const chord = CHORDS[8];
-    chord.forEach((nn, k) => {
-      const s = saw(len, noteToFreq(nn), 20, k * 4 - 6);
-      const f = biquad(s, 'lowpass', (t) => 400 + 3200 * Math.pow(t / len, 2), 0.9);
-      mulEnv(f, (t) => Math.pow(t / len, 1.3));
-      addMono(pre, f, MUSIC.riseStart, 0.045, (k - 1.5) * 0.12);
-    });
+    const depth = 0.5;
+    const rel = 0.16;
+    for (let i = 0; i < pumpable.L.length; i++) {
+      const t = i / SR;
+      let g = 1;
+      for (let k = kickTimes.length - 1; k >= 0; k--) {
+        const d = t - kickTimes[k];
+        if (d < 0) continue;
+        if (d < rel) g = 1 - depth * Math.pow(1 - d / rel, 2);
+        break;
+      }
+      pumpable.L[i] *= g;
+      pumpable.R[i] *= g;
+    }
+    addStereo(pre, pumpable, 0, 1);
   }
 
-  // 8. Resolution at 17 s: A-minor add-nine, lighter pulse and a decaying chord.
+  // 8. Rising texture 15.2–16.7 s tied to the scarf movement.
+  {
+    const t0 = 15.2;
+    const len = MUSIC.dipStart - t0 + 0.08;
+    const n = biquad(noise(len, SEED + 99), 'bandpass', (t) => 400 * Math.pow(14, t / len), 1.4);
+    mulEnv(n, (t) => Math.pow(t / len, 1.8));
+    addMono(pre, n, t0, 0.22, 0);
+    CHORDS[8].forEach((nn, k) => {
+      const sw = saw(len, noteToFreq(nn), 20, k * 4 - 6);
+      const fl = biquad(sw, 'lowpass', (t) => 400 + 3600 * Math.pow(t / len, 2), 0.9);
+      mulEnv(fl, (t) => Math.pow(t / len, 1.3));
+      addMono(pre, fl, t0, 0.05, (k - 1.5) * 0.12);
+    });
+    // snare roll accelerating into the drop
+    for (let t = 15.5; t < MUSIC.dipStart; ) {
+      const g = 0.03 + 0.09 * ((t - 15.5) / (MUSIC.dipStart - 15.5));
+      addMono(pre, snare(SEED + Math.round(t * 997)), t, g, 0);
+      t += t < 16 ? BEAT / 2 : t < 16.4 ? BEAT / 4 : BEAT / 8;
+    }
+  }
+
+  // 9. The drop at 17 s: A-minor add-nine, kick + sub, then a lighter pulse.
   {
     const t0 = MUSIC.resolve;
-    const pad = padChord(RESOLVE, DUR - t0, 1500, 0.02);
-    // decaying rather than sustaining
+    const pad = padChord(RESOLVE, DUR - t0, 1600, 0.02);
     for (let i = 0; i < pad.L.length; i++) {
-      const e = Math.exp(-(i / SR) * 0.55);
+      const e = Math.exp(-(i / SR) * 0.5);
       pad.L[i] *= e;
       pad.R[i] *= e;
     }
-    addStereo(post, pad, t0, 1.05);
+    addStereo(post, pad, t0, 1.1);
     addStereo(revSendPost, pad, t0, 0.45);
-    // strummed pluck chord
     RESOLVE.forEach((n, k) => {
       const p = pluck(noteToFreq(n), 1.6, 0.8);
       addMono(post, p, t0 + k * 0.012, 0.05, (k - 2) * 0.07);
       addMono(revSendPost, p, t0 + k * 0.012, 0.05, 0);
     });
+    addMono(post, kick(0.4), t0, 0.55, 0);
     addMono(post, bassNote(noteToFreq('A2'), 1.8), t0, 0.36, 0);
-    addMono(post, bassNote(noteToFreq('A1'), 1.6), t0, 0.18, 0);
-    // lighter pulse: quarter notes, low filter, from 17.5 s
+    addMono(post, bassNote(noteToFreq('A1'), 1.6), t0, 0.2, 0);
     for (let t = 17.5; t < DUR - 0.3; t += BEAT) {
-      addMono(post, pulseNote(noteToFreq('A3'), 700, 0.16), t, 0.055, 0);
-      if (Math.round(t / BEAT) % 2 === 0) addMono(post, hat(SEED + Math.round(t * 777)), t, 0.02, 0.1);
+      addMono(post, pulseNote(noteToFreq('A3'), 800, 0.16), t, 0.06, 0);
+      if (Math.round(t / BEAT) % 2 === 0) addMono(post, kick(0.22), t, 0.18, 0);
+      addMono(post, hat(SEED + Math.round(t * 777)), t + BEAT / 2, 0.025, 0.1);
     }
   }
 
-  // Reverb returns.
   const wet = reverb(revSend, {room: 0.8, damp: 0.4});
   const wetPost = reverb(revSendPost, {room: 0.84, damp: 0.35});
   addStereo(pre, wet, 0, 1.0);

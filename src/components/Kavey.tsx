@@ -1,24 +1,39 @@
-// Kavey compositor: the supplied PNG (matted working copy) under one 4×4
-// transform, with integrated light (violet rim, restrained magenta fill),
-// a soft hover shadow, and sub-frame motion blur only while moving fast.
+// Kavey compositor: the cut-out rig of the supplied image under one 4×4 root
+// transform. Children rotate about their own pivots; the eyes are additive
+// light (plus-lighter) so blinks and glances leave a clean visor. Sub-frame
+// motion blur is used only while the silhouette moves fast.
 import React from 'react';
 import {getStaticFiles, Img, staticFile} from 'remotion';
-import {KAVEY_SRC} from '../config/kavey.ts';
+import {KAVEY_SRC, RIG_LAYERS, type RigLayerId} from '../config/kavey.ts';
 import {PALETTE, rgba} from '../config/palette.ts';
-import {FONT_MONO} from '../config/type.ts';
-import {clamp} from '../lib/anim.ts';
 import {project, toCss} from '../lib/mat4.ts';
-import {kaveyMatrix, kaveyPose} from '../scenes/kavey.ts';
+import {kaveyMatrix, kaveyPose, type KaveyPose} from '../scenes/kavey.ts';
 
-const hasFile = (name: string) => getStaticFiles().some((f) => f.name === name);
+const hasRig = () => getStaticFiles().some((f) => f.name === 'assets/kavey/base.png');
 
-const Body: React.FC<{f: number; opacity: number; blend?: React.CSSProperties['mixBlendMode']; hasMatte: boolean; hasRim: boolean}> = ({
-  f,
-  opacity,
-  blend,
-  hasMatte,
-  hasRim,
-}) => {
+const layerTransform = (id: RigLayerId, pose: KaveyPose): {transform?: string; opacity?: number} => {
+  switch (id) {
+    case 'earL':
+      return {transform: `rotate(${pose.earL}deg)`};
+    case 'earR':
+      return {transform: `rotate(${pose.earR}deg)`};
+    case 'tail':
+      return {transform: `rotate(${pose.tail}deg)`};
+    case 'handL':
+      return {transform: `rotate(${pose.handL}deg)`};
+    case 'handR':
+      return {transform: `rotate(${pose.handR}deg)`};
+    case 'cube':
+      return {transform: `translate(${pose.cube.dx}px, ${pose.cube.dy}px) rotate(${pose.cube.rot}deg) scale(${pose.cube.scale})`};
+    case 'eyeL':
+    case 'eyeR':
+      return {transform: `translate(${pose.gazeX}px, ${pose.gazeY}px) scale(1, ${Math.max(0.08, 1 - pose.blink * 0.92)})`};
+    default:
+      return {};
+  }
+};
+
+const Rig: React.FC<{f: number; opacity: number; blend?: React.CSSProperties['mixBlendMode']}> = ({f, opacity, blend}) => {
   const pose = kaveyPose(f);
   const m = kaveyMatrix(pose);
   const W = KAVEY_SRC.width;
@@ -35,65 +50,39 @@ const Body: React.FC<{f: number; opacity: number; blend?: React.CSSProperties['m
         transform: toCss(m),
         opacity,
         mixBlendMode: blend,
-        backfaceVisibility: 'hidden',
+        isolation: 'isolate',
       }}
     >
-      {hasMatte ? (
-        <Img src={staticFile(KAVEY_SRC.file)} style={{width: W, height: H, display: 'block'}} />
-      ) : (
-        <div
-          style={{
-            position: 'absolute',
-            left: KAVEY_SRC.bbox.x,
-            top: KAVEY_SRC.bbox.y,
-            width: KAVEY_SRC.bbox.w,
-            height: KAVEY_SRC.bbox.h,
-            border: '4px dashed #ff5252',
-            color: '#ff5252',
-            fontFamily: FONT_MONO,
-            fontSize: 28,
-            display: 'grid',
-            placeItems: 'center',
-            textAlign: 'center',
-          }}
-        >
-          KAVEY
-          <br />
-          ASSET
-          <br />
-          PENDING
-        </div>
-      )}
-      {hasRim ? (
-        <>
-          {/* violet rim from the upper right, restrained magenta fill from the lower left */}
+      {RIG_LAYERS.map((L) => {
+        const t = layerTransform(L.id, pose);
+        return (
           <div
+            key={L.id}
             style={{
               position: 'absolute',
               inset: 0,
-              background: `linear-gradient(235deg, ${rgba(PALETTE.violet, 0.95)} 0%, ${rgba(PALETTE.violet, 0.5)} 45%, ${rgba(PALETTE.magenta, 0.55)} 100%)`,
-              WebkitMaskImage: `url(${staticFile(KAVEY_SRC.rimFile)})`,
-              maskImage: `url(${staticFile(KAVEY_SRC.rimFile)})`,
-              WebkitMaskSize: '100% 100%',
-              maskSize: '100% 100%',
-              mixBlendMode: 'screen',
-              opacity: 0.32 + 0.4 * pose.energy,
+              transformOrigin: `${L.pivot.x}px ${L.pivot.y}px`,
+              transform: t.transform,
+              mixBlendMode: L.additive ? 'plus-lighter' : undefined,
+              filter: L.id === 'cube' ? `drop-shadow(0 0 ${6 + 10 * pose.cube.glow}px ${rgba(PALETTE.magenta, 0.35 + 0.4 * pose.cube.glow)})` : undefined,
             }}
-          />
-        </>
-      ) : null}
+          >
+            <Img src={staticFile(L.file)} style={{width: W, height: H, display: 'block'}} />
+          </div>
+        );
+      })}
     </div>
   );
 };
 
-/** Screen-space speed of the silhouette, used to decide on motion blur. */
+/** Screen-space speed of the silhouette (px/frame), used to decide on motion blur. */
 const speedAt = (f: number) => {
   const a = kaveyMatrix(kaveyPose(f - 0.5));
   const b = kaveyMatrix(kaveyPose(f + 0.5));
   const pts = [
     [KAVEY_SRC.bbox.x, KAVEY_SRC.bbox.y],
     [KAVEY_SRC.bbox.x + KAVEY_SRC.bbox.w, KAVEY_SRC.bbox.y + KAVEY_SRC.bbox.h],
-    [KAVEY_SRC.anchors.eyes.x, KAVEY_SRC.anchors.eyes.y],
+    [KAVEY_SRC.anchors.face.x, KAVEY_SRC.anchors.face.y],
   ];
   let max = 0;
   for (const [x, y] of pts) {
@@ -105,43 +94,36 @@ const speedAt = (f: number) => {
 };
 
 export const Kavey: React.FC<{f: number}> = ({f}) => {
-  const hasMatte = hasFile(KAVEY_SRC.file);
-  const hasRim = hasFile(KAVEY_SRC.rimFile);
+  if (!hasRig()) return null;
   const pose = kaveyPose(f);
-  const speed = speedAt(f);
-  // 90° shutter equivalent: blur length = speed × 0.25 frames.
-  const blurPx = speed * 0.25;
-  const samples = blurPx < 1.2 ? 1 : Math.min(10, Math.ceil(blurPx / 1.2) + 1);
-
-  // Hover shadow under the silhouette.
   const m = kaveyMatrix(pose);
-  const foot = project(m, KAVEY_SRC.bbox.x + KAVEY_SRC.bbox.w / 2, KAVEY_SRC.bbox.y + KAVEY_SRC.bbox.h);
+  const foot = project(m, KAVEY_SRC.rootPivot.x + 20, KAVEY_SRC.bbox.y + KAVEY_SRC.bbox.h);
   const s = pose.height / KAVEY_SRC.bbox.h;
-  const shadowW = 250 * s;
-  const lift = clamp(-pose.hover / 10 + 0.5);
-
+  const lift = Math.max(0, Math.min(1, -pose.hover / 10 + 0.5));
+  const blurPx = speedAt(f) * 0.25; // 90° shutter
+  const samples = blurPx < 1.5 ? 1 : Math.min(8, Math.ceil(blurPx / 1.5) + 1);
   return (
     <div style={{position: 'absolute', inset: 0}}>
+      {/* energy under-glow: he hovers, so there is light rather than a hard shadow */}
       <div
         style={{
           position: 'absolute',
-          left: foot.x - shadowW / 2,
-          top: foot.y + 34 * s - 16 * s,
-          width: shadowW,
-          height: 32 * s,
+          left: foot.x - 200 * s,
+          top: foot.y + 40 * s,
+          width: 400 * s,
+          height: 70 * s,
           borderRadius: '50%',
-          background: `radial-gradient(closest-side, ${rgba(PALETTE.violet, 0.22 - 0.06 * lift)} 0%, ${rgba(PALETTE.violet, 0.06)} 60%, rgba(0,0,0,0) 100%)`,
-          transform: `scale(${1 - 0.08 * lift})`,
+          background: `radial-gradient(closest-side, ${rgba(PALETTE.violet, 0.16 + 0.08 * pose.energy - 0.05 * lift)} 0%, ${rgba(PALETTE.violet, 0.05)} 60%, rgba(0,0,0,0) 100%)`,
+          filter: 'blur(6px)',
         }}
       />
       {samples === 1 ? (
-        <Body f={f} opacity={1} hasMatte={hasMatte} hasRim={hasRim} />
+        <Rig f={f} opacity={1} />
       ) : (
         <div style={{position: 'absolute', inset: 0, isolation: 'isolate'}}>
-          {Array.from({length: samples}, (_, k) => {
-            const off = (k / (samples - 1) - 0.5) * 0.25;
-            return <Body key={k} f={f + off} opacity={1 / samples} blend="plus-lighter" hasMatte={hasMatte} hasRim={hasRim} />;
-          })}
+          {Array.from({length: samples}, (_, k) => (
+            <Rig key={k} f={f + (k / (samples - 1) - 0.5) * 0.25} opacity={1 / samples} blend="plus-lighter" />
+          ))}
         </div>
       )}
     </div>

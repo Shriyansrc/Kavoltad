@@ -190,10 +190,10 @@ const main = () => {
   console.log('placing narration …');
   const {bus: voice, placed} = buildNarration();
 
-  // Music sits 11 dB under the speech loudness, then ducks another 4 dB on lines.
+  // Music sits 10 dB under the speech loudness, then ducks another 4 dB on lines.
   const speechLufs = -18;
   const musicRef = windowLoudness(music, 2.5, 16.0);
-  const musicGain = dbToGain(speechLufs - 11 - musicRef);
+  const musicGain = dbToGain(speechLufs - 10 - musicRef);
   const duck = duckCurve(placed);
   const musicStem = scale(scale(music, musicGain), duck);
   const sfxStem = scale(sfx, dbToGain(-4));

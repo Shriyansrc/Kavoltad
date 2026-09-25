@@ -106,3 +106,50 @@ export const bump = (f: number, c: number, w: number) => {
 
 export const deg = (r: number) => (r * 180) / Math.PI;
 export const rad = (d: number) => (d * Math.PI) / 180;
+
+// ------------------------------------------------------------------ springs
+export type SpringCfg = {freq?: number; damping?: number};
+
+/**
+ * Closed-form damped spring from 0 to 1 (deterministic, frame based).
+ * `frames` is the time since the spring started. freq in Hz, damping ratio ζ.
+ */
+export const spring01 = (frames: number, {freq = 2.4, damping = 0.55}: SpringCfg = {}) => {
+  if (frames <= 0) return 0;
+  const t = frames / 60;
+  const w = 2 * Math.PI * freq;
+  const z = damping;
+  if (z >= 1) return 1 - Math.exp(-w * t) * (1 + w * t);
+  const wd = w * Math.sqrt(1 - z * z);
+  return 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + ((z * w) / wd) * Math.sin(wd * t));
+};
+
+export const SPR = {
+  snappy: {freq: 3.2, damping: 0.62},
+  pop: {freq: 3.4, damping: 0.42},
+  soft: {freq: 1.8, damping: 0.72},
+  bouncy: {freq: 2.6, damping: 0.38},
+  settle: {freq: 2.2, damping: 0.8},
+} as const;
+
+/** Value that springs through a sequence of targets (each starting at its own frame). */
+export const springSeq = (f: number, start: number, steps: [at: number, to: number, cfg?: SpringCfg][]) => {
+  let v = start;
+  for (const [at, to, cfg] of steps) {
+    if (f < at) break;
+    v = lerp(v, to, spring01(f - at, cfg));
+  }
+  return v;
+};
+
+/** Smooth deterministic value noise in [-1, 1] (for handheld shake, jitter). */
+export const noise1 = (x: number, seed = 0) => {
+  const h = (n: number) => {
+    const s = Math.sin(n * 127.1 + seed * 311.7) * 43758.5453;
+    return (s - Math.floor(s)) * 2 - 1;
+  };
+  const i = Math.floor(x);
+  const t = x - i;
+  const u = t * t * (3 - 2 * t);
+  return lerp(h(i), h(i + 1), u);
+};

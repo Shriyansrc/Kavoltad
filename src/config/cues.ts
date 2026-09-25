@@ -16,7 +16,15 @@ export type SfxKind =
   | 'intake'
   | 'sweep'
   | 'air'
-  | 'brandHit';
+  | 'brandHit'
+  | 'pop'
+  | 'whoosh'
+  | 'snap'
+  | 'blip'
+  | 'click'
+  | 'zap'
+  | 'chime'
+  | 'slam';
 
 export type SfxCue = {
   id: string;
@@ -25,6 +33,7 @@ export type SfxCue = {
   peakDb: number;
   note?: string; // for plucks
   pan?: number; // -1..1
+  dur?: number; // seconds, for whooshes
 };
 
 export const SFX: SfxCue[] = [
@@ -44,6 +53,27 @@ export const SFX: SfxCue[] = [
   {id: 'scarf-sweep', frame: K.sweep, kind: 'sweep', peakDb: -14},
   {id: 'music-gap-air', frame: K.coverStart, kind: 'air', peakDb: -24},
   {id: 'brand-hit', frame: K.reveal, kind: 'brandHit', peakDb: -10},
+
+  // Motion-design layer: every visible move gets a sound.
+  {id: 'bubble-pop-1', frame: 30, kind: 'pop', peakDb: -22, pan: -0.3},
+  {id: 'bubble-pop-2', frame: 62, kind: 'pop', peakDb: -22, pan: 0.2},
+  {id: 'bubble-pop-3', frame: 96, kind: 'pop', peakDb: -22, pan: -0.25},
+  {id: 'cards-whoosh', frame: K.connect + 1, kind: 'whoosh', peakDb: -17, dur: 0.35, pan: -0.2},
+  {id: 'cards-snap', frame: 168, kind: 'snap', peakDb: -18},
+  ...[0, 1, 2, 3, 4, 5, 6].map((d) => ({id: `day-${d + 1}`, frame: 176 + d * 5, kind: 'blip' as const, peakDb: -25 + d * 0.4, note: ['A5', 'B5', 'C6', 'D6', 'E6', 'G6', 'A6'][d], pan: -0.3 + d * 0.1})),
+  {id: 'push-whoosh', frame: 286, kind: 'whoosh', peakDb: -21, dur: 0.3},
+  {id: 'day-chip', frame: 300, kind: 'pop', peakDb: -20},
+  {id: 'check-2', frame: K.scopeChecks + 3, kind: 'pop', peakDb: -23, pan: -0.15},
+  {id: 'check-3', frame: K.scopeChecks + 6, kind: 'pop', peakDb: -23, pan: -0.15},
+  {id: 'lock', frame: 334, kind: 'click', peakDb: -18},
+  {id: 'morph-whoosh', frame: 420, kind: 'whoosh', peakDb: -20, dur: 0.3},
+  {id: 'spark', frame: 426, kind: 'zap', peakDb: -22, pan: 0.1},
+  {id: 'flow-checks', frame: K.flowChecks, kind: 'chime', peakDb: -19},
+  {id: 'phone-whoosh', frame: 600, kind: 'whoosh', peakDb: -19, dur: 0.32, pan: 0.2},
+  {id: 'launch-whoosh', frame: 720, kind: 'whoosh', peakDb: -21, dur: 0.25},
+  {id: 'tile-whoosh', frame: 744, kind: 'whoosh', peakDb: -20, dur: 0.3, pan: 0.15},
+  {id: 'flip-whoosh', frame: 840, kind: 'whoosh', peakDb: -19, dur: 0.25},
+  {id: 'shipped-slam', frame: 842, kind: 'slam', peakDb: -15},
 ];
 
 // Score structure: 120 BPM, 4/4, one beat = 30 frames, ten 2-second bars.

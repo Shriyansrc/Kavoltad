@@ -1,13 +1,13 @@
 {
   "sampleRate": 48000,
   "durationSeconds": 20,
-  "integratedLufs": -14.01,
+  "integratedLufs": -14.02,
   "truePeakDbtp": -1.65,
-  "truePeakBeforeLimiter": -0.08,
+  "truePeakBeforeLimiter": 0.13,
   "limiterApplied": true,
-  "limiterMaxReductionDb": 1.57,
-  "limiterSecondsOver1dB": 0.065,
-  "musicGainDb": -5.81,
+  "limiterMaxReductionDb": 1.78,
+  "limiterSecondsOver1dB": 0.102,
+  "musicGainDb": -5.71,
   "narration": [
     {
       "id": "l1",
@@ -109,51 +109,51 @@
   "separationLufs": [
     {
       "id": "l1",
-      "voice": -12.8,
-      "music": -43.5,
-      "sfx": -31.2
+      "voice": -12.6,
+      "music": -44.2,
+      "sfx": -30.8
     },
     {
       "id": "l2",
       "voice": -12.8,
-      "music": -30.8,
-      "sfx": -34.5
+      "music": -27.6,
+      "sfx": -27.4
     },
     {
       "id": "l3",
-      "voice": -12.7,
-      "music": -31.8,
-      "sfx": -32.7
+      "voice": -12.6,
+      "music": -27.3,
+      "sfx": -31.9
     },
     {
       "id": "l4",
-      "voice": -12.9,
-      "music": -27.1,
-      "sfx": -30.2
+      "voice": -12.8,
+      "music": -26.2,
+      "sfx": -28.3
     },
     {
       "id": "l5",
-      "voice": -12.8,
-      "music": -26.3,
-      "sfx": -44.5
+      "voice": -12.7,
+      "music": -25.9,
+      "sfx": -33.2
     },
     {
       "id": "l6",
-      "voice": -12.7,
+      "voice": -12.6,
       "music": -26.4,
-      "sfx": -32
+      "sfx": -29
     },
     {
       "id": "l7",
-      "voice": -12.7,
-      "music": -28.2,
-      "sfx": -44.2
+      "voice": -12.6,
+      "music": -28,
+      "sfx": -42.8
     },
     {
       "id": "l8",
-      "voice": -13,
-      "music": -27.6,
-      "sfx": -43.3
+      "voice": -12.9,
+      "music": -26.9,
+      "sfx": -43.1
     }
   ],
   "sfxCues": [
@@ -236,6 +236,131 @@
       "id": "brand-hit",
       "frame": 1020,
       "seconds": 17
+    },
+    {
+      "id": "bubble-pop-1",
+      "frame": 30,
+      "seconds": 0.5
+    },
+    {
+      "id": "bubble-pop-2",
+      "frame": 62,
+      "seconds": 1.033
+    },
+    {
+      "id": "bubble-pop-3",
+      "frame": 96,
+      "seconds": 1.6
+    },
+    {
+      "id": "cards-whoosh",
+      "frame": 151,
+      "seconds": 2.517
+    },
+    {
+      "id": "cards-snap",
+      "frame": 168,
+      "seconds": 2.8
+    },
+    {
+      "id": "day-1",
+      "frame": 176,
+      "seconds": 2.933
+    },
+    {
+      "id": "day-2",
+      "frame": 181,
+      "seconds": 3.017
+    },
+    {
+      "id": "day-3",
+      "frame": 186,
+      "seconds": 3.1
+    },
+    {
+      "id": "day-4",
+      "frame": 191,
+      "seconds": 3.183
+    },
+    {
+      "id": "day-5",
+      "frame": 196,
+      "seconds": 3.267
+    },
+    {
+      "id": "day-6",
+      "frame": 201,
+      "seconds": 3.35
+    },
+    {
+      "id": "day-7",
+      "frame": 206,
+      "seconds": 3.433
+    },
+    {
+      "id": "push-whoosh",
+      "frame": 286,
+      "seconds": 4.767
+    },
+    {
+      "id": "day-chip",
+      "frame": 300,
+      "seconds": 5
+    },
+    {
+      "id": "check-2",
+      "frame": 327,
+      "seconds": 5.45
+    },
+    {
+      "id": "check-3",
+      "frame": 330,
+      "seconds": 5.5
+    },
+    {
+      "id": "lock",
+      "frame": 334,
+      "seconds": 5.567
+    },
+    {
+      "id": "morph-whoosh",
+      "frame": 420,
+      "seconds": 7
+    },
+    {
+      "id": "spark",
+      "frame": 426,
+      "seconds": 7.1
+    },
+    {
+      "id": "flow-checks",
+      "frame": 558,
+      "seconds": 9.3
+    },
+    {
+      "id": "phone-whoosh",
+      "frame": 600,
+      "seconds": 10
+    },
+    {
+      "id": "launch-whoosh",
+      "frame": 720,
+      "seconds": 12
+    },
+    {
+      "id": "tile-whoosh",
+      "frame": 744,
+      "seconds": 12.4
+    },
+    {
+      "id": "flip-whoosh",
+      "frame": 840,
+      "seconds": 14
+    },
+    {
+      "id": "shipped-slam",
+      "frame": 842,
+      "seconds": 14.033
     }
   ]
 }

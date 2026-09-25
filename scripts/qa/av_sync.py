@@ -62,7 +62,7 @@ def main(mp4):
     }
     res["catch_frame_decoded"] = round(res["catch_onset_s_decoded"] * 60, 2)
     res["brand_hit_frame_decoded"] = round(res["brand_hit_onset_s_decoded"] * 60, 2)
-    print(json.dumps(res, indent=2))
+    print(json.dumps(res, indent=2, default=float))
 
 
 if __name__ == "__main__":

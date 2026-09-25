@@ -1,27 +1,25 @@
-// Master composition. Layer order (back → front), per plan section 10:
-// 1 background · 2 depth points · 3 blueprint grid · 4 panels/screenshot/
-// connectors · 5 Kavey, shadow and scarf wisp · 6 type and wordmark ·
-// 7 transition ribbon. Audio is mounted outside every visual wrapper.
+// Master composition. Layer order (back → front):
+// 1 background light, depth points, floor · 2 blueprint grid · 3 stage objects
+// (frame, connectors, cards, effects) under a handheld/pushing camera ·
+// 4 Kavey rig + scarf wisp · 5 grain · 6 type and wordmark · 7 transition
+// ribbon · audio mounted outside every visual wrapper.
 import React from 'react';
 import {AbsoluteFill, getStaticFiles, Html5Audio, staticFile, useCurrentFrame} from 'remotion';
 import {Background, BlueprintGrid, Grain} from './components/Background.tsx';
 import {Card} from './components/Card.tsx';
-import {Connectors} from './components/Connectors.tsx';
+import {Bubbles, CatchFlash, Connectors, DayStrip, HandoffTile, PulseAndSpark, Rail, Shockwave, Sparkles} from './components/Effects.tsx';
 import {Ending} from './components/Ending.tsx';
 import {FrameObject} from './components/Frame.tsx';
-import {HandoffTile} from './components/HandoffTile.tsx';
-import {Interactions} from './components/Interactions.tsx';
 import {Kavey} from './components/Kavey.tsx';
-import {Rail} from './components/Rail.tsx';
 import {RibbonView} from './components/RibbonView.tsx';
 import {TextLayer} from './components/TextLayer.tsx';
 import {Wordmark} from './components/Wordmark.tsx';
 import {LAYOUT} from './config/layout.ts';
 import {K} from './config/timeline.ts';
-import {ease, invLerp} from './lib/anim.ts';
+import {spring01, SPR} from './lib/anim.ts';
 import {kaveyPose} from './scenes/kavey.ts';
-import {camera, cardGeo, stageTurn} from './scenes/model.ts';
 import {scarfWisp, transitionBand} from './scenes/ribbon.ts';
+import {camera, stageTurn} from './scenes/stage.ts';
 
 export type FilmProps = {
   /** Debug: render only the transition ribbon as white on black. */
@@ -34,12 +32,6 @@ const hasFile = (name: string) => getStaticFiles().some((f) => f.name === name);
 
 export const Film: React.FC<FilmProps> = ({maskOnly = false, mute = false}) => {
   const f = useCurrentFrame();
-  const cam = camera(f);
-  const pose = kaveyPose(f);
-  const turn = stageTurn(f);
-  // Subtle forward rush on the object layer as the scene accelerates (972–1002).
-  const rush = f >= K.sweep && f < K.swap ? 1 + 0.035 * ease.cubicIn(invLerp(K.sweep, K.coverStart, f)) : 1;
-
   if (maskOnly) {
     return (
       <AbsoluteFill style={{background: '#000'}}>
@@ -47,61 +39,56 @@ export const Film: React.FC<FilmProps> = ({maskOnly = false, mute = false}) => {
       </AbsoluteFill>
     );
   }
+  const cam = camera(f);
+  const pose = kaveyPose(f);
+  const turn = stageTurn(f);
+  const camT = `translate(${cam.x}px, ${cam.y}px) rotate(${cam.rot}deg) scale(${cam.scale})`;
+  const wordmarkIn = spring01(f + 6, SPR.pop);
 
-  const mixAvailable = hasFile('audio/mix.wav');
   return (
     <AbsoluteFill style={{background: '#0A0A0F', overflow: 'hidden'}}>
       <Background f={f} focus={{x: pose.x, y: pose.y}} ending={f >= K.swap ? 1 : 0} />
       <BlueprintGrid f={f} />
 
-      {/* Object layer: camera push (opening) and phone presentation angle */}
       {f < K.swap ? (
-        <AbsoluteFill
-          style={{
-            transformOrigin: `${cam.ox}px ${cam.oy}px`,
-            transform: `scale(${cam.scale * rush})`,
-          }}
-        >
-          <AbsoluteFill
-            style={{
-              transformOrigin: '365px 920px',
-              transform: turn !== 0 ? `perspective(1400px) rotateY(${turn}deg)` : undefined,
-            }}
-          >
+        <AbsoluteFill style={{transformOrigin: `${cam.ox}px ${cam.oy}px`, transform: camT}}>
+          <AbsoluteFill style={{transformOrigin: '365px 920px', transform: turn !== 0 ? `perspective(1300px) rotateY(${turn}deg)` : undefined}}>
             <FrameObject f={f} fcnAvailable={hasFile('assets/fcn_crop.png')} />
             <Connectors f={f} />
-            {[0, 1, 2].map((i) => (
-              <Card key={i} i={i} f={f} geo={cardGeo(i, f)} />
+            {[2, 1, 0].map((i) => (
+              <Card key={i} i={i} f={f} />
             ))}
           </AbsoluteFill>
+          <Bubbles f={f} />
           <Rail f={f} />
           <HandoffTile f={f} />
-          <Interactions f={f} />
+          <PulseAndSpark f={f} />
+          <Shockwave f={f} />
+          <CatchFlash f={f} />
+          <Sparkles f={f} />
         </AbsoluteFill>
       ) : null}
 
-      {/* Kavey + scarf wisp: persistent across every beat */}
-      <AbsoluteFill
-        style={{
-          transformOrigin: `${cam.ox}px ${cam.oy}px`,
-          transform: f < K.swap ? `scale(${cam.scale * rush})` : undefined,
-        }}
-      >
+      {/* Kavey: persistent across every beat, under the same camera */}
+      <AbsoluteFill style={{transformOrigin: `${cam.ox}px ${cam.oy}px`, transform: f < K.swap ? camT : undefined}}>
         <RibbonView shape={scarfWisp(f)} id="wisp" f={f} />
         <Kavey f={f} />
       </AbsoluteFill>
 
       <Grain f={f} />
 
-      {/* Type and wordmark: never pushed, never blurred */}
-      {f < K.swap ? <Wordmark x={LAYOUT.wordmark.x} y={LAYOUT.wordmark.y} width={LAYOUT.wordmark.w} /> : null}
+      {f < K.swap ? (
+        <div style={{position: 'absolute', inset: 0, transformOrigin: '255px 256px', transform: `scale(${0.7 + 0.3 * Math.min(1.1, wordmarkIn)})`, opacity: Math.min(1, wordmarkIn * 2)}}>
+          <Wordmark x={LAYOUT.wordmark.x} y={LAYOUT.wordmark.y} width={LAYOUT.wordmark.w} />
+        </div>
+      ) : null}
+      <DayStrip f={f} />
       <TextLayer f={f} />
       <Ending f={f} />
 
-      {/* Signature transition */}
       <RibbonView shape={transitionBand(f)} id="band" f={f} />
 
-      {!mute && mixAvailable ? <Html5Audio src={staticFile('audio/mix.wav')} /> : null}
+      {!mute && hasFile('audio/mix.wav') ? <Html5Audio src={staticFile('audio/mix.wav')} /> : null}
     </AbsoluteFill>
   );
 };

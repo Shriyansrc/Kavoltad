@@ -4,6 +4,7 @@
 //   node scripts/render/render.mjs final            full 1080×1920 master
 //   node scripts/render/render.mjs draft            540×960 preview with audio
 //   node scripts/render/render.mjs draft --frames=960-1019
+//   node scripts/render/render.mjs encode           re-encode existing out/frames
 //
 // Final: Remotion renders lossless PNG frames, then ffmpeg encodes H.264
 // (CRF 18, yuv420p, BT.709 matrix + tags, constant 60 fps) and muxes the
@@ -36,15 +37,17 @@ if (!existsSync(MIX)) {
   process.exit(1);
 }
 
-if (mode === 'final') {
+if (mode === 'final' || mode === 'encode') {
   const dir = 'out/frames';
-  rmSync(dir, {recursive: true, force: true});
-  mkdirSync(dir, {recursive: true});
-  run('npx', [
-    'remotion', 'render', 'src/index.ts', 'KavoltKavey20s', dir,
-    '--sequence', '--image-format=png', `--concurrency=${concurrency}`,
-    ...(frames ? [`--frames=${frames}`] : []),
-  ]);
+  if (mode === 'final') {
+    rmSync(dir, {recursive: true, force: true});
+    mkdirSync(dir, {recursive: true});
+    run('npx', [
+      'remotion', 'render', 'src/index.ts', 'KavoltKavey20s', dir,
+      '--sequence', '--image-format=png', `--concurrency=${concurrency}`,
+      ...(frames ? [`--frames=${frames}`] : []),
+    ]);
+  }
   const pngs = readdirSync(dir).filter((f) => f.endsWith('.png')).sort();
   if (!frames && pngs.length !== 1200) {
     console.error(`expected 1200 frames, found ${pngs.length}`);

@@ -53,7 +53,10 @@ const wisp = (f: number, swing: number): RibbonShape => {
     };
     // Swing onto the transition axis (u < 0 is toward the lower-left edge).
     if (swing > 0) {
-      const onAxis = toScreen(O, -swingLen * Math.pow(s, 0.9), 0);
+      // S-curve with a travelling wave so the ribbon whips rather than
+      // extending as a straight line; it straightens as it reaches full swing.
+      const wave = (60 * Math.sin(Math.PI * s) + 26 * Math.sin(2 * Math.PI * (1.4 * s - t * 2.2)) * s) * (1 - 0.8 * ease.cubicIn(swing));
+      const onAxis = toScreen(O, -swingLen * Math.pow(s, 0.9), wave);
       const pull = ease.cubicInOut(clamp(swing * 1.15 - s * 0.15));
       const attach = {x: A.x + (onAxis.x - O.x), y: A.y + (onAxis.y - O.y)};
       p = {x: lerp(p.x, attach.x, pull), y: lerp(p.y, attach.y, pull)};

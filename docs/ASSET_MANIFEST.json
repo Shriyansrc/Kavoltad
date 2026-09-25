@@ -1,0 +1,90 @@
+{
+  "assets": [
+    {
+      "path": "out/fetched/kavey_clean_from_chat.png",
+      "bytes": 359862,
+      "sha256": "37507cfbbc6b2c56ab9155848c0129c9425d946d2ad89d6cea3b939dd9195c95",
+      "is_png": true,
+      "width": 360,
+      "height": 675,
+      "mode": "RGB",
+      "id": "KAVEY_SELECTED",
+      "role": "Controlling mascot reference; matted working copy used in the film",
+      "expected": "360x675 RGB",
+      "staged": "source-assets/kavey_clean.png",
+      "check_dimensions": true,
+      "provenance": "Attached by the user in the chat (360x675 RGB); matches the plan spec for Assets/kavey-alphas/kavey_clean.png. Controlling appearance reference. Working copies: public/assets/kavey_matte.png (edge-aware matte) and public/assets/kavey/*.png (cut-out rig layers)."
+    },
+    {
+      "path": "out/fetched/kavolt-logo_weserv.png",
+      "bytes": 60820,
+      "sha256": "8e3bbb790453ac86e59c35a86285123a642202da3a7d51f970d3075ad9807773",
+      "is_png": true,
+      "width": 700,
+      "height": 93,
+      "mode": "RGBA",
+      "id": "WORDMARK",
+      "role": "Official KAVOLT wordmark (untouched pixels)",
+      "expected": "700x93 RGBA",
+      "staged": "source-assets/kavolt-logo.png",
+      "check": true,
+      "provenance": "Fetched from the live site path /logos/kavolt.png (plan: hash-identical to Assets/brand-logos/kavolt-logo.png) through the images.weserv.nl proxy as lossless PNG, because the session network policy blocks kavoltstudio.netlify.app. 700x93 RGBA as specified. Used untouched."
+    },
+    {
+      "path": "out/fetched/fcn_weserv.png",
+      "bytes": 695510,
+      "sha256": "10e695ef7c053fe35cec06097fe89d54fd8a80bfa435849c374a9ae327ab4213",
+      "is_png": true,
+      "width": 1200,
+      "height": 692,
+      "mode": "RGBA",
+      "id": "PROJECT_FCN",
+      "role": "Genuine shipped commerce proof (cropped)",
+      "expected": "1200x692",
+      "staged": "source-assets/fcn.png",
+      "crop_rect": [
+        0,
+        0,
+        1200,
+        450
+      ],
+      "price_check": {
+        "ocr_available": true,
+        "text": "FCN\n\n2 Alseorech\n\nHome\n\n2\n\nFootball Cleats Nagaland\n\nQ Search boots by name, brand, or colorway.\n\nShop New Arrivals Featured {| steptiow ic}\n\nFeatured Boots\n\nHand-picked selections from our latest collection\n\nView all >\n\n‘ke FEATURED\n\n1 FEATURED\n\n7\n\nCasa\n\na\n\new aL\n\n—>\n\noa\n\naS\n\n4\n\nZB\n\nom\n\nain.\n\n.\n\nZi\n\nm7,\n\nyw |",
+        "currency_hits": [],
+        "digit_hits": [
+          "2",
+          "2",
+          "1",
+          "7",
+          "4",
+          "7,"
+        ],
+        "percent_hits": [],
+        "pass": true
+      },
+      "provenance": "Fetched from the live site path /projects/fcn.png (plan: hash-identical to the supplied projects/fcn.png) via the same proxy, 1200x692. Cropped to the plan rectangle (0,0,1200,450); the price row (y~670) is excluded. OCR found no currency symbols or percentages; the stray digits it reports come from shoe-box graphics and icons, not prices (visually confirmed)."
+    },
+    {
+      "path": "public/fonts/Geist-Variable.woff2",
+      "bytes": 69652,
+      "sha256": "a369fcf5628ea2aa4e1b9e2ec6a5b3624e365bda588e1f0f2f12b564f728fbb8",
+      "is_png": false,
+      "id": "GEIST",
+      "role": "Geist family from the official `geist` npm package 1.7.2 (SIL OFL); replaces the website's subsetted woff2 files, which were not supplied to this environment"
+    },
+    {
+      "path": "public/fonts/GeistMono-Variable.woff2",
+      "bytes": 71368,
+      "sha256": "fba8f577f38a2bbcbe818efa6348dd58f36303a10b8737c42fefad275be563ab",
+      "is_png": false,
+      "id": "GEISTMONO",
+      "role": "Geist family from the official `geist` npm package 1.7.2 (SIL OFL); replaces the website's subsetted woff2 files, which were not supplied to this environment"
+    }
+  ],
+  "notes": [
+    "kavey-fallback/kavey-hd.png was also fetched for comparison only: same character family but a visibly different pose/render (symmetric ear flames, plastic finish, no cube). It is NOT used.",
+    "The GLB model was not used: the selected PNG controls appearance and no matching GLB comparison was possible.",
+    "The brand master document was not available in this session; brand facts, palette and copy follow the attached marketing plan."
+  ]
+}
