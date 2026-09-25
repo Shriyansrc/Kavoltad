@@ -89,7 +89,7 @@ const Sign: React.FC<{f: number; c: number; kind: ShopKind; calmV: number; launc
   );
 };
 
-const Interior: React.FC<{c: number; kind: ShopKind; x0: number; x1: number; light: number}> = ({c, kind, x0, x1, light}) => {
+const Interior: React.FC<{kind: ShopKind; x0: number; x1: number; light: number}> = ({kind, x0, x1, light}) => {
   const y0 = SHOP.glassTop;
   const col = rgba('#0A0814', 0.75);
   const rim = rgba(LOOK[kind].accent, 0.18 + 0.3 * light);
@@ -196,7 +196,7 @@ const Shop: React.FC<{f: number; kind: ShopKind}> = ({f, kind}) => {
         <g key={i}>
           <rect x={x0} y={SHOP.glassTop} width={x1 - x0} height={GROUND - 20 - SHOP.glassTop} fill="#0C0A16" />
           <rect x={x0} y={SHOP.glassTop} width={x1 - x0} height={GROUND - 20 - SHOP.glassTop} fill={glassFill} />
-          <Interior c={c} kind={kind} x0={x0} x1={x1} light={light} />
+          <Interior kind={kind} x0={x0} x1={x1} light={light} />
           <line x1={(x0 + x1) / 2} y1={SHOP.glassTop} x2={(x0 + x1) / 2} y2={GROUND - 20} stroke={L.trim} strokeWidth={6} />
           <polygon points={`${x0 + 20},${SHOP.glassTop} ${x0 + 70},${SHOP.glassTop} ${x0 + 10},${GROUND - 30} ${x0},${GROUND - 60}`} fill={rgba('#FFFFFF', 0.04)} />
         </g>

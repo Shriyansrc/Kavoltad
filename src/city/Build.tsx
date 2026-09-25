@@ -22,7 +22,7 @@ const phoneState = (f: number) => {
   return {x: HUB.x + shake, y: HUB.y - lift * 1500 - 6 * Math.sin((f - C.holoMerge) * 0.07), s: clamp(born, 0, 1.25) * (1 - 0.3 * lift), lift};
 };
 
-const Module: React.FC<{i: number; y: number; w: number; built: number; f: number}> = ({i, y, w, built, f}) => {
+const Module: React.FC<{i: number; y: number; w: number; built: number}> = ({i, y, w, built}) => {
   const h = 150;
   const x0 = -w / 2;
   const solid = clamp(built);
@@ -104,7 +104,7 @@ const Phone: React.FC<{f: number}> = ({f}) => {
       <rect x={-sw / 2 + 18} y={-Hh / 2 + 62} width={sw - 36} height={10} rx={5} fill={rgba(WHITE, 0.1)} />
       <rect x={-sw / 2 + 18} y={-Hh / 2 + 62} width={(sw - 36) * progress} height={10} rx={5} fill={PALETTE.magenta} />
       {[0, 1, 2].map((i) => (
-        <Module key={i} i={i} y={-Hh / 2 + 172 + i * 160} w={sw - 36} built={f < C.day2 ? 0.02 : built(i)} f={f} />
+        <Module key={i} i={i} y={-Hh / 2 + 172 + i * 160} w={sw - 36} built={f < C.day2 ? 0.02 : built(i)} />
       ))}
       {/* private preview banner, approved on day 06 */}
       {preview > 0.01 ? (

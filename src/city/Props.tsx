@@ -15,7 +15,6 @@ import {
   birdState,
   blockState,
   CAL,
-  calCell,
   CARD,
   cardRow,
   CHAT,

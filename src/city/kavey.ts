@@ -7,7 +7,7 @@
 import {KAVEY_SRC} from '../config/kavey.ts';
 import {LAYOUT} from '../config/layout.ts';
 import {FPS} from '../config/video.ts';
-import {bump, clamp, ease, glide, invLerp, lerp, ring, settle, track, type Key} from '../lib/anim.ts';
+import {bump, clamp, ease, glide, invLerp, lerp, ring, track, type Key} from '../lib/anim.ts';
 import {anchorOf, followThrough, kaveyMatrix, type KaveyPose} from '../scenes/kavey.ts';
 import {project} from '../lib/mat4.ts';
 import {baseToScreen, baseToWorld, worldToBase} from './camera.ts';

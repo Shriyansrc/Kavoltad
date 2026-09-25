@@ -1,0 +1,789 @@
+{
+  "sampleRate": 48000,
+  "durationSeconds": 30,
+  "integratedLufs": -14.01,
+  "truePeakDbtp": -1.65,
+  "truePeakBeforeLimiter": -0.28,
+  "limiterMaxReductionDb": 1.37,
+  "limiterSecondsOver1dB": 0.055,
+  "narration": [
+    {
+      "id": "c01",
+      "text": "Welcome to Chaos City.",
+      "start": 0.3,
+      "end": 1.624,
+      "window": [
+        0.3,
+        1.95
+      ],
+      "startFrame": 18,
+      "endFrame": 97.4
+    },
+    {
+      "id": "c02",
+      "text": "Bookings clashing?",
+      "start": 3.3,
+      "end": 4.209,
+      "window": [
+        3.3,
+        4.7
+      ],
+      "startFrame": 198,
+      "endFrame": 252.5
+    },
+    {
+      "id": "c03",
+      "text": "Sorted, with one booking flow.",
+      "start": 5.5,
+      "end": 7.119,
+      "window": [
+        5.5,
+        7.7
+      ],
+      "startFrame": 330,
+      "endFrame": 427.1
+    },
+    {
+      "id": "c04",
+      "text": "Payments slipping away?",
+      "start": 8.3,
+      "end": 9.429,
+      "window": [
+        8.3,
+        9.9
+      ],
+      "startFrame": 498,
+      "endFrame": 565.7
+    },
+    {
+      "id": "c05",
+      "text": "Connected, with Razorpay.",
+      "start": 10.5,
+      "end": 11.909,
+      "window": [
+        10.5,
+        12.4
+      ],
+      "startFrame": 630,
+      "endFrame": 714.5
+    },
+    {
+      "id": "c06",
+      "text": "Clients forgetting?",
+      "start": 13.3,
+      "end": 14.289000000000001,
+      "window": [
+        13.3,
+        14.7
+      ],
+      "startFrame": 798,
+      "endFrame": 857.3
+    },
+    {
+      "id": "c07",
+      "text": "Reminders go out on WhatsApp.",
+      "start": 15.5,
+      "end": 17.014,
+      "window": [
+        15.5,
+        17.7
+      ],
+      "startFrame": 930,
+      "endFrame": 1020.8
+    },
+    {
+      "id": "c08",
+      "text": "Kavolt ships it all as one product, in seven days.",
+      "start": 18.3,
+      "end": 21.299,
+      "window": [
+        18.3,
+        21.4
+      ],
+      "startFrame": 1098,
+      "endFrame": 1277.9
+    },
+    {
+      "id": "c09",
+      "text": "Reviewed on your phone. Launched on day seven.",
+      "start": 21.5,
+      "end": 23.869,
+      "window": [
+        21.5,
+        23.95
+      ],
+      "startFrame": 1290,
+      "endFrame": 1432.1
+    },
+    {
+      "id": "c10",
+      "text": "Your code. Your keys.",
+      "start": 24.15,
+      "end": 25.418999999999997,
+      "window": [
+        24.15,
+        25.55
+      ],
+      "startFrame": 1449,
+      "endFrame": 1525.1
+    },
+    {
+      "id": "c11",
+      "text": "Real work, shipped.",
+      "start": 25.6,
+      "end": 26.629,
+      "window": [
+        25.6,
+        26.75
+      ],
+      "startFrame": 1536,
+      "endFrame": 1597.7
+    },
+    {
+      "id": "c12",
+      "text": "Ready to ship? Check the website.",
+      "start": 27.25,
+      "end": 29.009,
+      "window": [
+        27.25,
+        29.5
+      ],
+      "startFrame": 1635,
+      "endFrame": 1740.5
+    }
+  ],
+  "separationLufs": [
+    {
+      "id": "c01",
+      "voice": -12.9,
+      "music": -30.8,
+      "sfx": -26
+    },
+    {
+      "id": "c02",
+      "voice": -13,
+      "music": -30.3,
+      "sfx": -27.5
+    },
+    {
+      "id": "c03",
+      "voice": -13,
+      "music": -26.9,
+      "sfx": -24.6
+    },
+    {
+      "id": "c04",
+      "voice": -12.9,
+      "music": -31.5,
+      "sfx": -29.3
+    },
+    {
+      "id": "c05",
+      "voice": -13.1,
+      "music": -27.1,
+      "sfx": -25.2
+    },
+    {
+      "id": "c06",
+      "voice": -12.9,
+      "music": -30.1,
+      "sfx": -32.8
+    },
+    {
+      "id": "c07",
+      "voice": -12.9,
+      "music": -27,
+      "sfx": -23.7
+    },
+    {
+      "id": "c08",
+      "voice": -13,
+      "music": -27.6,
+      "sfx": -26.8
+    },
+    {
+      "id": "c09",
+      "voice": -12.9,
+      "music": -25.4,
+      "sfx": -27.2
+    },
+    {
+      "id": "c10",
+      "voice": -12.9,
+      "music": -28.2,
+      "sfx": -27.7
+    },
+    {
+      "id": "c11",
+      "voice": -12.9,
+      "music": -27.4,
+      "sfx": -31.8
+    },
+    {
+      "id": "c12",
+      "voice": -13.1,
+      "music": -29,
+      "sfx": -42.8
+    }
+  ],
+  "sfxCues": [
+    {
+      "id": "fly-in",
+      "kind": "whoosh",
+      "frame": 0,
+      "seconds": 0
+    },
+    {
+      "id": "glitch-city",
+      "kind": "glitch",
+      "frame": 10,
+      "seconds": 0.167
+    },
+    {
+      "id": "land",
+      "kind": "thud",
+      "frame": 52,
+      "seconds": 0.867
+    },
+    {
+      "id": "hop-off",
+      "kind": "boing",
+      "frame": 102,
+      "seconds": 1.7
+    },
+    {
+      "id": "crane",
+      "kind": "whoosh",
+      "frame": 96,
+      "seconds": 1.6
+    },
+    {
+      "id": "touch-down",
+      "kind": "softland",
+      "frame": 158,
+      "seconds": 2.633
+    },
+    {
+      "id": "title-glitch-1",
+      "kind": "glitch",
+      "frame": 200,
+      "seconds": 3.333
+    },
+    {
+      "id": "blocks-drop",
+      "kind": "whoosh",
+      "frame": 192,
+      "seconds": 3.2
+    },
+    {
+      "id": "clash-1",
+      "kind": "clank",
+      "frame": 208,
+      "seconds": 3.467
+    },
+    {
+      "id": "clash-2",
+      "kind": "clank",
+      "frame": 226,
+      "seconds": 3.767
+    },
+    {
+      "id": "clash-3",
+      "kind": "clank",
+      "frame": 244,
+      "seconds": 4.067
+    },
+    {
+      "id": "clash-4",
+      "kind": "clank",
+      "frame": 262,
+      "seconds": 4.367
+    },
+    {
+      "id": "surprise",
+      "kind": "boing",
+      "frame": 230,
+      "seconds": 3.833
+    },
+    {
+      "id": "salon-throw",
+      "kind": "throw",
+      "frame": 300,
+      "seconds": 5
+    },
+    {
+      "id": "salon-hit",
+      "kind": "transform",
+      "frame": 318,
+      "seconds": 5.3
+    },
+    {
+      "id": "snap-1",
+      "kind": "blip",
+      "frame": 330,
+      "seconds": 5.5
+    },
+    {
+      "id": "snap-2",
+      "kind": "blip",
+      "frame": 338,
+      "seconds": 5.633
+    },
+    {
+      "id": "snap-3",
+      "kind": "blip",
+      "frame": 346,
+      "seconds": 5.767
+    },
+    {
+      "id": "snap-4",
+      "kind": "blip",
+      "frame": 354,
+      "seconds": 5.9
+    },
+    {
+      "id": "salon-catch",
+      "kind": "catch",
+      "frame": 364,
+      "seconds": 6.067
+    },
+    {
+      "id": "salon-checks",
+      "kind": "chime",
+      "frame": 370,
+      "seconds": 6.167
+    },
+    {
+      "id": "salon-door",
+      "kind": "bell",
+      "frame": 392,
+      "seconds": 6.533
+    },
+    {
+      "id": "dash-gym",
+      "kind": "whoosh",
+      "frame": 452,
+      "seconds": 7.533
+    },
+    {
+      "id": "title-glitch-2",
+      "kind": "glitch",
+      "frame": 500,
+      "seconds": 8.333
+    },
+    {
+      "id": "flutter-1",
+      "kind": "flutter",
+      "frame": 492,
+      "seconds": 8.2
+    },
+    {
+      "id": "flutter-2",
+      "kind": "flutter",
+      "frame": 506,
+      "seconds": 8.433
+    },
+    {
+      "id": "flutter-3",
+      "kind": "flutter",
+      "frame": 520,
+      "seconds": 8.667
+    },
+    {
+      "id": "flutter-4",
+      "kind": "flutter",
+      "frame": 534,
+      "seconds": 8.9
+    },
+    {
+      "id": "grab",
+      "kind": "whiff",
+      "frame": 556,
+      "seconds": 9.267
+    },
+    {
+      "id": "gym-throw",
+      "kind": "throw",
+      "frame": 600,
+      "seconds": 10
+    },
+    {
+      "id": "gym-hit",
+      "kind": "transform",
+      "frame": 616,
+      "seconds": 10.267
+    },
+    {
+      "id": "pay-1",
+      "kind": "blip",
+      "frame": 632,
+      "seconds": 10.533
+    },
+    {
+      "id": "pay-2",
+      "kind": "blip",
+      "frame": 646,
+      "seconds": 10.767
+    },
+    {
+      "id": "pay-3",
+      "kind": "blip",
+      "frame": 660,
+      "seconds": 11
+    },
+    {
+      "id": "pay-4",
+      "kind": "blip",
+      "frame": 674,
+      "seconds": 11.233
+    },
+    {
+      "id": "gym-catch",
+      "kind": "catch",
+      "frame": 696,
+      "seconds": 11.6
+    },
+    {
+      "id": "gym-checks",
+      "kind": "chime",
+      "frame": 700,
+      "seconds": 11.667
+    },
+    {
+      "id": "gym-door",
+      "kind": "bell",
+      "frame": 714,
+      "seconds": 11.9
+    },
+    {
+      "id": "dash-clinic",
+      "kind": "whoosh",
+      "frame": 752,
+      "seconds": 12.533
+    },
+    {
+      "id": "title-glitch-3",
+      "kind": "glitch",
+      "frame": 800,
+      "seconds": 13.333
+    },
+    {
+      "id": "snore-1",
+      "kind": "snore",
+      "frame": 793,
+      "seconds": 13.217
+    },
+    {
+      "id": "snore-2",
+      "kind": "snore",
+      "frame": 845,
+      "seconds": 14.083
+    },
+    {
+      "id": "snore-3",
+      "kind": "snore",
+      "frame": 898,
+      "seconds": 14.967
+    },
+    {
+      "id": "snore-4",
+      "kind": "snore",
+      "frame": 950,
+      "seconds": 15.833
+    },
+    {
+      "id": "tick",
+      "kind": "ticktock",
+      "frame": 812,
+      "seconds": 13.533
+    },
+    {
+      "id": "wave-1",
+      "kind": "swish",
+      "frame": 830,
+      "seconds": 13.833
+    },
+    {
+      "id": "wave-2",
+      "kind": "swish",
+      "frame": 846,
+      "seconds": 14.1
+    },
+    {
+      "id": "idea",
+      "kind": "ping",
+      "frame": 874,
+      "seconds": 14.567
+    },
+    {
+      "id": "clinic-throw",
+      "kind": "throw",
+      "frame": 900,
+      "seconds": 15
+    },
+    {
+      "id": "clinic-hit",
+      "kind": "transform",
+      "frame": 914,
+      "seconds": 15.233
+    },
+    {
+      "id": "bird-1",
+      "kind": "flutter",
+      "frame": 924,
+      "seconds": 15.4
+    },
+    {
+      "id": "bird-2",
+      "kind": "flutter",
+      "frame": 936,
+      "seconds": 15.6
+    },
+    {
+      "id": "bird-3",
+      "kind": "flutter",
+      "frame": 948,
+      "seconds": 15.8
+    },
+    {
+      "id": "bird-4",
+      "kind": "flutter",
+      "frame": 960,
+      "seconds": 16
+    },
+    {
+      "id": "ping-1",
+      "kind": "ping",
+      "frame": 952,
+      "seconds": 15.867
+    },
+    {
+      "id": "ping-2",
+      "kind": "ping",
+      "frame": 964,
+      "seconds": 16.067
+    },
+    {
+      "id": "ping-3",
+      "kind": "ping",
+      "frame": 976,
+      "seconds": 16.267
+    },
+    {
+      "id": "ping-4",
+      "kind": "ping",
+      "frame": 988,
+      "seconds": 16.467
+    },
+    {
+      "id": "clinic-catch",
+      "kind": "catch",
+      "frame": 978,
+      "seconds": 16.3
+    },
+    {
+      "id": "wake",
+      "kind": "alarm",
+      "frame": 996,
+      "seconds": 16.6
+    },
+    {
+      "id": "clinic-bell",
+      "kind": "bell",
+      "frame": 1030,
+      "seconds": 17.167
+    },
+    {
+      "id": "pullback",
+      "kind": "whoosh",
+      "frame": 1062,
+      "seconds": 17.7
+    },
+    {
+      "id": "rise",
+      "kind": "riser",
+      "frame": 1096,
+      "seconds": 18.267
+    },
+    {
+      "id": "merge",
+      "kind": "transform",
+      "frame": 1170,
+      "seconds": 19.5
+    },
+    {
+      "id": "day1",
+      "kind": "flip",
+      "frame": 1172,
+      "seconds": 19.533
+    },
+    {
+      "id": "day2",
+      "kind": "flip",
+      "frame": 1206,
+      "seconds": 20.1
+    },
+    {
+      "id": "build-ticks",
+      "kind": "construct",
+      "frame": 1214,
+      "seconds": 20.233
+    },
+    {
+      "id": "day6",
+      "kind": "flip",
+      "frame": 1290,
+      "seconds": 21.5
+    },
+    {
+      "id": "preview",
+      "kind": "pop",
+      "frame": 1292,
+      "seconds": 21.533
+    },
+    {
+      "id": "approve",
+      "kind": "chime",
+      "frame": 1314,
+      "seconds": 21.9
+    },
+    {
+      "id": "day7",
+      "kind": "flip",
+      "frame": 1350,
+      "seconds": 22.5
+    },
+    {
+      "id": "launch",
+      "kind": "launch",
+      "frame": 1380,
+      "seconds": 23
+    },
+    {
+      "id": "firework-1",
+      "kind": "firework",
+      "frame": 1410,
+      "seconds": 23.5
+    },
+    {
+      "id": "firework-2",
+      "kind": "firework",
+      "frame": 1418,
+      "seconds": 23.633
+    },
+    {
+      "id": "firework-3",
+      "kind": "firework",
+      "frame": 1428,
+      "seconds": 23.8
+    },
+    {
+      "id": "firework-4",
+      "kind": "firework",
+      "frame": 1438,
+      "seconds": 23.967
+    },
+    {
+      "id": "firework-5",
+      "kind": "firework",
+      "frame": 1446,
+      "seconds": 24.1
+    },
+    {
+      "id": "firework-6",
+      "kind": "firework",
+      "frame": 1460,
+      "seconds": 24.333
+    },
+    {
+      "id": "tiles",
+      "kind": "whoosh",
+      "frame": 1446,
+      "seconds": 24.1
+    },
+    {
+      "id": "code-glyph",
+      "kind": "pop",
+      "frame": 1464,
+      "seconds": 24.4
+    },
+    {
+      "id": "keys",
+      "kind": "keys",
+      "frame": 1476,
+      "seconds": 24.6
+    },
+    {
+      "id": "board-rise",
+      "kind": "servo",
+      "frame": 1490,
+      "seconds": 24.833
+    },
+    {
+      "id": "billboard",
+      "kind": "power",
+      "frame": 1526,
+      "seconds": 25.433
+    },
+    {
+      "id": "shipped",
+      "kind": "slam",
+      "frame": 1532,
+      "seconds": 25.533
+    },
+    {
+      "id": "scan",
+      "kind": "scan",
+      "frame": 1536,
+      "seconds": 25.6
+    },
+    {
+      "id": "proof-click",
+      "kind": "click",
+      "frame": 1550,
+      "seconds": 25.833
+    },
+    {
+      "id": "intake",
+      "kind": "intake",
+      "frame": 1566,
+      "seconds": 26.1
+    },
+    {
+      "id": "scarf-sweep",
+      "kind": "sweep",
+      "frame": 1574,
+      "seconds": 26.233
+    },
+    {
+      "id": "air",
+      "kind": "air",
+      "frame": 1602,
+      "seconds": 26.7
+    },
+    {
+      "id": "brand-hit",
+      "kind": "brandHit",
+      "frame": 1620,
+      "seconds": 27
+    }
+  ],
+  "carPasses": [
+    {
+      "frame": 650,
+      "dir": 1
+    },
+    {
+      "frame": 1159,
+      "dir": 1
+    },
+    {
+      "frame": 1449,
+      "dir": 1
+    },
+    {
+      "frame": 1541,
+      "dir": -1
+    }
+  ]
+}

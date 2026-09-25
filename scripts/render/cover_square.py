@@ -10,6 +10,6 @@ from PIL import Image
 src = sys.argv[1] if len(sys.argv) > 1 else "deliverables/Kavolt_Kavey_20s_Cover_9x16.png"
 out = sys.argv[2] if len(sys.argv) > 2 else "deliverables/Kavolt_Kavey_20s_Cover_1x1.png"
 im = Image.open(src).convert("RGB")
-top = 300  # headline starts at y 355; Kavey's face sits near y 870
+top = int(sys.argv[3]) if len(sys.argv) > 3 else 300  # 20 s film: headline at y 355, Kavey's face near y 870
 im.crop((0, top, 1080, top + 1080)).save(out, optimize=True)
 print(out)
