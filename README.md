@@ -6,102 +6,97 @@ deterministic offline synthesiser for the music and effects, and a local
 neural TTS voice for narration. The supplied Kavey artwork is the only
 character source; no video-generation model is used.
 
-1. **“Kavey in Chaos City” (30 s): the current film.** Kavey explores a
-   whole new world, faces three animated problems and Kavolt solves each one.
-   See [the section below](#kavey-in-chaos-city-30-s).
+1. **“Kavey in Chaos City” (48 s): the current film.** Kavey explores a
+   bright new world where three shop owners voice their problems and Kavolt
+   solves each one, then shows off stunning websites and apps and brings the
+   business to the global stage. See [the section below](#kavey-in-chaos-city-48-s).
 2. **“Kavey turns chaos into a launch” (20 s):** the earlier film from the
    marketing plan, kept buildable. It is documented after the city film.
 
 ---
 
-## Kavey in Chaos City (30 s)
+## Kavey in Chaos City (48 s)
 
-### Story (script, 12 narration lines, 30.00 s)
+### Script (16 lines: an upbeat narrator and the three shop owners)
 
-| Time | Picture | Narration |
+| Time | Picture | Voice |
 |---|---|---|
-| 0–3 s | Night sky over Chaos City. Kavey streaks in as a comet, lands on the flickering SALON sign, rides the crane down and hops to the street. **WELCOME TO / CHAOS CITY.** | “Welcome to Chaos City.” |
-| 3–8 s | Salon. Booking blocks rain onto a calendar critter and clash four times; Kavey jumps in surprise, then throws his cube. It becomes a **booking** hologram, the blocks snap into their own slots, customers walk in. **BOOKINGS CLASH. → BOOKINGS, SORTED.** | “Bookings clashing?” / “Sorted, with one booking flow.” |
-| 8–13 s | Gym. Invoice paper planes with PENDING tags escape through the door; Kavey grabs one and misses. The cube becomes a **Razorpay** payment card; the planes U-turn into it and land as PAID rows. **PAYMENTS SLIP AWAY. → PAYMENTS, CONNECTED.** | “Payments slipping away?” / “Connected, with Razorpay.” |
-| 13–18 s | Clinic. A clock snores, clients sleep in the flats above, the waiting room is empty. Kavey waves, gets an idea, throws: a **WhatsApp** reminder panel releases four message birds; each lands on a window and wakes a client, the alarm rings, patients walk in. **CLIENTS FORGET. → REMINDERS ON WHATSAPP.** | “Clients forgetting?” / “Reminders go out on WhatsApp.” |
-| 18–24 s | Pull-back over the street. The three holograms fly to a hub and merge into one product on a phone; day chips DAY 01 SCOPE → DAYS 02–05 BUILD (Kavey conducts parts into it) → DAY 06 REVIEW (private preview approved) → DAY 07 LAUNCH. LIVE, the phone rockets up, fireworks, a light wave calms the whole city, the crowd cheers. **ONE PRODUCT. / 7 DAYS.** | “Kavolt ships it all as one product, in seven days.” / “Reviewed on your phone. Launched on day seven.” |
-| 24–27 s | CODE and KEYS tiles are handed over; a billboard rises behind the gym sign and powers on with the real FCN storefront. **YOUR CODE. / YOUR KEYS. → SHIPPED. / NOT MOCKED UP.** Kavey dashes; his scarf becomes the ribbon that wipes the frame. | “Your code. Your keys.” / “Real work, shipped.” |
-| 27–30 s | Brand hit on 27.00 s. Wordmark, **READY TO SHIP?**, Kavey, “Your business. Operational online.”, kavoltstudio.netlify.app over the calm skyline. | “Ready to ship? Check the website.” |
+| 0–3.9 s | Golden-dusk city. Kavey streaks in, lands on the SALON sign, rides the crane down. **WELCOME TO / CHAOS CITY.** | Narrator: “Welcome to Chaos City, where running a business gets a little crazy!” |
+| 3.9–13.3 s | Pink boutique **salon**. Booking blocks clash on a calendar critter; the stylist panics. Kavey throws his cube: a booking hologram, blocks snap into slots, confetti, customers walk in, the stylist waves thanks. **BOOKINGS CLASH. → BOOKINGS, SORTED.** | Salon owner: “Oh no! The bookings at my salon are clashing again!” · Narrator: “No stress! Kavolt builds your salon one smooth booking flow, so every slot is sorted.” · Salon owner: “Amazing! Thank you!” |
+| 13.3–21.2 s | Orange-and-slate **gym**. Invoice planes with PENDING tags escape; Kavey grabs one and misses; the cube becomes a Razorpay card and the planes land as PAID rows. **PAYMENTS SLIP AWAY. → PAYMENTS, CONNECTED.** | Gym owner: “Oh man! My gym's payments keep slipping away!” · Narrator: “Kavolt connects Razorpay, so every payment lands, right on time.” · Gym owner: “Yes! Let's go!” |
+| 21.2–27.6 s | White-and-mint **clinic**. A snoring clock, sleeping patients upstairs; WhatsApp reminder birds wake each window, the alarm rings, patients arrive. **CLIENTS FORGET. → REMINDERS ON WHATSAPP.** | Clinic doctor: “Oh dear, my patients keep forgetting their appointments!” · Narrator: “Now WhatsApp reminders bring them right back to your door!” · Doctor: “Brilliant!” |
+| 27.6–33.6 s | Pull-back. The holograms dock into a **salon website** (laptop) and **gym and clinic apps** (phones) that Kavey paints in five design beats: colour, type, layout, imagery, buttons. **STUNNING / WEBSITES & APPS.** | Narrator: “That's Kavolt! Stunning websites and apps, beautifully designed, with everything your business needs.” |
+| 33.6–36.6 s | DAY 01 SCOPE → DAYS 02–05 BUILD → DAY 06 REVIEW (private preview approved) → DAY 07 LAUNCH. **LIVE IN / 7 DAYS.** | Narrator: “Built in just seven days, and reviewed right on your phone.” |
+| 36.6–41.6 s | LIVE, light wave, fireworks, devices shoot skyward, crowd cheers; CODE and KEYS tiles; the billboard powers on with the real FCN storefront; the scarf ribbon wipes the frame. **YOUR CODE. YOUR KEYS. → SHIPPED. NOT MOCKED UP.** | Narrator: “Launch day! Your code and your keys, all yours.” · “Real work. Really shipped.” |
+| 41.6–48 s | Brand hit. Kavey on a lit stage before a turning globe with city arcs, spotlights, confetti. **READY TO BRING YOUR BUSINESS TO THE GLOBAL STAGE?** and **kavolt.antideploy.com**. | Narrator: “Ready to bring your business to the global stage?” · “Visit kavolt dot antideploy dot com!” |
 
-No prices, currency, amounts, discounts, metrics or testimonials appear
-anywhere; UI labels are limited to BOOKING, RAZORPAY, PAYMENTS, PAID,
-PENDING, WHATSAPP, REMINDER, PRIVATE PREVIEW, LIVE, CODE, KEYS and the shop
-names.
+Voices are stock Kokoro-82M voices (narrator `af_heart` at 1.12× for energy;
+salon owner `af_kore`, gym owner `am_fenrir`, clinic doctor `bf_emma`), not
+imitations of real people. No prices, currency, amounts, metrics or
+testimonials appear.
 
 ### Deliverables (`deliverables/`)
 
 | File | What it is |
 |---|---|
-| `Kavolt_ChaosCity_30s_Final.mp4` | H.264 High, 1080 × 1920, constant 60 fps, 1800 frames, 30.000 s, `yuv420p`, BT.709 (tagged), CRF 18, fast-start; stereo AAC-LC 48 kHz 256 kbps |
-| `audio/Kavolt_ChaosCity_30s_{Music,SFX,Narration,Mix}.wav` | 48 kHz 24-bit stereo stems; Music + SFX + Narration sum to the Mix |
-| `audio/Kavolt_ChaosCity_30s_Captions.{srt,vtt}` | Timed captions matching the placed narration |
-| `Kavolt_ChaosCity_30s_Cover_9x16.png`, `…_Cover_1x1.png` | Cover still from the final film and a square crop |
-| `Kavolt_ChaosCity_30s_Storyboard.png` | Contact sheet of decoded frames from the final MP4 |
-| `Kavolt_ChaosCity_30s_Project.zip` | This project without `node_modules`, `out/` or deliverables |
+| `Kavolt_ChaosCity_48s_Final.mp4` | H.264 High, 1080 × 1920, constant 60 fps, 2880 frames, 48.000 s, `yuv420p`, BT.709 (tagged), CRF 18, fast-start; stereo AAC-LC 48 kHz 256 kbps |
+| `audio/Kavolt_ChaosCity_48s_{Music,SFX,Narration,Mix}.wav` | 48 kHz 24-bit stereo stems; Music + SFX + Narration sum to the Mix |
+| `audio/Kavolt_ChaosCity_48s_Captions.{srt,vtt}` | Timed captions with speaker tags for the owners |
+| `Kavolt_ChaosCity_48s_Cover_9x16.png`, `…_Cover_1x1.png` | Cover still from the final film and a square crop |
+| `Kavolt_ChaosCity_48s_Storyboard.png` | Contact sheet of decoded frames from the final MP4 |
+| `Kavolt_ChaosCity_48s_Project.zip` | This project without `node_modules`, `out/` or deliverables |
+
+The earlier 30 s cut (`Kavolt_ChaosCity_30s_*`) is kept in `deliverables/`
+and in git history for reference.
 
 ### Commands actually used (city film)
 
 ```bash
 npm ci
-python scripts/tts/narrate.py --lines scripts/tts/lines_city.json --out audio-src/narration_city  # takes are committed
-node scripts/audio/build-city-audio.ts          # score + SFX + ambience + narration → stems, mix, captions, report
+python scripts/tts/narrate.py --lines scripts/tts/lines_city_v2.json --out audio-src/narration_city_v2  # takes are committed
+python scripts/tts/lipsync.py scripts/tts/lines_city_v2.json audio-src/narration_city_v2               # owners' mouth envelopes
+node scripts/audio/build-city-audio.ts          # score + SFX + ambience + dialogue → stems, mix, captions, report
 node scripts/audio/city/audit-run.ts            # click audit of every effect in isolation
-node scripts/render/stills.mjs --comp=KaveyChaosCity --frames=0,340,1385 --scale=0.5
-node scripts/render/render.mjs draft --film=city
+node scripts/render/stills.mjs --comp=KaveyChaosCity --frames=0,330,1900,2700 --scale=0.5
 REMOTION_CONCURRENCY=4 node scripts/render/render.mjs final --film=city
-
-python scripts/qa/probe.py deliverables/Kavolt_ChaosCity_30s_Final.mp4 1800 30
-python scripts/qa/av_sync.py deliverables/Kavolt_ChaosCity_30s_Final.mp4 --prefix Kavolt_ChaosCity_30s --events land=0.8667,salon_hit=5.3,launch=23.0,brand_hit=27.0
-python scripts/qa/transition_mask.py --comp CityTransitionMask --start 1590 --end 1619 --full 1602 1605 --json out/qa/city_transition_mask.json
-python scripts/qa/asr_check.py --prefix Kavolt_ChaosCity_30s --report audio/city-audio-report.json --out audio/city-asr-check.json
-python scripts/qa/clicks.py audio/Kavolt_ChaosCity_30s_*.wav
+PY=python bash scripts/render/city_deliver.sh   # probe, A/V sync, motion, clicks, storyboard, covers, audio copies
+python scripts/qa/transition_mask.py --comp CityTransitionMask --start 2466 --end 2495 --full 2478 2481 --json out/qa/city_transition_mask.json
+python scripts/qa/asr_check.py --prefix Kavolt_ChaosCity_48s --report audio/city-audio-report.json --out audio/city-asr-check.json
 ```
 
 ### How the city film is built (`src/city/`)
 
-- **World with depth.** One street in world pixels with three districts
-  (salon, gym, clinic) between filler blocks. Seven parallax planes: sky and
-  moon (0.12), clouds (0.22), far skyline (0.35, defocused), mist, mid
-  skyline (0.62), street (1.0), and near-lens string lights, poles and bokeh
-  (1.35–1.6, defocused). Aerial-perspective mist sits between skyline rows;
-  shops have side walls, rim light, awning shadows, lit interiors, light
-  spill on the sidewalk and blurred neon reflections on the wet road. Cars
-  drive, townsfolk walk (walk cycle, moods), windows flicker while a shop is
-  broken and settle when it is fixed; a light wave relights the city at launch.
-- **Camera.** Authored crane, travel between districts, pull-back, close-up
-  and tilt (`camera.ts`), with punch-ins on every fix, impact shake and a
-  soft handheld drift. Every parallax layer gets its own directional motion
-  blur (180° shutter) from its screen velocity, so fast travel stays smooth.
-- **Kavey.** The same cut-out rig of the supplied image (no redraw).
-  `city/kavey.ts` keys him against the base camera so he stays readable while
-  the world moves, then maps him through the live camera. Acting: comet
-  entry, landing squash, perch, hop, surprise with widened eye glow, three
-  wind-up throws of his cube (it flies, docks on the hologram as a projector
-  and returns), a missed grab, waving at the sleeping clock, conducting the
-  build, a launch jump, pointing at the billboard, the scarf dash. Ears and
-  scarf flame use spring follow-through driven by his world acceleration;
-  sub-frame motion blur (180°) when he moves fast.
-- **Transition.** The 20 s film's ribbon, generalised (`makeRibbon`) and fed
-  with the city scarf anchor; the ending switches in at frame 1605 under full
-  cover.
-- **Sound.** An original 30 s, 120 BPM A-minor cue: each district plays a
-  tense half (half-time kick, off-beat stabs, a bending bass; a sleepy music
-  box for the clinic) that lifts into four-on-the-floor with claps, 16th hats,
-  ping-pong arps and sidechain pump at the fix; a riser and drop-out into the
-  launch drop at 23.0 s; the −18 dB dip under the ribbon at 26.7 s; the
-  resolve on the brand hit at 27.0 s. 90 frame-accurate effects (clanks,
-  boings, cube throws, hologram transforms, paper flutter, snores, tick-tock,
-  reminder pings, alarm bell, construct ticks, rocket launch, fireworks, keys,
-  servo, power-up, scan …) plus three ambience beds for depth: city rumble,
-  neon buzz that exists only while the shop in view is broken, and car passes
-  placed where a car crosses the camera. Every effect is built from
-  zero-starting envelopes with edge fades, and every effect is audited in isolation for
-  clicks (`scripts/audio/city/audit-run.ts`).
+- **A bright, deep world.** Golden-dusk sky with a low sun, lit clouds and a
+  flock of birds; two warm-windowed skyline rows separated by pink mist;
+  pastel filler blocks; three shops with their own architecture and colour
+  (`world/Shops.tsx`): a pink boutique salon (arches, flower boxes, scissors
+  sign), an industrial orange-and-slate gym (brick, dumbbell sign, runners
+  on treadmills, punching bag) and a white-and-mint clinic (rounded facade,
+  teal cross, sky-blue flats). Broken shops are dimmed and flicker; fixed
+  ones light up with confetti and balloons. Trees sway, bunting flutters near
+  the lens, cars and townsfolk move, road reflections shimmer, and every
+  parallax layer has its own motion blur while the camera travels.
+- **Owners** (`world/Owners.tsx`): a stylist, a gym owner and a doctor who
+  speak their lines with lip-sync from their own voice tracks
+  (`src/city/lipsync.json`), panic while the problem runs, gape at the
+  hologram and cheer and wave thanks after the fix.
+- **Kavey**: the supplied rig only, keyed against the base camera
+  (`city/kavey.ts`): comet entry, perch, surprise, three wind-up throws, a
+  missed grab, waving at the clock, painting the showcase, conducting the
+  build, the launch jump, the handoff, pointing at the billboard, the scarf
+  dash and a wave on the global stage. Every key eases from and to rest
+  (checked numerically for velocity pops).
+- **Music** (`scripts/audio/city/score.ts`): warm, smooth and lively, in
+  120 BPM F major with the beat grid offset so the downbeats land on the
+  cube hits, the showcase merge, the launch and the brand hit. It uses FM
+  electric piano, kalimba arps, soft pads, round bass, a soft kick, claps and
+  shaker, a music box for the sleepy clinic, and swells into every big
+  moment. Problems play light and playful; fixes lift into the groove.
+- **Sound design**: 115 synthesised, frame-placed effects plus city rumble,
+  neon buzz only while the shop in view is broken, car passes and birdsong.
+  All effects pass an isolated click audit. The narrator is centred and dry;
+  the owners sit slightly left with a touch of room; a voice-bus peak
+  control keeps the master limiter nearly idle.
 
 ### Verification (city film, final MP4)
 
