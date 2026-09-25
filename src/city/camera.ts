@@ -59,7 +59,8 @@ export const cam = (f: number): Cam => {
   // Punch-ins on each fix and at launch; a small shake on clashes.
   zoom *= 1 + 0.045 * bump(f, C.salonHit + 4, 12) + 0.045 * bump(f, C.gymHit + 4, 12) + 0.045 * bump(f, C.clinicHit + 4, 12) + 0.06 * bump(f, C.launch + 4, 16);
   let shake = 0;
-  for (const h of C.clashHits) shake += ring(f, h, 7, 6, 5);
+  // gentle, slower jolt on each clash (smooth, not jittery)
+  for (const h of C.clashHits) shake += ring(f, h, 3.5, 11, 8);
   shake += ring(f, C.land, 6, 7, 5) + ring(f, C.launch, 8, 7, 7);
   cx += shake + 2.5 * noise1(f / 40, 7);
   cy += shake * 0.6 + 2 * noise1(f / 45, 8);

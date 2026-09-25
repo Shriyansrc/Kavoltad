@@ -100,34 +100,26 @@ python scripts/qa/asr_check.py --prefix Kavolt_ChaosCity_48s --report audio/city
 
 ### Verification (city film, final MP4)
 
-- ffprobe: H.264 High, 1080 × 1920, 60/1 real and average frame rate, 1800
-  decoded frames, 30.000 s, yuv420p, BT.709 primaries/transfer/matrix, tv
-  range, AAC-LC 48 kHz stereo 256 kbps, moov before mdat. All checks pass
-  (`scripts/qa/probe.py`).
-- Audio: −14.0 LUFS integrated (source mix and decoded AAC), −1.65 dBTP source
-  true peak, limiter reduction ≤ 1.4 dB for 0.05 s in total, 0 clipped
-  samples; decoded AAC vs source mix offset 0 samples; the brand hit decodes
-  at frame 1620.05.
-- On every line the narration is at least 12.5 LU above the music and
-  10.8 LU above the effects (window loudness per line).
-  Offline Whisper small.en recognises all 12 lines from the narration stem and
-  from the full mix (only differences: “7” for “seven”, and one “Payment” on
-  the isolated stem that is heard as “payments” in the mix).
-- Clicks: all 90 effects pass an isolated click audit (edge level ≤ 2e-5 of
-  peak, no isolated second-difference spikes); the SFX, music, narration and
-  mix stems show 0 clicks, 0 clipped samples and no DC offset in
-  `scripts/qa/clicks.py` (its self-test shows dense stems can mask −48 dBFS
-  steps, which is why effects are audited at source).
-- Motion: Kavey's paths are checked for velocity discontinuities (all keys
-  ease from and to rest; the remaining fast accelerations are the throws and
-  lunges, softened by motion blur); flyers use continuous-velocity splines.
-  Decoded video: maximum frame-to-frame luminance change 5.3/255 (no flash),
-  no unexpected single-frame jumps; the only near-identical frames are the
-  still end card (1686–1763).
+- ffprobe: H.264 High, 1080 × 1920, 60/1 real and average frame rate, 2880
+  decoded frames, 48.000 s, yuv420p, BT.709 primaries/transfer/matrix, tv
+  range, AAC-LC 48 kHz stereo 256 kbps, moov before mdat. All checks pass.
+- Audio: −14.0 LUFS integrated (source and decoded AAC), −1.65 dBTP source,
+  −1.7 dBFS decoded peak, 0 clipped samples; the master limiter works at most
+  0.24 dB (a voice-bus peak control handles speech first); decoded AAC vs
+  source offset 0 samples; the brand hit decodes at frame 2496.08.
+- Dialogue: on every line the voice is at least 10.6 LU above the music and
+  11.3 LU above the effects. Offline Whisper small.en recognises all 16 lines
+  in the full mix at 0 % WER (numerals and the spoken URL normalised).
+- Clicks: all 115 effects pass the isolated click audit (edge ≤ 1.4e-5 of
+  peak, no isolated spikes); stems show 0 clicks, 0 clipped samples, no DC.
+- Motion: Kavey's keys ease from and to rest (numeric velocity check; the
+  remaining fast accelerations are throws and lunges under motion blur);
+  flyers use continuous-velocity splines. Decoded video: no duplicate frames
+  and no unexpected single-frame jumps; the clash shake was softened after
+  the first check. The largest frame-to-frame luminance change (14.5/255) is
+  the dark ribbon sweeping in at frame 2476 (a darkening, not a flash).
 - Transition: `CityTransitionMask` covers 100 % of the frame, corners
-  included, for frames 1602–1608; the swap happens on 1605.
-- Storyboard (`deliverables/Kavolt_ChaosCity_30s_Storyboard.png`) is built
-  from decoded MP4 frames.
+  included, for frames 2478–2484; the swap happens on 2481.
 
 ### Limitations (city film)
 
@@ -138,7 +130,7 @@ python scripts/qa/asr_check.py --prefix Kavolt_ChaosCity_48s --report audio/city
   `audio-src/narration_city/*.wav`, and `node scripts/audio/build-city-audio.ts`
   rebuilds the mix and captions.
 - Platform UI zones were only approximated (`scripts/qa/safe_zones.py`).
-- A full-resolution render takes about 70–100 minutes on 4 cores.
+- A full-resolution render takes about 100 minutes on 4 cores.
 
 ---
 

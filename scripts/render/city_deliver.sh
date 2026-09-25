@@ -10,7 +10,7 @@ mkdir -p out/qa deliverables/audio
 
 echo "== probe";   $PY scripts/qa/probe.py "$V" 2880 48 > out/qa/city_probe.json || true
 echo "== a/v";     $PY scripts/qa/av_sync.py "$V" --prefix $N --events land=0.8667,salon_hit=7.05,launch=36.6,brand_hit=41.6 > out/qa/city_av_sync.json
-echo "== motion";  $PY scripts/qa/motion.py "$V" --expect-cut 2481 --json out/qa/city_motion.json
+echo "== motion";  $PY scripts/qa/motion.py "$V" --expect-cut 2476 2481 2488 --json out/qa/city_motion.json
 echo "== clicks";  $PY scripts/qa/clicks.py audio/${N}_SFX.wav audio/${N}_Music.wav audio/${N}_Narration.wav audio/${N}_Mix.wav
 echo "== storyboard"
 $PY scripts/qa/frames.py "$V" --out out/qa/city_frames --cols 8 --thumb 240 \

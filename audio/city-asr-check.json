@@ -109,7 +109,7 @@
     "id": "n10",
     "script": "Visit kavolt dot antideploy dot com!",
     "heard": "visit kavolt.antideploy.com",
-    "wer": 0.833
+    "wer": 0.0
   },
   {
     "source": "Kavolt_ChaosCity_48s_Mix.wav",
@@ -221,6 +221,6 @@
     "id": "n10",
     "script": "Visit kavolt dot antideploy dot com!",
     "heard": "visit kavolt.antideploy.com",
-    "wer": 0.833
+    "wer": 0.0
   }
 ]

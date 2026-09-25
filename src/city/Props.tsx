@@ -190,8 +190,8 @@ const Calendar: React.FC<{f: number}> = ({f}) => {
   let jx = 0;
   let sq = 0;
   for (const h of C.clashHits) {
-    jx += ring(f, h, 9, 6, 6);
-    sq += ring(f, h, 0.07, 10, 6);
+    jx += ring(f, h, 6, 10, 7);
+    sq += ring(f, h, 0.06, 12, 7);
   }
   const breathe = holo < 1 ? 0.015 * Math.sin(f * 0.25) : 0.01 * Math.sin(f * 0.08);
   const angry = f >= C.clashHits[0] && holo < 0.5;
