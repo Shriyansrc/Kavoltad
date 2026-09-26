@@ -2,9 +2,9 @@
   "sampleRate": 48000,
   "durationSeconds": 48,
   "integratedLufs": -14,
-  "truePeakDbtp": -1.65,
-  "truePeakBeforeLimiter": -1.41,
-  "limiterMaxReductionDb": 0.24,
+  "truePeakDbtp": -1.55,
+  "truePeakBeforeLimiter": -1.55,
+  "limiterMaxReductionDb": 0,
   "limiterSecondsOver1dB": 0,
   "narration": [
     {
@@ -165,29 +165,29 @@
     },
     {
       "id": "n07",
-      "text": "Launch day! Your code and your keys, all yours.",
-      "start": 36.6,
-      "end": 38.959,
+      "text": "On the seventh day, your code and your keys are all yours, ready to go live!",
+      "start": 36.5,
+      "end": 40.334,
       "window": [
-        36.6,
-        42.6
+        36.5,
+        42.5
       ],
       "speaker": "narrator",
-      "startFrame": 2196,
-      "endFrame": 2337.5
+      "startFrame": 2190,
+      "endFrame": 2420
     },
     {
       "id": "n08",
       "text": "Real work. Really shipped.",
-      "start": 39.3,
-      "end": 40.608999999999995,
+      "start": 40.45,
+      "end": 41.759,
       "window": [
-        39.3,
-        45.3
+        40.45,
+        46.45
       ],
       "speaker": "narrator",
-      "startFrame": 2358,
-      "endFrame": 2436.5
+      "startFrame": 2427,
+      "endFrame": 2505.5
     },
     {
       "id": "n09",
@@ -219,99 +219,99 @@
   "separationLufs": [
     {
       "id": "n01",
-      "voice": -14,
-      "music": -28.2,
-      "sfx": -29
+      "voice": -14.2,
+      "music": -28.3,
+      "sfx": -29.1
     },
     {
       "id": "s01",
-      "voice": -12.9,
-      "music": -28.9,
-      "sfx": -31.3
+      "voice": -13,
+      "music": -29,
+      "sfx": -31.5
     },
     {
       "id": "n02",
-      "voice": -14,
-      "music": -26.1,
-      "sfx": -29.4
+      "voice": -14.2,
+      "music": -26.2,
+      "sfx": -29.5
     },
     {
       "id": "s02",
-      "voice": -12.9,
-      "music": -25.5,
-      "sfx": -25.6
+      "voice": -13,
+      "music": -25.6,
+      "sfx": -25.8
     },
     {
       "id": "g01",
-      "voice": -14.5,
-      "music": -28.4,
-      "sfx": -32
+      "voice": -14.7,
+      "music": -28.6,
+      "sfx": -32.2
     },
     {
       "id": "n03",
-      "voice": -14.5,
-      "music": -26.3,
-      "sfx": -27.4
+      "voice": -14.6,
+      "music": -26.5,
+      "sfx": -27.5
     },
     {
       "id": "g02",
-      "voice": -14.8,
-      "music": -27.3,
-      "sfx": -27.3
+      "voice": -15,
+      "music": -27.4,
+      "sfx": -27.4
     },
     {
       "id": "c01",
-      "voice": -13.8,
-      "music": -29,
-      "sfx": -33.5
+      "voice": -13.9,
+      "music": -29.2,
+      "sfx": -33.6
     },
     {
       "id": "n04",
-      "voice": -13.5,
-      "music": -26.1,
-      "sfx": -24.8
+      "voice": -13.6,
+      "music": -26.2,
+      "sfx": -24.9
     },
     {
       "id": "c02",
-      "voice": -13.4,
-      "music": -27.1,
-      "sfx": -31.3
+      "voice": -13.6,
+      "music": -27.2,
+      "sfx": -31.4
     },
     {
       "id": "n05",
-      "voice": -14.3,
-      "music": -26.5,
-      "sfx": -28
+      "voice": -14.4,
+      "music": -26.7,
+      "sfx": -28.1
     },
     {
       "id": "n06",
-      "voice": -13.7,
-      "music": -27.9,
-      "sfx": -30.8
+      "voice": -13.9,
+      "music": -28.1,
+      "sfx": -31
     },
     {
       "id": "n07",
-      "voice": -13.5,
-      "music": -25.6,
-      "sfx": -26.3
+      "voice": -13.7,
+      "music": -26.2,
+      "sfx": -27.9
     },
     {
       "id": "n08",
-      "voice": -12.9,
-      "music": -26.6,
-      "sfx": -33.7
+      "voice": -13,
+      "music": -26.9,
+      "sfx": -23
     },
     {
       "id": "n09",
-      "voice": -14.2,
-      "music": -24.8,
-      "sfx": -37.1
+      "voice": -14.4,
+      "music": -25,
+      "sfx": -37.2
     },
     {
       "id": "n10",
-      "voice": -14.4,
-      "music": -26.9,
-      "sfx": -32.8
+      "voice": -14.5,
+      "music": -27.1,
+      "sfx": -32.9
     }
   ],
   "sfxCues": [

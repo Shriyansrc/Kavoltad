@@ -1,5 +1,5 @@
 // Proof: CODE and KEYS tiles are handed over (screen space), then a billboard
-// rises behind the gym sign and powers on with the real FCN storefront.
+// rises behind the gym sign and powers on with the real Sikshaara homepage.
 import React from 'react';
 import {getStaticFiles, Img, staticFile} from 'remotion';
 import {IconCode, IconKey} from '../components/icons.tsx';
@@ -133,10 +133,10 @@ export const Billboard: React.FC<{f: number}> = ({f}) => {
   );
 };
 
-/** The FCN screenshot (HTML image so it is preloaded), wiped on by a scanline. */
+/** The Sikshaara screenshot (HTML image so it is preloaded), wiped on by a scanline. */
 export const BillboardImage: React.FC<{f: number}> = ({f}) => {
   if (f < C.fcnReveal || f >= C.swap) return null;
-  if (!getStaticFiles().some((s) => s.name === 'assets/fcn_crop.png')) return null;
+  if (!getStaticFiles().some((s) => s.name === 'assets/sikshaara_crop.png')) return null;
   const rise = boardRise(f);
   const dy = (1 - rise) * 520;
   const wipe = ease.cubicOut(clamp(invLerp(C.fcnReveal, C.fcnReveal + 14, f)));
@@ -146,7 +146,7 @@ export const BillboardImage: React.FC<{f: number}> = ({f}) => {
   return (
     <WorldDiv f={f}>
       <div style={{position: 'absolute', left: x0, top: y0, width: BOARD.imgW, height: BOARD.imgH, overflow: 'hidden', clipPath: `inset(0 ${(1 - wipe) * 100}% 0 0)`}}>
-        <Img src={staticFile('assets/fcn_crop.png')} style={{width: BOARD.imgW, height: BOARD.imgH, display: 'block'}} />
+        <Img src={staticFile('assets/sikshaara_crop.png')} style={{width: BOARD.imgW, height: BOARD.imgH, display: 'block'}} />
         <div style={{position: 'absolute', inset: 0, background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.12) 0 2px, rgba(0,0,0,0) 2px 5px)'}} />
         {wipe < 1 ? <div style={{position: 'absolute', top: 0, bottom: 0, left: `${wipe * 100}%`, width: 6, background: PALETTE.cyan}} /> : null}
         {click > -18 && click < 30 ? (

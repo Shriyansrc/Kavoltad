@@ -86,8 +86,8 @@
   {
     "source": "Kavolt_ChaosCity_48s_Narration.wav",
     "id": "n07",
-    "script": "Launch day! Your code and your keys, all yours.",
-    "heard": "Launch Day. Your code and your keys all yours.",
+    "script": "On the seventh day, your code and your keys are all yours, ready to go live!",
+    "heard": "On the seventh day, your code and your keys are all yours, ready to go live.",
     "wer": 0.0
   },
   {
@@ -198,8 +198,8 @@
   {
     "source": "Kavolt_ChaosCity_48s_Mix.wav",
     "id": "n07",
-    "script": "Launch day! Your code and your keys, all yours.",
-    "heard": "Launch Day, your code and your keys, all yours.",
+    "script": "On the seventh day, your code and your keys are all yours, ready to go live!",
+    "heard": "On the seventh day, your code and your keys are all yours, ready to go live.",
     "wer": 0.0
   },
   {

@@ -185,15 +185,15 @@
     },
     {
       "id": "n07",
-      "text": "Launch day! Your code and your keys, all yours.",
+      "text": "On the seventh day, your code and your keys are all yours, ready to go live!",
       "voice": "af_heart",
       "speed": 1.12,
-      "phonemes": "lˈɑːntʃ dˈeɪ! jʊɹ kˈoʊd ænd jʊɹ kˈiːz, ˈɔːl jˈɔːɹz.",
+      "phonemes": "ɔnðə sˈɛvənθ dˈeɪ, jʊɹ kˈoʊd ænd jʊɹ kˈiːz ɑːɹ ˈɔːl jˈɔːɹz, ɹˈɛdi tə ɡˌoʊ lˈaɪv!",
       "window": [
-        36.6,
-        42.6
+        36.5,
+        42.5
       ],
-      "duration": 2.359,
+      "duration": 3.834,
       "fits": true,
       "sr": 24000,
       "file": "audio-src/narration_city_v2/n07.wav"
@@ -205,8 +205,8 @@
       "speed": 1.12,
       "phonemes": "ɹˈiːəl wˈɜːk. ɹˈiəli ʃˈɪpt.",
       "window": [
-        39.3,
-        45.3
+        40.45,
+        46.45
       ],
       "duration": 1.309,
       "fits": true,

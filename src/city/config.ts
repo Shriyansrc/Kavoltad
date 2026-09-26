@@ -100,7 +100,7 @@ export const COPY2 = {
   ],
   handoff: ['YOUR CODE.', 'YOUR KEYS.'],
   proof: ['SHIPPED.', 'NOT MOCKED UP.'],
-  proofLabel: 'FCN · COMMERCE',
+  proofLabel: 'SIKSHAARA · EDTECH',
   shops: {salon: 'SALON', gym: 'GYM', clinic: 'CLINIC'},
   ui: {pending: 'PENDING', booking: 'BOOKING', razorpay: 'RAZORPAY', payments: 'PAYMENTS', whatsapp: 'WHATSAPP', reminder: 'REMINDER', paid: 'PAID', live: 'LIVE', preview: 'PRIVATE PREVIEW', code: 'CODE', keys: 'KEYS', book: 'BOOK NOW', join: 'JOIN NOW', visit: 'BOOK A VISIT'},
   ending: {headline: ['READY TO BRING', 'YOUR BUSINESS TO', 'THE GLOBAL STAGE?'], website: 'kavolt.antideploy.com'},

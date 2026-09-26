@@ -114,9 +114,9 @@ export const LINES = [
   "speaker": "narrator",
   "voice": "af_heart",
   "speed": 1.12,
-  "text": "Launch day! Your code and your keys, all yours.",
-  "start": 36.6,
-  "end": 42.6
+  "text": "On the seventh day, your code and your keys are all yours, ready to go live!",
+  "start": 36.5,
+  "end": 42.5
  },
  {
   "id": "n08",
@@ -124,8 +124,8 @@ export const LINES = [
   "voice": "af_heart",
   "speed": 1.12,
   "text": "Real work. Really shipped.",
-  "start": 39.3,
-  "end": 45.3
+  "start": 40.45,
+  "end": 46.45
  },
  {
   "id": "n09",
